@@ -41,7 +41,7 @@ void		cross_product(t_vec *res, t_vec *i, t_vec *j)
 	res->z = (i->x * j->y) - (i->y * j->x);
 }
 
-void		vecpuivec(t_vec *rec, t_vec *i, t_vec *j)
+void		vecpuivec(t_vec *res, t_vec *i, t_vec *j)
 {
 	res->x = i->x * j->x;
 	res->y = i->y * j->y;

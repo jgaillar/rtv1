@@ -44,6 +44,7 @@ int				main(int ac, char **av)
 	e.buf[read(e.fd, e.buf, BUFF_SIZE)] = '\0';
 	close(e.fd);
 	init_struct(&e);
+	raycast(&e);
 	mlx_loop(e.img.mlx_ptr);
 	return (0);
 }

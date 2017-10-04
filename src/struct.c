@@ -28,6 +28,7 @@ void	init_struct(t_stuff *e)
 	e->longvue = 0.35;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
 	vecpuivec(&e->vecdroit, &e->dircam, &e->vech);
+	upleft(e);
 	create_image(e);
 }
 

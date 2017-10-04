@@ -19,8 +19,16 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
-# include <../libft/libft.h>
-# include <../mlx/mlx.h>
+# include "../libft/libft.h"
+# include "../mlx/mlx.h"
+
+typedef	struct		s_rt
+{
+	double			det;
+	double			t;
+	double			t1;
+	double			t2;
+}					t_rt;
 
 typedef struct		s_sphere
 {
@@ -61,7 +69,7 @@ typedef struct		s_lumiere
 	int				posz;
 	int				color;
 	double			coefdif;
-}
+}					s_lumiere;
 
 typedef struct		s_vec
 {
@@ -93,6 +101,7 @@ typedef	struct		s_stuff
 	t_vec			raydir;
 	t_vec			dircam;
 	t_sphere		sphere;
+	t_rt			rt;
 	double			distvue;
 	double			longvue;
 	double			largvue;
@@ -108,8 +117,10 @@ void				vecsous(t_vec *res, t_vec *i, t_vec *j);
 void				vecadd(t_vec *res, t_vec *i, t_vec *j);
 int					dot_product(t_vec *i, t_vec *j);
 void				cross_product(t_vec *res, t_vec *i, t_vec *j);
-void				vecpuivec(t_vec *rec, t_vec *i, t_vec *j);
+void				vecpuivec(t_vec *res, t_vec *i, t_vec *j);
 void				upleft(t_stuff *e);
 void				raydir(t_stuff *e, int x, int y);
+void				checksphere(t_stuff *e, int x, int y);
+void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
 
 #endif

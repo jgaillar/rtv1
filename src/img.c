@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "wolf3d.h"
+#include "rtv1.h"
 
 void			mlx_pixel_put_to_image(t_img img, int x, int y, int color)
 {
