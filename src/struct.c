@@ -14,19 +14,24 @@
 
 void	init_struct(t_stuff *e)
 {
-	e->poscam.x = 3;
-	e->poscam.y = 3;
+	e->poscam.x = 5;
+	e->poscam.y = 5;
 	e->poscam.z = 0;
-	e->pr.x = 15;
-	e->pr.y = 15;
-	e->pr.z = 15;
-	e->vech.x = 3;
-	e->vech.y = 3;
-	e->vech.z = 3;
+	e->pr.x = 30;
+	e->pr.y = 30;
+	e->pr.z = 0;
+	e->vech.x = 5;
+	e->vech.y = 5;
+	e->vech.z = 30;
 	e->distvue = 1;
 	e->largvue = 0.5;
 	e->longvue = 0.35;
+	e->sphere.cx = 5;
+	e->sphere.cy = 120;
+	e->sphere.cz = 0;
+	e->sphere.rayon = 10;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
+	printf("x : [%d]\n y : [%d]\n z : [%d]\n", e->dircam.x, e->dircam.y, e->dircam.z);
 	vecpuivec(&e->vecdroit, &e->dircam, &e->vech);
 	upleft(e);
 	create_image(e);

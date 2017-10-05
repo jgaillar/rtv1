@@ -21,6 +21,7 @@
 # include <math.h>
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
+# include <stdio.h>
 
 typedef	struct		s_rt
 {
@@ -122,5 +123,8 @@ void				upleft(t_stuff *e);
 void				raydir(t_stuff *e, int x, int y);
 void				checksphere(t_stuff *e, int x, int y);
 void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
+int					hooks(int keycode, t_stuff *e);
+void				echap(int keycode, t_stuff *e);
+void				cleanexit(t_stuff *e);
 
 #endif

@@ -24,8 +24,10 @@ void		raycast(t_stuff *e)
 		while (++x < WIDTH)
 		{
 			raydir(e, x, y);
+			checksphere(e, x, y);
 		}
 	}
+	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 }
 
 void		raydir(t_stuff *e, int x, int y)
@@ -35,8 +37,8 @@ void		raydir(t_stuff *e, int x, int y)
 	t_vec	tmp;
 	t_vec	tmp2;
 
-	xindent = (e->largvue / WIDTH) * x;
-	yindent = (e->longvue / LENGTH) * y;
+	xindent = e->largvue / WIDTH * x;
+	yindent = e->longvue / LENGTH * y;
 	tmp.x = e->vecdroit.x * xindent;
 	tmp.y = e->vecdroit.y * xindent;
 	tmp.z = e->vecdroit.z * xindent;
@@ -53,8 +55,8 @@ void		checksphere(t_stuff *e, int x, int y)
 	int	b;
 	int	c;
 
-	a = e->raydir.x * e->raydir.x + e->raydir.y * e->raydir.y + e->raydir.z * \
-		e->raydir.z;
+	a = (e->raydir.x * e->raydir.x) + (e->raydir.y * e->raydir.y) + (e->raydir.z * \
+		e->raydir.z);
 	b = 2 * (e->raydir.x * (e->poscam.x - e->sphere.cx) + e->raydir.y * \
 	(e->poscam.y - e->sphere.cy) + e->raydir.z * (e->poscam.z - e->sphere.cz));
 	c = (((e->poscam.x - e->sphere.cx) * (e->poscam.x - e->sphere.cx)) + \
@@ -63,14 +65,21 @@ void		checksphere(t_stuff *e, int x, int y)
 	(e->sphere.rayon * e->sphere.rayon));
 	e->rt.det = (b * b) - 4 * a * c;
 	if (e->rt.det < 0)
-		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
+		mlx_pixel_put_to_image(e->img, x, y, 0xffffff);
 	else if (e->rt.det == 0)
+	{
 		e->rt.t = (-b + sqrt(e->rt.det)) / (2 * a);
+		if (e->rt.t > 0.01)
+			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
+	}
 	else if (e->rt.det > 0)
 	{
 		e->rt.t1 = (-b + sqrt(e->rt.det)) / (2 * a);
 		e->rt.t2 = (-b - sqrt(e->rt.det)) / (2 * a);
 		e->rt.t = (e->rt.t1 < e->rt.t2 ? e->rt.t1 : e->rt.t2);
+		if (e->rt.t > 0.01)
+			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
+		// printf("t : [%f]\n", e->rt.t);
 	}
 
 }

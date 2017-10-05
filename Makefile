@@ -12,7 +12,7 @@
 
 SRC_PATH = src/
 
-SRC_NAME = main.c raycast.c struct.c img.c vector.c
+SRC_NAME = main.c raycast.c struct.c img.c vector.c hooks.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
