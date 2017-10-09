@@ -47,3 +47,15 @@ void		vecpuivec(t_vec *res, t_vec *i, t_vec *j)
 	res->y = i->y * j->y;
 	res->z = i->z * j->z;
 }
+
+void		veclength(t_vec *i)
+{
+	i->length = sqrt((i->x * i->x) + (i->y * i->y) + (i->z * i->z));
+}
+
+void		vecnorm(t_vec *i)
+{
+	i->x = i->x / i->length;
+	i->y = i->y / i->length;
+	i->z = i->z / i->length;
+}

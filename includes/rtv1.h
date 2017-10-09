@@ -29,54 +29,57 @@ typedef	struct		s_rt
 	double			t;
 	double			t1;
 	double			t2;
+	double			xindent;
+	double			yindent;
 }					t_rt;
 
 typedef struct		s_sphere
 {
-	int 			cx;
-	int				cy;
-	int				cz;
-	int				rayon;
-	int				color;
+	double 			cx;
+	double			cy;
+	double			cz;
+	double			rayon;
+	double			color;
 }					t_sphere;
 
 typedef struct		s_plan
 {
-	int				normx;
-	int				normy;
-	int				normz;
-	int				planx;
-	int				plany;
-	int				planz;
-	int				color;
+	double			normx;
+	double			normy;
+	double			normz;
+	double			planx;
+	double			plany;
+	double			planz;
+	double			color;
 }					t_plan;
 
 typedef struct		s_cylindre
 {
-	int				normx;
-	int				normy;
-	int				normz;
-	int				axex;
-	int				axey;
-	int				axez;
-	int				rayon;
-	int				color;
+	double			normx;
+	double			normy;
+	double			normz;
+	double			axex;
+	double			axey;
+	double			axez;
+	double			rayon;
+	double			color;
 }					t_cylindre;
 
 typedef struct		s_lumiere
 {
-	int				posx;
-	int				posy;
-	int				posz;
-	int				color;
+	double			posx;
+	double			posy;
+	double			posz;
+	double			color;
 	double			coefdif;
 }					s_lumiere;
 
 typedef struct		s_vec
 {
-	int x;
-	int y;
-	int z;
+	double 			x;
+	double 			y;
+	double 			z;
+	double 			length;
 }					t_vec;
 
 typedef struct		s_img
@@ -126,5 +129,7 @@ void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
 int					hooks(int keycode, t_stuff *e);
 void				echap(int keycode, t_stuff *e);
 void				cleanexit(t_stuff *e);
+void				vecnorm(t_vec *i);
+void				veclength(t_vec *i);
 
 #endif
