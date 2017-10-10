@@ -58,4 +58,5 @@ void		vecnorm(t_vec *i)
 	i->x = i->x / i->length;
 	i->y = i->y / i->length;
 	i->z = i->z / i->length;
+	veclength(i);
 }

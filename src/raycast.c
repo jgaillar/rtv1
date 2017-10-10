@@ -45,11 +45,10 @@ void		raydir(t_stuff *e, int x, int y)
 	tmp2.z = e->vech.z * e->rt.yindent;
 	vecadd(&e->raydir, &e->vecupleft, &tmp);
 	vecsous(&e->raydir, &e->raydir, &tmp2);
-	//printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
+//	printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
 	veclength(&e->raydir);
 	vecnorm(&e->raydir);
-	veclength(&e->raydir);
-//	printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
+	//printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
 }
 
 void		checksphere(t_stuff *e, int x, int y)
@@ -66,23 +65,21 @@ void		checksphere(t_stuff *e, int x, int y)
 	((e->poscam.y - e->sphere.cy) * (e->poscam.y - e->sphere.cy)) + \
 	((e->poscam.z = e->sphere.cz) * (e->poscam.z = e->sphere.cz)) - \
 	(e->sphere.rayon * e->sphere.rayon));
-	//printf("a : [%f]\nb : [%f]\nc : [%f]\n", a, b, c);
 	e->rt.det = (b * b) - 4 * a * c;
-	//printf("det : [%f]\n", e->rt.det);
 	if (e->rt.det < 0)
 	{
 	//	ft_putendl("1");
-		mlx_pixel_put_to_image(e->img, x, y, 0xFFFFFF);
+		mlx_pixel_put_to_image(e->img, x, y, 0xffffff);
 	}
 	else if (e->rt.det == 0)
 	{
-	//	ft_putendl("2");
+		//ft_putendl("2");
 		e->rt.t = (-b + sqrt(e->rt.det)) / (2 * a);
 			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
 	}
 	else if (e->rt.det > 0)
 	{
-	//	ft_putendl("3");
+		//ft_putendl("3");
 		e->rt.t1 = (-b + sqrt(e->rt.det)) / (2 * a);
 		e->rt.t2 = (-b - sqrt(e->rt.det)) / (2 * a);
 		e->rt.t = (e->rt.t1 < e->rt.t2 ? e->rt.t1 : e->rt.t2);
