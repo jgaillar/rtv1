@@ -26,7 +26,6 @@
 typedef	struct		s_rt
 {
 	double			det;
-	double			t;
 	double			t1;
 	double			t2;
 	double			xindent;
@@ -40,6 +39,7 @@ typedef struct		s_sphere
 	double			cz;
 	double			rayon;
 	double			color;
+	double			t;
 }					t_sphere;
 
 typedef struct		s_plan
@@ -51,6 +51,7 @@ typedef struct		s_plan
 	double			plany;
 	double			planz;
 	double			color;
+	double			t;
 }					t_plan;
 
 typedef struct		s_cylindre
@@ -65,14 +66,14 @@ typedef struct		s_cylindre
 	double			color;
 }					t_cylindre;
 
-typedef struct		s_lumiere
+typedef struct		s_light
 {
 	double			posx;
 	double			posy;
 	double			posz;
 	double			color;
 	double			coefdif;
-}					s_lumiere;
+}					s_light;
 
 typedef struct		s_vec
 {
@@ -105,6 +106,7 @@ typedef	struct		s_stuff
 	t_vec			raydir;
 	t_vec			dircam;
 	t_sphere		sphere;
+	t_plan			plan;
 	t_rt			rt;
 	double			distvue;
 	double			longvue;
@@ -125,6 +127,7 @@ void				vecpuivec(t_vec *res, t_vec *i, t_vec *j);
 void				upleft(t_stuff *e);
 void				raydir(t_stuff *e, int x, int y);
 void				checksphere(t_stuff *e, int x, int y);
+void				checkplan(t_stuff *e, int x, int y);
 void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
 int					hooks(int keycode, t_stuff *e);
 void				echap(int keycode, t_stuff *e);

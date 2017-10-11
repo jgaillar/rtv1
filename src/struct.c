@@ -14,35 +14,33 @@
 
 void	init_struct(t_stuff *e)
 {
-	e->poscam.x = 15;
-	e->poscam.y = 20;
-	e->poscam.z = 50;
-	e->pr.x = 10;
-	e->pr.y = 10;
-	e->pr.z = 15;
+	e->poscam.x = 0;
+	e->poscam.y = 0;
+	e->poscam.z = 0;
+	e->pr.x = 25;
+	e->pr.y = 17.3;
+	e->pr.z = 0;
 	e->vech.x = 0;
 	e->vech.y = 0;
 	e->vech.z = 1;
-	veclength(&e->vech);
-	vecnorm(&e->vech);
-	printf("vechx : [%f]\nvechy : [%f]\nvechz : [%f]\n", e->vech.x, e->vech.y, e->vech.z);
 	e->distvue = 1;
 	e->largvue = 0.5;
-	e->longvue = 0.35;
-	e->sphere.cx = 15;
-	e->sphere.cy = 15;
-	e->sphere.cz = 30;
-	e->sphere.rayon = 20;
+	e->longvue = 0.3;
+	e->sphere.cx = 20;
+	e->sphere.cy = 10;
+	e->sphere.cz = 0;
+	e->sphere.rayon = 2;
+	e->plan.normx = 0;
+	e->plan.normy = 0;
+	e->plan.normz = 1;
+	e->plan.planx = 0;
+	e->plan.plany = 1;
+	e->plan.planz = 1;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
-	veclength(&e->dircam);
 	vecnorm(&e->dircam);
-	printf("dircamx : [%f]\ndircamy : [%f]\ndircamz : [%f]\n", e->dircam.x, e->dircam.y, e->dircam.z);
 	cross_product(&e->vecdroit, &e->dircam, &e->vech);
-	veclength(&e->vecdroit);
 	vecnorm(&e->vecdroit);
-	printf("vecdroitx : [%f]\nvecdroity : [%f]\nvecdroitz : [%f]\n", e->vecdroit.x, e->vecdroit.y, e->vecdroit.z);
 	upleft(e);
-	printf("vecupleftx : [%f]\nvecuplefty : [%f]\nvecupleftz : [%f]\n", e->vecupleft.x, e->vecupleft.y, e->vecupleft.z);
 	create_image(e);
 }
 

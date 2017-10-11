@@ -24,7 +24,10 @@ void		raycast(t_stuff *e)
 		while (++x < WIDTH)
 		{
 			raydir(e, x, y);
+			checkplan(e, x, y);
 			checksphere(e, x, y);
+			if (e->plan.t < e->sphere.t && e->plan.t > 0)
+				mlx_pixel_put_to_image(e->img, x, y, 0x0000FF);
 		}
 	}
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
@@ -45,10 +48,8 @@ void		raydir(t_stuff *e, int x, int y)
 	tmp2.z = e->vech.z * e->rt.yindent;
 	vecadd(&e->raydir, &e->vecupleft, &tmp);
 	vecsous(&e->raydir, &e->raydir, &tmp2);
-//	printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
 	veclength(&e->raydir);
 	vecnorm(&e->raydir);
-	//printf("raydirx : [%f]\nraydiry : [%f]\nraydirz : [%f]\n", e->raydir.x, e->raydir.y, e->raydir.z);
 }
 
 void		checksphere(t_stuff *e, int x, int y)
@@ -68,23 +69,41 @@ void		checksphere(t_stuff *e, int x, int y)
 	e->rt.det = (b * b) - 4 * a * c;
 	if (e->rt.det < 0)
 	{
-	//	ft_putendl("1");
-		mlx_pixel_put_to_image(e->img, x, y, 0xffffff);
+		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
 	}
 	else if (e->rt.det == 0)
 	{
-		//ft_putendl("2");
-		e->rt.t = (-b + sqrt(e->rt.det)) / (2 * a);
+		e->sphere.t = (-b + sqrt(e->rt.det)) / (2 * a);
 			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
 	}
 	else if (e->rt.det > 0)
 	{
-		//ft_putendl("3");
 		e->rt.t1 = (-b + sqrt(e->rt.det)) / (2 * a);
 		e->rt.t2 = (-b - sqrt(e->rt.det)) / (2 * a);
-		e->rt.t = (e->rt.t1 < e->rt.t2 ? e->rt.t1 : e->rt.t2);
-			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
-		// printf("t : [%f]\n", e->rt.t);
+		e->sphere.t = (e->rt.t1 < e->rt.t2 ? e->rt.t1 : e->rt.t2);
+			mlx_pixel_put_to_image(e->img, x, y, 0x00FF00);
+		//printf("shere t : [%f]\n", e->sphere.t);
 	}
 
+}
+
+void		checkplan(t_stuff *e, int x, int y)
+{
+	double	a;
+	double	b;
+	double	c;
+	double	d;
+
+	a = e->poscam.x - e->plan.planx;
+	b = e->poscam.y - e->plan.plany;
+	c = e->poscam.z - e->plan.planz;
+	d = e->plan.planx + e->plan.plany + e->plan.planz;
+
+	e->plan.t = -(e->plan.normx * a + e->plan.normy * b + e->plan.normz * c + d) \
+	/ (e->plan.normx * e->raydir.x + e->plan.normy * e->raydir.y + e->plan.normz * e->raydir.z);
+	if (e->plan.t <= 0)
+		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
+//	else if (e->plan.t > 0)
+	//	mlx_pixel_put_to_image(e->img, x, y, 0x0000FF);
+	//printf("t plan : [%f]\n", e->plan.t);
 }
