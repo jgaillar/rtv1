@@ -23,13 +23,24 @@
 # include "../mlx/mlx.h"
 # include <stdio.h>
 
+typedef struct		s_vec
+{
+	double 			x;
+	double 			y;
+	double 			z;
+	double 			length;
+}					t_vec;
+
 typedef	struct		s_rt
 {
+	double			dist;
 	double			det;
 	double			t1;
 	double			t2;
 	double			xindent;
 	double			yindent;
+	int				obj;
+	t_vec			inter;
 }					t_rt;
 
 typedef struct		s_sphere
@@ -40,6 +51,7 @@ typedef struct		s_sphere
 	double			rayon;
 	double			color;
 	double			t;
+	t_vec			normsphere;
 }					t_sphere;
 
 typedef struct		s_plan
@@ -73,15 +85,7 @@ typedef struct		s_light
 	double			posz;
 	double			color;
 	double			coefdif;
-}					s_light;
-
-typedef struct		s_vec
-{
-	double 			x;
-	double 			y;
-	double 			z;
-	double 			length;
-}					t_vec;
+}					t_light;
 
 typedef struct		s_img
 {
@@ -108,6 +112,7 @@ typedef	struct		s_stuff
 	t_sphere		sphere;
 	t_plan			plan;
 	t_rt			rt;
+	t_light			light;
 	double			distvue;
 	double			longvue;
 	double			largvue;
@@ -118,7 +123,7 @@ typedef	struct		s_stuff
 void				ft_exit(int code, t_stuff *e);
 void				init_struct(t_stuff *e);
 void				create_image(t_stuff *e);
-void				raycast(t_stuff *e);
+void				aff(t_stuff *e);
 void				vecsous(t_vec *res, t_vec *i, t_vec *j);
 void				vecadd(t_vec *res, t_vec *i, t_vec *j);
 int					dot_product(t_vec *i, t_vec *j);
@@ -134,5 +139,9 @@ void				echap(int keycode, t_stuff *e);
 void				cleanexit(t_stuff *e);
 void				vecnorm(t_vec *i);
 void				veclength(t_vec *i);
+void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
+					t_rt *rt);
+void				movement(int keycode, t_stuff *e);
+void				raycast(t_stuff *e, int x, int y);
 
 #endif

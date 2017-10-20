@@ -15,6 +15,8 @@
 int		hooks(int keycode, t_stuff *e)
 {
 	echap(keycode, e);
+	movement(keycode, e);
+	aff(e);
 	return (0);
 }
 
@@ -33,4 +35,12 @@ void	cleanexit(t_stuff *e)
 	free(e->img.data);
 	mlx_destroy_image(e->img.mlx_ptr, e->img.win_ptr);
 	exit(0);
+}
+
+void	movement(int keycode, t_stuff *e)
+{
+	if (keycode == 0)
+		e->poscam.z -= 1;
+	if (keycode == 2)
+		e->poscam.z += 1;
 }

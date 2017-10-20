@@ -12,10 +12,42 @@
 
 #include "rtv1.h"
 
-void		raycast(t_stuff *e)
+void		getintersection(t_vec *poscam, t_vec *raydir, double dist, t_rt *rt)
 {
-	int x;
-	int y;
+	rt->inter.x = poscam->x + raydir->x * dist;
+	rt->inter.y = poscam->y + raydir->y * dist;
+	rt->inter.z = poscam->z + raydir->z * dist;
+}
+
+void		raycast(t_stuff *e, int x, int y)
+{
+	e->rt.dist = 9999;
+	e->rt.obj = 0;
+	raydir(e, x, y);
+	checksphere(e, x, y);
+	if (e->sphere.t < e->rt.dist && e->sphere.t > 0)
+	{
+		e->rt.dist = e->sphere.t;
+		e->rt.obj = 1;
+	}
+	checkplan(e, x, y);
+	if (e->plan.t < e->rt.dist && e->plan.t > 0)
+	{
+		e->rt.dist = e->plan.t;
+		e->rt.obj = 2;
+	}
+	if (e->rt.obj == 1)
+		mlx_pixel_put_to_image(e->img, x, y, 0x551A8B);
+	else if (e->rt.obj == 2)
+		mlx_pixel_put_to_image(e->img, x, y, 0xFB6500 * 0.2);
+	else if (e->rt.obj == 0)
+		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
+}
+
+void		aff(t_stuff *e)
+{
+	int		x;
+	int		y;
 
 	y = -1;
 	while (++y < LENGTH)
@@ -23,11 +55,7 @@ void		raycast(t_stuff *e)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			raydir(e, x, y);
-			checkplan(e, x, y);
-			checksphere(e, x, y);
-			if (e->plan.t < e->sphere.t && e->plan.t > 0)
-				mlx_pixel_put_to_image(e->img, x, y, 0x0000FF);
+			raycast(e, x, y);
 		}
 	}
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
@@ -48,7 +76,6 @@ void		raydir(t_stuff *e, int x, int y)
 	tmp2.z = e->vech.z * e->rt.yindent;
 	vecadd(&e->raydir, &e->vecupleft, &tmp);
 	vecsous(&e->raydir, &e->raydir, &tmp2);
-	veclength(&e->raydir);
 	vecnorm(&e->raydir);
 }
 
@@ -68,21 +95,14 @@ void		checksphere(t_stuff *e, int x, int y)
 	(e->sphere.rayon * e->sphere.rayon));
 	e->rt.det = (b * b) - 4 * a * c;
 	if (e->rt.det < 0)
-	{
-		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
-	}
+		e->sphere.t = -1;
 	else if (e->rt.det == 0)
-	{
 		e->sphere.t = (-b + sqrt(e->rt.det)) / (2 * a);
-			mlx_pixel_put_to_image(e->img, x, y, 0xFF0000);
-	}
 	else if (e->rt.det > 0)
 	{
 		e->rt.t1 = (-b + sqrt(e->rt.det)) / (2 * a);
 		e->rt.t2 = (-b - sqrt(e->rt.det)) / (2 * a);
 		e->sphere.t = (e->rt.t1 < e->rt.t2 ? e->rt.t1 : e->rt.t2);
-			mlx_pixel_put_to_image(e->img, x, y, 0x00FF00);
-		//printf("shere t : [%f]\n", e->sphere.t);
 	}
 
 }
@@ -100,10 +120,6 @@ void		checkplan(t_stuff *e, int x, int y)
 	d = e->plan.planx + e->plan.plany + e->plan.planz;
 
 	e->plan.t = -(e->plan.normx * a + e->plan.normy * b + e->plan.normz * c + d) \
-	/ (e->plan.normx * e->raydir.x + e->plan.normy * e->raydir.y + e->plan.normz * e->raydir.z);
-	if (e->plan.t <= 0)
-		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
-//	else if (e->plan.t > 0)
-	//	mlx_pixel_put_to_image(e->img, x, y, 0x0000FF);
-	//printf("t plan : [%f]\n", e->plan.t);
+	/ (e->plan.normx * e->raydir.x + e->plan.normy * \
+		e->raydir.y + e->plan.normz * e->raydir.z);
 }

@@ -44,7 +44,7 @@ int				main(int ac, char **av)
 	// e.buf[read(e.fd, e.buf, BUFF_SIZE)] = '\0';
 	// close(e.fd);
 	init_struct(&e);
-	raycast(&e);
+	aff(&e);
 	mlx_hook(e.img.win_ptr, 2, (1L << 0), hooks, &e);
 	mlx_hook(e.img.win_ptr, 17, (1L << 17), (int(*)())cleanexit, &e);
 	mlx_loop(e.img.mlx_ptr);
