@@ -26,9 +26,9 @@ void		vecadd(t_vec *res, t_vec *i, t_vec *j)
 	res->z = i->z + j->z;
 }
 
-int			dot_product(t_vec *i, t_vec *j)
+double		dot_product(t_vec *i, t_vec *j)
 {
-	int res;
+	double res;
 
 	res = ((i->x * j->x) + (i->y * j->y) + (i->z * j->z));
 	return (res);
@@ -61,4 +61,14 @@ void		vecnorm(t_vec *i)
 	i->y = i->y / i->length;
 	i->z = i->z / i->length;
 	veclength(i);
+}
+
+t_vec		getvec(t_vec *i, t_vec *j)
+{
+	t_vec	res;
+
+	res.x = j->x - i->x;
+	res.y = j->y - i->y;
+	res.z = j->z - i->z;
+	return (res);
 }

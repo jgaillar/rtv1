@@ -34,34 +34,29 @@ typedef struct		s_vec
 typedef	struct		s_rt
 {
 	double			dist;
-	double			det;
-	double			t1;
-	double			t2;
 	double			xindent;
 	double			yindent;
 	int				obj;
+	double			color;
 	t_vec			inter;
 }					t_rt;
 
 typedef struct		s_sphere
 {
-	double 			cx;
-	double			cy;
-	double			cz;
+	t_vec			poss;
 	double			rayon;
 	double			color;
+	double			det;
+	double			t1;
+	double			t2;
 	double			t;
 	t_vec			normsphere;
 }					t_sphere;
 
 typedef struct		s_plan
 {
-	double			normx;
-	double			normy;
-	double			normz;
-	double			planx;
-	double			plany;
-	double			planz;
+	t_vec			normp;
+	t_vec			plan;
 	double			color;
 	double			t;
 }					t_plan;
@@ -80,9 +75,7 @@ typedef struct		s_cylindre
 
 typedef struct		s_light
 {
-	double			posx;
-	double			posy;
-	double			posz;
+	t_vec			posl;
 	double			color;
 	double			coefdif;
 }					t_light;
@@ -120,19 +113,20 @@ typedef	struct		s_stuff
 	char			buf[BUFF_SIZE + 1];
 }					t_stuff;
 
+double		getlight(t_vec *norm, t_vec *inter, t_light *light, double colorobj);
 void				ft_exit(int code, t_stuff *e);
 void				init_struct(t_stuff *e);
 void				create_image(t_stuff *e);
 void				aff(t_stuff *e);
 void				vecsous(t_vec *res, t_vec *i, t_vec *j);
 void				vecadd(t_vec *res, t_vec *i, t_vec *j);
-int					dot_product(t_vec *i, t_vec *j);
+double				dot_product(t_vec *i, t_vec *j);
 void				cross_product(t_vec *res, t_vec *i, t_vec *j);
 void				vecpuivec(t_vec *res, t_vec *i, t_vec *j);
 void				upleft(t_stuff *e);
 void				raydir(t_stuff *e, int x, int y);
-void				checksphere(t_stuff *e, int x, int y);
-void				checkplan(t_stuff *e, int x, int y);
+void				checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam);
+void				checkplan(t_plan *plan, t_vec *raydir, t_vec *poscam);
 void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
 int					hooks(int keycode, t_stuff *e);
 void				echap(int keycode, t_stuff *e);
@@ -142,6 +136,7 @@ void				veclength(t_vec *i);
 void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
 					t_rt *rt);
 void				movement(int keycode, t_stuff *e);
-void				raycast(t_stuff *e, int x, int y);
+void				raythingy(t_stuff *e, int x, int y);
+t_vec				getvec(t_vec *i, t_vec *j);
 
 #endif

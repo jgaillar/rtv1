@@ -40,7 +40,11 @@ void	cleanexit(t_stuff *e)
 void	movement(int keycode, t_stuff *e)
 {
 	if (keycode == 0)
-		e->poscam.z -= 1;
+		e->sphere.poss.y -= 0.1;
 	if (keycode == 2)
-		e->poscam.z += 1;
+		e->sphere.poss.y += 0.1;
+	if (keycode == 1)
+		e->sphere.poss.x -= 0.1;
+	if (keycode == 13)
+		e->sphere.poss.x += 0.1;
 }
