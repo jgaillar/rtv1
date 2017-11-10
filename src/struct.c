@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/08/08 13:09:33 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/10 18:07:55 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,31 @@ void	init_struct(t_stuff *e)
 	e->sphere.poss.y = 0;
 	e->sphere.poss.z = 0;
 	e->sphere.rayon = 4;
-	e->sphere.color = 0x00FF00;
+	e->sphere.color.r = 100;
+	e->sphere.color.g = 30;
+	e->sphere.color.b = 78;
 	e->plan.normp.x = 0;
 	e->plan.normp.y = 0;
 	e->plan.normp.z = 1;
 	e->plan.plan.x = 1;
 	e->plan.plan.y = 0;
 	e->plan.plan.z = 0;
-	e->plan.color = 0x00FF00;
-	e->light.posl.x = -10;
+	e->plan.color.r = 100;
+	e->plan.color.g = 30;
+	e->plan.color.b = 78;
+	e->light.posl.x = 0;
 	e->light.posl.y = 0;
-	e->light.posl.z = 30;
-	e->light.color = 0x551A8B;
-	e->light.coefdif = 0.5;
+	e->light.posl.z = 1;
+	e->light.color.r = 85;
+	e->light.color.g = 26;
+	e->light.color.b = 139;
+	e->light.coefdif = 0.8;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
 	vecnorm(&e->dircam);
 	cross_product(&e->vecdroit, &e->dircam, &e->vech);
 	vecnorm(&e->vecdroit);
 	upleft(e);
+	vecnorm(&e->vecupleft);
 	create_image(e);
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RTv1.h                                             :+:      :+:    :+:   */
+/*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/10/03 14:06:30 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/10 10:06:05 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@
 # include "../mlx/mlx.h"
 # include <stdio.h>
 
+typedef struct		s_rgb
+{
+	int				r;
+	int				g;
+	int				b;
+}					t_rgb;
+
 typedef struct		s_vec
 {
 	double 			x;
@@ -37,7 +44,7 @@ typedef	struct		s_rt
 	double			xindent;
 	double			yindent;
 	int				obj;
-	double			color;
+	t_rgb			color;
 	t_vec			inter;
 }					t_rt;
 
@@ -45,7 +52,7 @@ typedef struct		s_sphere
 {
 	t_vec			poss;
 	double			rayon;
-	double			color;
+	t_rgb			color;
 	double			det;
 	double			t1;
 	double			t2;
@@ -57,7 +64,7 @@ typedef struct		s_plan
 {
 	t_vec			normp;
 	t_vec			plan;
-	double			color;
+	t_rgb			color;
 	double			t;
 }					t_plan;
 
@@ -70,13 +77,13 @@ typedef struct		s_cylindre
 	double			axey;
 	double			axez;
 	double			rayon;
-	double			color;
+	t_rgb			color;
 }					t_cylindre;
 
 typedef struct		s_light
 {
 	t_vec			posl;
-	double			color;
+	t_rgb			color;
 	double			coefdif;
 }					t_light;
 
@@ -113,7 +120,7 @@ typedef	struct		s_stuff
 	char			buf[BUFF_SIZE + 1];
 }					t_stuff;
 
-double		getlight(t_vec *norm, t_vec *inter, t_light *light, double colorobj);
+double		getlight(t_vec *norm, t_vec *inter, t_light *light, t_rgb *colorobj);
 void				ft_exit(int code, t_stuff *e);
 void				init_struct(t_stuff *e);
 void				create_image(t_stuff *e);
@@ -138,5 +145,6 @@ void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
 void				movement(int keycode, t_stuff *e);
 void				raythingy(t_stuff *e, int x, int y);
 t_vec				getvec(t_vec *i, t_vec *j);
+double				rgbtohexa(int r, int g, int b);
 
 #endif

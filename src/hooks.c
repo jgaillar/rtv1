@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hooks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/10/05 10:47:06 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/10 15:56:11 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	cleanexit(t_stuff *e)
 
 void	movement(int keycode, t_stuff *e)
 {
-	if (keycode == 0)
-		e->sphere.poss.y -= 0.1;
 	if (keycode == 2)
-		e->sphere.poss.y += 0.1;
+		e->light.posl.y -= 1;
+	if (keycode == 0)
+		e->light.posl.y += 1;
 	if (keycode == 1)
-		e->sphere.poss.x -= 0.1;
+		e->light.posl.x -= 1;
 	if (keycode == 13)
-		e->sphere.poss.x += 0.1;
+		e->light.posl.x += 1;
 }

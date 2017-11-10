@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:06:24 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/06/19 22:06:25 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/10 10:07:21 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,12 @@ void			mlx_pixel_put_to_image(t_img img, int x, int y, int color)
 	img.data[y * img.size_line + x * bit_pix] = color;
 	img.data[y * img.size_line + x * bit_pix + 1] = color >> 8;
 	img.data[y * img.size_line + x * bit_pix + 2] = color >> 16;
+}
+
+double			rgbtohexa(int r, int g, int b)
+{
+	double color;
+
+	color = (r << 16) | (g << 8) | b;
+	return (color);
 }
