@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/10 15:56:11 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/21 16:25:17 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,44 @@ void	movement(int keycode, t_stuff *e)
 		e->light.posl.x -= 1;
 	if (keycode == 13)
 		e->light.posl.x += 1;
+	if (keycode == 49)
+		e->light.posl.z += 1;
+	if (keycode == 8)
+		e->light.posl.z -= 1;
+	if (keycode == 125)
+		e->sphere.poss.x -= 1;
+	if (keycode == 126)
+		e->sphere.poss.x += 1;
+	if (keycode == 123)
+		e->sphere.poss.y += 1;
+	if (keycode == 124)
+		e->sphere.poss.y -= 1;
+	if (keycode == 78)
+		e->sphere.poss.z -= 1;
+	if (keycode == 69)
+		e->sphere.poss.z += 1;
+	if (keycode == 27)
+		e->sphere.rayon -= 0.1;
+	if (keycode == 24)
+		e->sphere.rayon += 0.1;
+	if (keycode == 91)
+		e->plan.normp.x += 0.1;
+	if (keycode == 86)
+		e->plan.normp.y += 0.1;
+	if (keycode == 87)
+		e->plan.normp.x -= 0.1;
+	if (keycode == 88)
+		e->plan.normp.y -= 0.1;
+	if (keycode == 89)
+		e->plan.normp.z -= 0.5;
+	if (keycode == 92)
+		e->plan.normp.z += 0.5;
+	if (keycode == 83)
+		e->plan.plan.y -= 0.1;
+	if (keycode == 84)
+		e->plan.plan.x += 0.1;
+	if (keycode == 85)
+		e->plan.plan.y += 0.1;
+	if (keycode == 82)
+		e->plan.plan.x -= 0.1;
 }

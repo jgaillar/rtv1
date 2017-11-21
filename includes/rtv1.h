@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/10 10:06:05 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/21 09:49:41 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef	struct		s_rt
 	double			yindent;
 	int				obj;
 	t_rgb			color;
+	double			colorf;
 	t_vec			inter;
 }					t_rt;
 
@@ -83,8 +84,10 @@ typedef struct		s_cylindre
 typedef struct		s_light
 {
 	t_vec			posl;
+	t_vec			lightdir;
 	t_rgb			color;
-	double			coefdif;
+	double			amb;
+	double			diff;
 }					t_light;
 
 typedef struct		s_img
@@ -120,7 +123,7 @@ typedef	struct		s_stuff
 	char			buf[BUFF_SIZE + 1];
 }					t_stuff;
 
-double		getlight(t_vec *norm, t_vec *inter, t_light *light, t_rgb *colorobj);
+double		getlight(t_vec *norm, t_rt *rt, t_light *light, t_rgb *colorobj);
 void				ft_exit(int code, t_stuff *e);
 void				init_struct(t_stuff *e);
 void				create_image(t_stuff *e);
@@ -131,7 +134,7 @@ double				dot_product(t_vec *i, t_vec *j);
 void				cross_product(t_vec *res, t_vec *i, t_vec *j);
 void				vecpuivec(t_vec *res, t_vec *i, t_vec *j);
 void				upleft(t_stuff *e);
-void				raydir(t_stuff *e, int x, int y);
+void				raydir(t_stuff *e, double x, double y);
 void				checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam);
 void				checkplan(t_plan *plan, t_vec *raydir, t_vec *poscam);
 void				mlx_pixel_put_to_image(t_img img, int x, int y, int color);
@@ -143,8 +146,7 @@ void				veclength(t_vec *i);
 void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
 					t_rt *rt);
 void				movement(int keycode, t_stuff *e);
-void				raythingy(t_stuff *e, int x, int y);
-t_vec				getvec(t_vec *i, t_vec *j);
+void				raythingy(t_stuff *e, double x, double y);
 double				rgbtohexa(int r, int g, int b);
 
 #endif

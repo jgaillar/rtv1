@@ -6,64 +6,51 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/10 18:02:03 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/21 17:00:18 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-double		getlight(t_vec *norm, t_vec *inter, t_light *light, t_rgb *colorobj)
+double		getlight(t_vec *norm, t_rt *rt, t_light *light, t_rgb *colorobj)
 {
-	t_vec	lightdir;
 	t_rgb	rgb;
 	double	angle;
 	double	color;
-	double 	val;
 
-	val = 180 / M_PI;
-	rgb.r = 0;
-	rgb.g = 0;
-	rgb.b = 0;
-	angle = 0;
-	lightdir = getvec(inter, &light->posl);
-	vecnorm(&lightdir);
-	angle = dot_product(norm, &lightdir) * val;
+	angle = dot_product(norm, &light->lightdir) / 30;
+//	printf("angle : [%f]\n", angle);
 	if (angle > 0)
 	{
-	// rgb.r += (colorobj->r * 200) * light->coefdif;
-	// rgb.g += (colorobj->g * 1) * light->coefdif;
-	// rgb.b += (colorobj->b * 1) * light->coefdif;
-		if (rgb.r += light->color.r * angle * light->coefdif >= 255)
+		rgb.r = colorobj->r * light->diff;
+		rgb.g = colorobj->g * light->diff;
+		rgb.b = colorobj->b * light->diff;
+		if (rgb.r + (light->color.r * angle * light->diff) >= 255)
 			rgb.r = 255;
-		else if (rgb.r += light->color.r * angle * light->coefdif <= 0)
+		else if (rgb.r + (light->color.r * angle * light->diff) <= 0)
 			rgb.r = 0;
 		else
-			rgb.r += light->color.r * angle * light->coefdif;
-		if (rgb.g += light->color.g * angle * light->coefdif >= 255)
+			rgb.r += light->color.r * angle * light->diff;
+		if (rgb.g + (light->color.g * angle * light->diff) >= 255)
 			rgb.g = 255;
-		else if (rgb.g += light->color.g * angle * light->coefdif <= 0)
+		else if (rgb.g + (light->color.g * angle * light->diff) <= 0)
 			rgb.g = 0;
 		else
-			rgb.g += light->color.g * angle * light->coefdif;
-		if (rgb.b += light->color.b * angle * light->coefdif >= 255)
+			rgb.g += light->color.g * angle * light->diff;
+		if (rgb.b + (light->color.b * angle * light->diff) >= 255)
 			rgb.b = 255;
-		else if (rgb.b += light->color.b * angle * light->coefdif <= 0)
+		else if (rgb.b + (light->color.b * angle * light->diff) <= 0)
 			rgb.b = 0;
 		else
-			rgb.b += light->color.b * angle * light->coefdif;
+			rgb.b += light->color.b * angle * light->diff;
+		color = rgbtohexa(rgb.r, rgb.g, rgb.b);
+		return (color);
 	}
-	color = rgbtohexa(rgb.r, rgb.g, rgb.b);
+	color = rgbtohexa(colorobj->r * light->amb, colorobj->g * light->amb, colorobj->b * light->amb);
 	return (color);
 }
 
-void		getintersection(t_vec *poscam, t_vec *raydir, double dist, t_rt *rt)
-{
-	rt->inter.x = poscam->x + raydir->x * dist;
-	rt->inter.y = poscam->y + raydir->y * dist;
-	rt->inter.z = poscam->z + raydir->z * dist;
-}
-
-void		raythingy(t_stuff *e, int x, int y)
+void		raythingy(t_stuff *e, double x, double y)
 {
 	e->rt.dist = 9999;
 	e->rt.obj = 0;
@@ -82,25 +69,38 @@ void		raythingy(t_stuff *e, int x, int y)
 	}
 	if (e->rt.obj == 0)
 		mlx_pixel_put_to_image(e->img, x, y, 0x000000);
-	if (e->rt.obj != 0)
+	else if (e->rt.obj != 0)
 	{
 		getintersection(&e->poscam, &e->raydir, e->rt.dist, &e->rt);
+		vecsous(&e->light.lightdir, &e->light.posl, &e->rt.inter);
+		vecnorm(&e->light.lightdir);
 		if (e->rt.obj == 1)
 		{
-			e->sphere.normsphere = getvec(&e->sphere.poss, &e->rt.inter);
+			vecsous(&e->sphere.normsphere, &e->rt.inter, &e->sphere.poss);
 			vecnorm(&e->sphere.normsphere);
-			mlx_pixel_put_to_image(e->img, x, y, getlight(&e->sphere.normsphere, &e->rt.inter, &e->light, &e->sphere.color));
+			e->rt.colorf = getlight(&e->sphere.normsphere, &e->rt, &e->light, &e->sphere.color);
+			mlx_pixel_put_to_image(e->img, x, y, e->rt.colorf);
 		}
 		else if (e->rt.obj == 2)
-			mlx_pixel_put_to_image(e->img, x, y, getlight(&e->plan.normp, &e->rt.inter, &e->light, &e->plan.color));
+		{
+			checksphere(&e->sphere, &e->light.lightdir, &e->rt.inter);
+			if (e->sphere.t >= 0 && e->sphere.t < e->plan.t)
+			{
+		//		ft_putendl("oklm");
+				mlx_pixel_put_to_image(e->img, x, y, rgbtohexa(e->plan.color.r * 0.2, e->plan.color.g * 0.2, e->plan.color.b * 0.2));
+			}
+			else
+				e->rt.colorf = getlight(&e->plan.normp, &e->rt, &e->light, &e->plan.color);
+				mlx_pixel_put_to_image(e->img, x, y, e->rt.colorf);
+		}
 	}
 }
 
 void		aff(t_stuff *e)
 {
-	int		x;
-	int		y;
-	int i;
+	double		x;
+	double		y;
+	int 	i;
 
 	y = -1;
 	while (++y < LENGTH)
@@ -112,12 +112,11 @@ void		aff(t_stuff *e)
 			while (++i < 4)
 				raythingy(e, x, y);
 		}
-		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 	}
-
+	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 }
 
-void		raydir(t_stuff *e, int x, int y)
+void		raydir(t_stuff *e, double x, double y)
 {
 	t_vec	tmp;
 	t_vec	tmp2;
@@ -147,8 +146,8 @@ void		checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam)
 	(poscam->y - sphere->poss.y) + raydir->z * (poscam->z - sphere->poss.z));
 	c = (((poscam->x - sphere->poss.x) * (poscam->x - sphere->poss.x)) + \
 	((poscam->y - sphere->poss.y) * (poscam->y - sphere->poss.y)) + \
-	((poscam->z = sphere->poss.z) * (poscam->z = sphere->poss.z)) - \
-	(sphere->rayon * sphere->rayon));
+	((poscam->z - sphere->poss.z) * (poscam->z - sphere->poss.z))) - \
+	(sphere->rayon * sphere->rayon);
 	sphere->det = (b * b) - 4 * a * c;
 	if (sphere->det < 0)
 		sphere->t = -1;
@@ -156,9 +155,9 @@ void		checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam)
 		sphere->t = (-b + sqrt(sphere->det)) / (2 * a);
 	else if (sphere->det > 0)
 	{
-		sphere->t1 = (-b + sqrt(sphere->det)) / (2 * a);
-		sphere->t2 = (-b - sqrt(sphere->det)) / (2 * a);
-		sphere->t = (sphere->t1 < sphere->t2 ? sphere->t1 : sphere->t2);
+		sphere->t1 = ((b * -1) + sqrt(sphere->det)) / (2 * a);
+		sphere->t2 = ((b * -1) - sqrt(sphere->det)) / (2 * a);
+		sphere->t = (sphere->t1 <= sphere->t2 ? sphere->t1 : sphere->t2);
 	}
 
 }

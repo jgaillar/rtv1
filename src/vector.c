@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:23:23 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/10/04 11:23:24 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/21 09:44:44 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,29 +46,4 @@ void		vecpuivec(t_vec *res, t_vec *i, t_vec *j)
 	res->x = i->x * j->x;
 	res->y = i->y * j->y;
 	res->z = i->z * j->z;
-}
-
-void		veclength(t_vec *i)
-{
-	i->length = sqrt((i->x * i->x) + (i->y * i->y) + (i->z * i->z));
-}
-
-void		vecnorm(t_vec *i)
-{
-	if (!i->length)
-		veclength(i);
-	i->x = i->x / i->length;
-	i->y = i->y / i->length;
-	i->z = i->z / i->length;
-	veclength(i);
-}
-
-t_vec		getvec(t_vec *i, t_vec *j)
-{
-	t_vec	res;
-
-	res.x = j->x - i->x;
-	res.y = j->y - i->y;
-	res.z = j->z - i->z;
-	return (res);
 }

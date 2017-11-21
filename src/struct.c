@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/10 18:07:55 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/21 15:31:32 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_struct(t_stuff *e)
 	e->poscam.x = 0;
 	e->poscam.y = 0;
 	e->poscam.z = 0;
-	e->pr.x = 25;
+	e->pr.x = 20;
 	e->pr.y = 0;
 	e->pr.z = 0;
 	e->vech.x = 0;
@@ -26,29 +26,31 @@ void	init_struct(t_stuff *e)
 	e->distvue = 1;
 	e->largvue = 0.5;
 	e->longvue = 0.3;
-	e->sphere.poss.x = 40;
+	e->sphere.poss.x = 30;
 	e->sphere.poss.y = 0;
 	e->sphere.poss.z = 0;
-	e->sphere.rayon = 4;
-	e->sphere.color.r = 100;
-	e->sphere.color.g = 30;
-	e->sphere.color.b = 78;
+	e->sphere.rayon = 2;
+	e->sphere.color.r = 128;
+	e->sphere.color.g = 0;
+	e->sphere.color.b = 64;
 	e->plan.normp.x = 0;
 	e->plan.normp.y = 0;
 	e->plan.normp.z = 1;
 	e->plan.plan.x = 1;
 	e->plan.plan.y = 0;
-	e->plan.plan.z = 0;
-	e->plan.color.r = 100;
-	e->plan.color.g = 30;
-	e->plan.color.b = 78;
-	e->light.posl.x = 0;
+	e->plan.plan.z = 0.5;
+	e->plan.color.r = 0;
+	e->plan.color.g = 0;
+	e->plan.color.b = 255;
+	e->light.posl.x = 10;
 	e->light.posl.y = 0;
-	e->light.posl.z = 1;
-	e->light.color.r = 85;
-	e->light.color.g = 26;
-	e->light.color.b = 139;
-	e->light.coefdif = 0.8;
+	e->light.posl.z = 0;
+	e->light.color.r = 255;
+	e->light.color.g = 255;
+	e->light.color.b = 255;
+	e->light.amb = 0.1;
+	e->light.diff = 0.2;
+	e->rt.colorf = 0;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
 	vecnorm(&e->dircam);
 	cross_product(&e->vecdroit, &e->dircam, &e->vech);

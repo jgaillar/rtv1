@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2017/09/25 17:43:43 by jgaillar         ###   ########.fr        #
+#    Updated: 2017/11/21 09:45:02 by jgaillar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = src/
 
-SRC_NAME = main.c raycast.c struct.c img.c vector.c hooks.c
+SRC_NAME = main.c raycast.c struct.c img.c vector.c vector2.c hooks.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
