@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/21 15:31:32 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/22 16:54:23 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ void	init_struct(t_stuff *e)
 	e->sphere.poss.y = 0;
 	e->sphere.poss.z = 0;
 	e->sphere.rayon = 2;
-	e->sphere.color.r = 128;
-	e->sphere.color.g = 0;
-	e->sphere.color.b = 64;
+	e->sphere.color.r = 85;
+	e->sphere.color.g = 26;
+	e->sphere.color.b = 139;
 	e->plan.normp.x = 0;
 	e->plan.normp.y = 0;
 	e->plan.normp.z = 1;
 	e->plan.plan.x = 1;
 	e->plan.plan.y = 0;
-	e->plan.plan.z = 0.5;
-	e->plan.color.r = 0;
+	e->plan.plan.z = 0;
+	e->plan.color.r = 255;
 	e->plan.color.g = 0;
-	e->plan.color.b = 255;
-	e->light.posl.x = 10;
-	e->light.posl.y = 0;
-	e->light.posl.z = 0;
-	e->light.color.r = 255;
-	e->light.color.g = 255;
-	e->light.color.b = 255;
+	e->plan.color.b = 0;
+	e->light.posl.x = -10;
+	e->light.posl.y = -10;
+	e->light.posl.z = 2;
+	e->light.color.r = 0;
+	e->light.color.g = 238;
+	e->light.color.b = 238;
 	e->light.amb = 0.1;
-	e->light.diff = 0.2;
+	e->light.diff = 0.4;
 	e->rt.colorf = 0;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
 	vecnorm(&e->dircam);

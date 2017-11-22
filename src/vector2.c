@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 09:44:13 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/21 09:44:52 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/22 11:57:22 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void		veclength(t_vec *i)
 
 void		vecnorm(t_vec *i)
 {
-	if (!i->length)
-		veclength(i);
+	veclength(i);
 	i->x = i->x / i->length;
 	i->y = i->y / i->length;
 	i->z = i->z / i->length;

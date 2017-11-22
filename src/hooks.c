@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/21 16:25:17 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/22 11:14:21 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,33 @@ void	cleanexit(t_stuff *e)
 void	movement(int keycode, t_stuff *e)
 {
 	if (keycode == 2)
-		e->light.posl.y -= 1;
+		e->light.posl.y -= 0.5;
 	if (keycode == 0)
-		e->light.posl.y += 1;
+		e->light.posl.y += 0.5;
 	if (keycode == 1)
-		e->light.posl.x -= 1;
+		e->light.posl.x -= 0.5;
 	if (keycode == 13)
-		e->light.posl.x += 1;
+		e->light.posl.x += 0.5;
 	if (keycode == 49)
-		e->light.posl.z += 1;
+		e->light.posl.z += 0.5;
 	if (keycode == 8)
-		e->light.posl.z -= 1;
+		e->light.posl.z -= 0.5;
 	if (keycode == 125)
-		e->sphere.poss.x -= 1;
+		e->sphere.poss.x -= 0.5;
 	if (keycode == 126)
-		e->sphere.poss.x += 1;
+		e->sphere.poss.x += 0.5;
 	if (keycode == 123)
-		e->sphere.poss.y += 1;
+		e->sphere.poss.y += 0.5;
 	if (keycode == 124)
-		e->sphere.poss.y -= 1;
+		e->sphere.poss.y -= 0.5;
 	if (keycode == 78)
-		e->sphere.poss.z -= 1;
+		e->sphere.poss.z -= 0.5;
 	if (keycode == 69)
-		e->sphere.poss.z += 1;
+		e->sphere.poss.z += 0.5;
 	if (keycode == 27)
-		e->sphere.rayon -= 0.1;
+		e->sphere.rayon -= 0.5;
 	if (keycode == 24)
-		e->sphere.rayon += 0.1;
+		e->sphere.rayon += 0.5;
 	if (keycode == 91)
 		e->plan.normp.x += 0.1;
 	if (keycode == 86)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raycast.c                                          :+:      :+:    :+:   */
+/*   raytracing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/21 17:00:18 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/22 16:56:22 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,31 @@ double		getlight(t_vec *norm, t_rt *rt, t_light *light, t_rgb *colorobj)
 	double	angle;
 	double	color;
 
-	angle = dot_product(norm, &light->lightdir) / 30;
+	angle = dot_product(norm, &light->lightdir);
 //	printf("angle : [%f]\n", angle);
 	if (angle > 0)
 	{
 		rgb.r = colorobj->r * light->diff;
 		rgb.g = colorobj->g * light->diff;
 		rgb.b = colorobj->b * light->diff;
-		if (rgb.r + (light->color.r * angle * light->diff) >= 255)
+		if (rgb.r + (light->color.r * angle * 0.25) >= 255)
 			rgb.r = 255;
-		else if (rgb.r + (light->color.r * angle * light->diff) <= 0)
+		else if (rgb.r + (light->color.r * angle * 0.25) <= 0)
 			rgb.r = 0;
 		else
-			rgb.r += light->color.r * angle * light->diff;
-		if (rgb.g + (light->color.g * angle * light->diff) >= 255)
+			rgb.r += light->color.r * angle * 0.25;
+		if (rgb.g + (light->color.g * angle * 0.25) >= 255)
 			rgb.g = 255;
-		else if (rgb.g + (light->color.g * angle * light->diff) <= 0)
+		else if (rgb.g + (light->color.g * angle * 0.25) <= 0)
 			rgb.g = 0;
 		else
-			rgb.g += light->color.g * angle * light->diff;
-		if (rgb.b + (light->color.b * angle * light->diff) >= 255)
+			rgb.g += light->color.g * angle * 0.25;
+		if (rgb.b + (light->color.b * angle * 0.25) >= 255)
 			rgb.b = 255;
-		else if (rgb.b + (light->color.b * angle * light->diff) <= 0)
+		else if (rgb.b + (light->color.b * angle * 0.25) <= 0)
 			rgb.b = 0;
 		else
-			rgb.b += light->color.b * angle * light->diff;
+			rgb.b += light->color.b * angle * 0.25;
 		color = rgbtohexa(rgb.r, rgb.g, rgb.b);
 		return (color);
 	}
@@ -84,14 +84,18 @@ void		raythingy(t_stuff *e, double x, double y)
 		else if (e->rt.obj == 2)
 		{
 			checksphere(&e->sphere, &e->light.lightdir, &e->rt.inter);
-			if (e->sphere.t >= 0 && e->sphere.t < e->plan.t)
+			checkplan(&e->plan, &e->light.lightdir, &e->rt.inter);
+			if (e->sphere.t > e->plan.t)
 			{
-		//		ft_putendl("oklm");
-				mlx_pixel_put_to_image(e->img, x, y, rgbtohexa(e->plan.color.r * 0.2, e->plan.color.g * 0.2, e->plan.color.b * 0.2));
+		//		printf("st : [%f] | pt : [%f]\n", e->sphere.t, e->plan.t);
+				//ft_putendl("oklm");
+				mlx_pixel_put_to_image(e->img, x, y, rgbtohexa(e->plan.color.r * e->light.amb, e->plan.color.g * e->light.amb, e->plan.color.b * e->light.amb));
 			}
 			else
+			{
 				e->rt.colorf = getlight(&e->plan.normp, &e->rt, &e->light, &e->plan.color);
 				mlx_pixel_put_to_image(e->img, x, y, e->rt.colorf);
+			}
 		}
 	}
 }
@@ -100,7 +104,7 @@ void		aff(t_stuff *e)
 {
 	double		x;
 	double		y;
-	int 	i;
+	int 		i;
 
 	y = -1;
 	while (++y < LENGTH)
@@ -109,7 +113,7 @@ void		aff(t_stuff *e)
 		while (++x < WIDTH)
 		{
 			i = -1;
-			while (++i < 4)
+			while (++i < 1)
 				raythingy(e, x, y);
 		}
 	}
