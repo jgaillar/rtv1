@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/21 09:49:41 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/24 10:26:12 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,23 @@ typedef struct		s_plan
 
 typedef struct		s_cylindre
 {
-	double			normx;
-	double			normy;
-	double			normz;
-	double			axex;
-	double			axey;
-	double			axez;
+	t_vec			norm;
+	t_vec			axe;
 	double			rayon;
 	t_rgb			color;
 }					t_cylindre;
 
 typedef struct		s_light
 {
-	t_vec			posl;
+	t_vec			pos;
+	t_vec			norm;
 	t_vec			lightdir;
 	t_rgb			color;
+	double			rayon;
+	double			det;
+	double			t1;
+	double			t2;
+	double			t;
 	double			amb;
 	double			diff;
 }					t_light;
@@ -148,5 +150,6 @@ void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
 void				movement(int keycode, t_stuff *e);
 void				raythingy(t_stuff *e, double x, double y);
 double				rgbtohexa(int r, int g, int b);
+void		checklight(t_light *light, t_vec *raydir, t_vec *poscam);
 
 #endif

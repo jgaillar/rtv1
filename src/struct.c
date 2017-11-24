@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/22 16:54:23 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/24 16:43:13 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	init_struct(t_stuff *e)
 	e->poscam.x = 0;
 	e->poscam.y = 0;
 	e->poscam.z = 0;
-	e->pr.x = 20;
+	e->pr.x = 10;
 	e->pr.y = 0;
 	e->pr.z = 0;
 	e->vech.x = 0;
@@ -26,7 +26,7 @@ void	init_struct(t_stuff *e)
 	e->distvue = 1;
 	e->largvue = 0.5;
 	e->longvue = 0.3;
-	e->sphere.poss.x = 30;
+	e->sphere.poss.x = 40;
 	e->sphere.poss.y = 0;
 	e->sphere.poss.z = 0;
 	e->sphere.rayon = 2;
@@ -39,15 +39,16 @@ void	init_struct(t_stuff *e)
 	e->plan.plan.x = 1;
 	e->plan.plan.y = 0;
 	e->plan.plan.z = 0;
-	e->plan.color.r = 255;
-	e->plan.color.g = 0;
-	e->plan.color.b = 0;
-	e->light.posl.x = -10;
-	e->light.posl.y = -10;
-	e->light.posl.z = 2;
-	e->light.color.r = 0;
-	e->light.color.g = 238;
-	e->light.color.b = 238;
+	e->plan.color.r = 226;
+	e->plan.color.g = 204;
+	e->plan.color.b = 95;
+	e->light.pos.x = 25;
+	e->light.pos.y = 0;
+	e->light.pos.z = 0;
+	e->light.rayon = 0.5;
+	e->light.color.r = 244;
+	e->light.color.g = 104;
+	e->light.color.b = 77;
 	e->light.amb = 0.1;
 	e->light.diff = 0.4;
 	e->rt.colorf = 0;

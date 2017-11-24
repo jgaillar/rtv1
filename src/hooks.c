@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/22 11:14:21 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/24 14:47:16 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ void	cleanexit(t_stuff *e)
 void	movement(int keycode, t_stuff *e)
 {
 	if (keycode == 2)
-		e->light.posl.y -= 0.5;
+		e->light.pos.y -= 0.5;
 	if (keycode == 0)
-		e->light.posl.y += 0.5;
+		e->light.pos.y += 0.5;
 	if (keycode == 1)
-		e->light.posl.x -= 0.5;
+		e->light.pos.x -= 0.5;
 	if (keycode == 13)
-		e->light.posl.x += 0.5;
+		e->light.pos.x += 0.5;
 	if (keycode == 49)
-		e->light.posl.z += 0.5;
+		e->light.pos.z += 0.5;
 	if (keycode == 8)
-		e->light.posl.z -= 0.5;
+		e->light.pos.z -= 0.5;
 	if (keycode == 125)
 		e->sphere.poss.x -= 0.5;
 	if (keycode == 126)
@@ -87,4 +87,8 @@ void	movement(int keycode, t_stuff *e)
 		e->plan.plan.y += 0.1;
 	if (keycode == 82)
 		e->plan.plan.x -= 0.1;
+	if (keycode == 81 && e->light.rayon - 0.1 > -0.00001)
+		e->light.rayon -= 0.1;
+	if (keycode == 75)
+		e->light.rayon += 0.1;
 }
