@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/28 15:47:41 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/30 09:20:04 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,9 +194,7 @@ typedef	struct		s_stuff
 	t_light			light;
 	t_cyl			cyl;
 	t_con			con;
-	pthread_t		*th;
-	double			start;
-	double			end;
+	int				pix;
 	int				fd;
 	char			buf[BUFF_SIZE + 1];
 }					t_stuff;

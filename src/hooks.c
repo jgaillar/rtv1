@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/28 17:30:05 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/30 16:27:22 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,17 @@ void	movement(int keycode, t_stuff *e)
 	if (keycode == 17)
 		e->con.pos.x += 0.1;
 	if (keycode == 3)
-		e->con.pos.z += 0.1;
+		e->con.pos.y += 0.1;
 	if (keycode == 5)
 		e->con.pos.x -= 0.1;
 	if (keycode == 4)
+		e->con.pos.y -= 0.1;
+	if (keycode == 15)
 		e->con.pos.z -= 0.1;
+	if (keycode == 16)
+		e->con.pos.z += 0.1;
+	if (keycode == 43 && e->pix - 2 >= 0)
+		e->pix -= 2;
+	if (keycode == 47 && e->pix + 2 < 20)
+		e->pix += 2;
 }

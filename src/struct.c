@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/28 16:25:51 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/11/30 15:49:01 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ void	init_struct(t_stuff *e)
 	e->sphere.color.r = 85;
 	e->sphere.color.g = 26;
 	e->sphere.color.b = 139;
-	e->cyl.pos.x = 40;
-	e->cyl.pos.y = 5;
+	e->cyl.pos.x = 30;
+	e->cyl.pos.y = 2;
 	e->cyl.pos.z = 0;
 	e->cyl.norm.x = 0;
 	e->cyl.norm.y = 0;
@@ -61,13 +61,14 @@ void	init_struct(t_stuff *e)
 	e->light.color.b = 255;
 	e->light.amb = 0.1;
 	e->light.diff = 0.7;
-	e->con.pos.x = 25;
-	e->con.pos.y = -5;
+	e->con.pos.x = 15;
+	e->con.pos.y = 0;
 	e->con.pos.z = 0;
-	e->con.color.r = 246;
-	e->con.color.g = 156;
-	e->con.color.b = 155;
+	e->con.color.r = 218;
+	e->con.color.g = 134;
+	e->con.color.b = 255;
 	e->rt.colorf = 0;
+	e->pix = 0;
 	vecsous(&e->dircam, &e->pr, &e->poscam);
 	vecnorm(&e->dircam);
 	cross_product(&e->vecdroit, &e->dircam, &e->vech);
