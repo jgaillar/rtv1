@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/30 09:20:04 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/04 16:45:19 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct		s_d
 	int				nbmpla;
 	int				nbmlight;
 	int				nbmcyl;
+	int				nbmcone;
 	int				nbl;
 	int				equal;
 	int				dot;
@@ -54,6 +55,7 @@ typedef struct		s_d
 	double			*tabdpla;
 	double			*tabdlight;
 	double			*tabdcyl;
+	double			*tabdcone;
 }					t_d;
 
 typedef struct		s_c
@@ -63,6 +65,26 @@ typedef struct		s_c
 	double			largvue;
 	int				posx;
 	int				posy;
+	double			xindent;
+	double			yindent;
+	int				i;
+	int				n;
+	double			dist;
+	double			distsph;
+	double			distpla;
+	double			distcyl;
+	double			distcone;
+	double			distlight;
+	int				obj;
+	int				objsph;
+	int				objpla;
+	int				objcyl;
+	int				objcone;
+	int				objlight;
+	t_rgb			color;
+	double			colorf;
+	t_vec			inter;
+
 }					t_c;
 
 typedef struct		s_b
@@ -77,17 +99,6 @@ typedef struct		s_b
 	int				i;
 	int				y;
 }					t_b;
-
-typedef	struct		s_rt
-{
-	double			dist;
-	double			xindent;
-	double			yindent;
-	int				obj;
-	t_rgb			color;
-	double			colorf;
-	t_vec			inter;
-}					t_rt;
 
 typedef struct		s_sphere
 {
@@ -120,6 +131,7 @@ typedef struct		s_cyl
 {
 	struct s_cyl	*prev;
 	t_vec			norm;
+	t_vec			norml;
 	t_vec			pos;
 	double			ray;
 	t_rgb			color;
@@ -131,9 +143,9 @@ typedef struct		s_cyl
 	struct s_cyl	*next;
 }					t_cyl;
 
-typedef struct		s_con
+typedef struct		s_cone
 {
-	struct s_cyl	*prev;
+	struct s_cone	*prev;
 	t_vec			norm;
 	t_vec			pos;
 	t_rgb			color;
@@ -142,8 +154,8 @@ typedef struct		s_con
 	double			t;
 	double			det;
 	int				nm;
-	struct s_cyl	*next;
-}					t_con;
+	struct s_cone	*next;
+}					t_cone;
 
 typedef struct		s_light
 {
@@ -188,20 +200,49 @@ typedef	struct		s_stuff
 	t_vec			vecdroit;
 	t_vec			raydir;
 	t_vec			dircam;
-	t_sphere		sphere;
-	t_plan			plan;
-	t_rt			rt;
-	t_light			light;
-	t_cyl			cyl;
-	t_con			con;
+	t_sphere		*sph;
+	t_sphere		*tmp;
+	t_plan			*pla;
+	t_plan			*tmppla;
+	t_light			*light;
+	t_light			*tmplight;
+	t_cyl			*cyl;
+	t_cyl			*tmpcyl;
+	t_cone			*cone;
+	t_cone			*tmpcone;
 	int				pix;
 	int				fd;
 	char			buf[BUFF_SIZE + 1];
 }					t_stuff;
 
-double		getlight(t_vec *norm, t_rt *rt, t_light *light, t_rgb *colorobj);
+void				vectorcalc(t_stuff *e);
+void				reboot_list(t_stuff *e);
+void				print_list(t_stuff *e);
+void				reboot_list_loop(t_stuff *e);
+int					ft_check(t_stuff *e);
+int					ft_parsing(t_stuff *e);
+int					ft_parsing_sd(t_stuff *e);
+int					ft_compare_camera(char *str, int i);
+int					check_format(t_stuff *e);
+int					check_data_sphere(t_stuff *e, int y);
+int					ft_compare_sphere(char *str, int i);
+int					init_list_sph(t_sphere **sph);
+void				fill_list_sph(t_sphere **sph, double *tabd, int nbm);
+int					check_data_plan(t_stuff *e, int y);
+int					init_list_pla(t_plan **pla);
+int					ft_compare_plan(char *str, int i);
+void				fill_list_pla(t_plan **pla, double *tabdpla, int nbmpla);
+int					ft_compare_light(char *str, int i);
+int					check_data_light(t_stuff *e, int y);
+int					init_list_light(t_light **light);
+void				fill_list_light(t_light **light, double *tabdlight, int nbmlight);
+int					init_list_cyl(t_cyl **cyl);
+int					check_data_cylindre(t_stuff *e, int y);
+void				fill_list_cyl(t_cyl **cyl, double *tabdcyl, int nbmcyl);
+int					ft_compare_cylindre(char *str, int i);
+double		getlight(t_vec *norm, t_light **light, t_rgb *colorobj);
 void				ft_exit(int code, t_stuff *e);
-void				init_struct(t_stuff *e);
+void				ft_init_struct(t_stuff *e, int option);
 void				create_image(t_stuff *e);
 void				aff(t_stuff *e);
 void				vecsous(t_vec *res, t_vec *i, t_vec *j);
@@ -219,13 +260,25 @@ void				echap(int keycode, t_stuff *e);
 void				cleanexit(t_stuff *e);
 void				vecnorm(t_vec *i);
 void				veclength(t_vec *i);
-void				getintersection(t_vec *poscam, t_vec *raydir, double dist, \
-					t_rt *rt);
+void				getintersection(t_stuff *e, double dist);
 void				movement(int keycode, t_stuff *e);
 void				raythingy(t_stuff *e);
 double				rgbtohexa(int r, int g, int b);
 void		checklight(t_light *light, t_vec *raydir, t_vec *poscam);
 void		checkcyl(t_cyl *cyl, t_vec *raydir, t_vec *poscam);
-void		checkcone(t_con *con, t_vec *raydir, t_vec *poscam);
+void		checkcone(t_cone *cone, t_vec *raydir, t_vec *poscam);
+int			cone(t_stuff *e, int y);
+int			init_list_cone(t_cone **cone);
+int		check_data_cone(t_stuff *e, int y);
+void	fill_list_cone(t_cone **cone, double *tabdcone, int nbmcone);
+int		ft_compare_cone(char *str, int i);
+void	searchlist(t_stuff *e, int nmail, int nlist);
+void		check_dist(t_stuff *e);
+void		check(t_stuff *e);
+int		cylindre(t_stuff *e, int y);
+int		light(t_stuff *e, int y);
+int		plan(t_stuff *e, int y);
+int		sphere(t_stuff *e, int y);
+int		cone(t_stuff *e, int y);
 
 #endif

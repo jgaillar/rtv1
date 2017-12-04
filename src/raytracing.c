@@ -6,125 +6,73 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/30 16:20:02 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/04 16:46:10 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-double		getlight(t_vec *norm, t_rt *rt, t_light *light, t_rgb *colorobj)
+double		getlight(t_vec *norm, t_light **light, t_rgb *colorobj)
 {
 	t_rgb	rgb;
 	double	angle;
 	double	color;
 
-	angle = (light->ray > 0.00001 ? (dot_product(norm, &light->lightdir)) \
-	 		* light->ray : (dot_product(norm, &light->lightdir)));
-	if (light->ray > 0.00001 && angle > 0)
+	angle = ((*light)->ray > 0.00001 ? (dot_product(norm, &(*light)->lightdir)) \
+	 		* (*light)->ray : (dot_product(norm, &(*light)->lightdir)));
+	if ((*light)->ray > 0.00001 && angle > 0)
 	{
-		rgb.r = colorobj->r * light->amb;
-		rgb.g = colorobj->g * light->amb;
-		rgb.b = colorobj->b * light->amb;
-		rgb.r += light->color.r * angle * light->diff;
-		rgb.g += light->color.g * angle * light->diff;
-		rgb.b += light->color.b * angle * light->diff;
+		rgb.r = colorobj->r * (*light)->amb;
+		rgb.g = colorobj->g * (*light)->amb;
+		rgb.b = colorobj->b * (*light)->amb;
+		rgb.r += (*light)->color.r * angle * (*light)->diff;
+		rgb.g += (*light)->color.g * angle * (*light)->diff;
+		rgb.b += (*light)->color.b * angle * (*light)->diff;
 		color = rgbtohexa(rgb.r, rgb.g, rgb.b);
 		return (color);
 	}
-	color = rgbtohexa(colorobj->r * light->amb, colorobj->g * light->amb, colorobj->b * light->amb);
+	color = rgbtohexa(colorobj->r * (*light)->amb, colorobj->g * (*light)->amb, colorobj->b * (*light)->amb);
 	return (color);
 }
 
 void		raythingy(t_stuff *e)
 {
-	e->rt.dist = 9999;
-	e->rt.obj = 0;
-	e->rt.colorf = 0;
-	raydir(e);
-	checksphere(&e->sphere, &e->raydir, &e->poscam);
-	if (e->sphere.t < e->rt.dist && e->sphere.t > 0.00001)
+	check(e);
+	check_dist(e);
+	e->c.colorf = 0;
+	if (e->c.obj > -1)
 	{
-		e->rt.dist = e->sphere.t;
-		e->rt.obj = 1;
-	}
-	// checkcone(&e->con, &e->raydir, &e->poscam);
-	// if (e->con.t < e->rt.dist && e->con.t > 0.00001)
-	// {
-	// 	e->rt.dist = e->con.t;
-	// 	e->rt.obj = 5;
-	// }
-	checklight(&e->light, &e->raydir, &e->poscam);
-	if (e->light.t < e->rt.dist && e->light.t > 0.00001)
-	{
-		e->rt.dist = e->light.t;
-		e->rt.obj = 3;
-	}
-	checkcyl(&e->cyl, &e->raydir, &e->poscam);
-	if (e->cyl.t < e->rt.dist && e->cyl.t > 0.00001)
-	{
-		e->rt.dist = e->cyl.t;
-		e->rt.obj = 4;
-	}
-	checkplan(&e->plan, &e->raydir, &e->poscam);
-	if (e->plan.t < e->rt.dist && e->plan.t > 0.00001)
-	{
-		e->rt.dist = e->plan.t;
-		e->rt.obj = 2;
-	}
-	if (e->rt.obj == 0)
-		mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
-	else if (e->rt.obj != 0)
-	{
-		getintersection(&e->poscam, &e->raydir, e->rt.dist, &e->rt);
-		vecsous(&e->light.lightdir, &e->light.pos, &e->rt.inter);
-		vecnorm(&e->light.lightdir);
-		if (e->rt.obj == 1)
+		getintersection(e, e->c.dist);
+		if (e->c.obj == 0)
 		{
-			vecsous(&e->sphere.norm, &e->rt.inter, &e->sphere.pos);
-			vecnorm(&e->sphere.norm);
-			e->rt.colorf = getlight(&e->sphere.norm, &e->rt, &e->light, &e->sphere.color);
-			mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
+			searchlist(e, e->c.objsph, e->c.obj);
+			vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
+			vecnorm(&e->sph->norm);
+			e->c.colorf = getlight(&e->sph->norm, &e->light, &e->sph->color);
 		}
-		else if (e->rt.obj == 2)
+		if (e->c.obj == 1)
 		{
-			checkcyl(&e->cyl, &e->light.lightdir, &e->rt.inter);
-			checklight(&e->light, &e->light.lightdir, &e->rt.inter);
-			if (e->light.ray > 0.00001 && e->cyl.t <= e->light.t && e->cyl.t > 0.00001)
-			{
-				e->rt.colorf += rgbtohexa(e->plan.color.r * e->light.amb, e->plan.color.g * e->light.amb, e->plan.color.b * e->light.amb);
-			}
-			checksphere(&e->sphere, &e->light.lightdir, &e->rt.inter);
-			if (e->light.ray > 0.00001 && e->sphere.t <= e->light.t && e->sphere.t > 0.00001)
-			{
-				e->rt.colorf += rgbtohexa(e->plan.color.r * e->light.amb, e->plan.color.g * e->light.amb, e->plan.color.b * e->light.amb);
-			}
-			else
-			{
-				e->rt.colorf += getlight(&e->plan.norm, &e->rt, &e->light, &e->plan.color);
-			}
-			mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
+			searchlist(e, e->c.objpla, e->c.obj);
+			e->c.colorf = getlight(&e->pla->norm, &e->light, &e->pla->color);
 		}
-		else if (e->rt.obj == 3)
+		if (e->c.obj == 2)
 		{
-			vecsous(&e->light.norm, &e->rt.inter, &e->light.pos);
-			vecnorm(&e->light.norm);
-			e->rt.colorf = rgbtohexa(e->light.color.r, e->light.color.g, e->light.color.b);
-			mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
+			searchlist(e, e->c.objcyl, e->c.obj);
+			vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
+			vecnorm(&e->cyl->norml);
+			e->c.colorf = getlight(&e->cyl->norml, &e->light, &e->cyl->color);
 		}
-		else if (e->rt.obj == 4)
+		if (e->c.obj == 3)
 		{
-			vecsous(&e->cyl.norm, &e->rt.inter, &e->cyl.pos);
-			vecnorm(&e->cyl.norm);
-			e->rt.colorf = getlight(&e->cyl.norm, &e->rt, &e->light, &e->cyl.color);
-			mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
+			searchlist(e, e->c.objcone, e->c.obj);
+			vecsous(&e->cone->norm, &e->c.inter, &e->cone->pos);
+			vecnorm(&e->cone->norm);
+			e->c.colorf = getlight(&e->cone->norm, &e->light, &e->cone->color);
 		}
-		else if (e->rt.obj == 5)
+		if (e->c.obj == 4)
 		{
-			vecsous(&e->con.norm, &e->rt.inter, &e->con.pos);
-			vecnorm(&e->con.norm);
-			//printf("x : [%f] | y : [%f] | z : [%f]\n", e->con.norm.x, e->con.norm.y, e->con.norm.z);
-			e->rt.colorf = getlight(&e->con.norm, &e->rt, &e->light, &e->con.color);
-			mlx_pixel_put_to_image(e->img, e->c.posx, e->c.posy, e->rt.colorf);
+			searchlist(e, e->c.objlight, e->c.obj);
+			e->c.colorf = 0xFFFFFF;
 		}
 	}
 }
@@ -142,147 +90,151 @@ void		aff(t_stuff *e)
 		e->c.posx = -1;
 		while (++e->c.posx < WIDTH)
 		{
-				raythingy(e);
-				if (e->pix > 0)
+			reboot_list_loop(e);
+			raydir(e);
+			raythingy(e);
+			if (e->pix > 0)
+			{
+				j = -1;
+				while (++j <= e->pix)
 				{
-					j = -1;
-					while (++j <= e->pix)
-					{
-						i = -1;
-						while (++i <= e->pix)
-							mlx_pixel_put_to_image(e->img, e->c.posx + i, e->c.posy + j, e->rt.colorf);
-					}
-					e->c.posx += e->pix;
+					i = -1;
+					while (++i <= e->pix)
+						mlx_pixel_put_to_image(e->img, e->c.posx + i, e->c.posy + j, e->c.colorf);
 				}
+				e->c.posx += e->pix;
+			}
+			else
+			mlx_pixel_put_to_image(e->img, e->c.posx + i, e->c.posy + j, e->c.colorf);
 		}
 		if (e->pix > 0)
 			e->c.posy += e->pix;
 	}
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
+	reboot_list_loop(e);
 }
 
-void		raydir(t_stuff *e)
+void		check(t_stuff *e)
 {
-	t_vec	tmp;
-	t_vec	tmp2;
-
-	e->rt.xindent = e->c.largvue / WIDTH * e->c.posx;
-	e->rt.yindent = e->c.longvue / LENGTH * e->c.posy;
-	tmp.x = e->vecdroit.x * e->rt.xindent;
-	tmp.y = e->vecdroit.y * e->rt.xindent;
-	tmp.z = e->vecdroit.z * e->rt.xindent;
-	tmp2.x = e->vech.x * e->rt.yindent;
-	tmp2.y = e->vech.y * e->rt.yindent;
-	tmp2.z = e->vech.z * e->rt.yindent;
-	vecadd(&e->raydir, &e->vecupleft, &tmp);
-	vecsous(&e->raydir, &e->raydir, &tmp2);
-	vecnorm(&e->raydir);
-}
-
-void		checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam)
-{
-	double	a;
-	double	b;
-	double	c;
-
-	a = (raydir->x * raydir->x) + (raydir->y * raydir->y) + (raydir->z * \
-		raydir->z);
-	b = 2 * (raydir->x * (poscam->x - sphere->pos.x) + raydir->y * \
-	(poscam->y - sphere->pos.y) + raydir->z * (poscam->z - sphere->pos.z));
-	c = (((poscam->x - sphere->pos.x) * (poscam->x - sphere->pos.x)) + \
-	((poscam->y - sphere->pos.y) * (poscam->y - sphere->pos.y)) + \
-	((poscam->z - sphere->pos.z) * (poscam->z - sphere->pos.z))) - \
-	(sphere->ray * sphere->ray);
-	sphere->det = (b * b) - 4 * a * c;
-	if (sphere->det < 0)
-		sphere->t = -1;
-	else if (sphere->det == 0)
-		sphere->t = (-b + sqrt(sphere->det)) / (2 * a);
-	else if (sphere->det > 0)
+	e->c.dist = 9999;
+	e->c.distsph = 9999;
+	e->c.distpla = 9999;
+	e->c.distcyl = 9999;
+	e->c.distcone = 9999;
+	e->c.distlight = 9999;
+	e->c.obj = -1;
+	while (e->sph)
 	{
-		sphere->t1 = ((b * -1) + sqrt(sphere->det)) / (2 * a);
-		sphere->t2 = ((b * -1) - sqrt(sphere->det)) / (2 * a);
-		sphere->t = (sphere->t1 <= sphere->t2 ? sphere->t1 : sphere->t2);
+		checksphere(e->sph, &e->raydir, &e->poscam);
+		if (e->sph->t < e->c.distsph && e->sph->t > 0.00001)
+		{
+			e->c.distsph = e->sph->t;
+			e->c.objsph = e->sph->nm;
+			e->c.obj = 0;
+		}
+		e->sph = e->sph->next;
+	}
+	while (e->pla)
+	{
+		checkplan(e->pla, &e->raydir, &e->poscam);
+		if (e->pla->t < e->c.distpla && e->pla->t > 0.00001)
+		{
+			e->c.distpla = e->pla->t;
+			e->c.objpla = e->pla->nm;
+			e->c.obj = 1;
+		}
+		e->pla = e->pla->next;
+	}
+	while (e->cyl)
+	{
+		checkcyl(e->cyl, &e->raydir, &e->poscam);
+		if (e->cyl->t < e->c.distcyl && e->cyl->t > 0.00001)
+		{
+			e->c.distcyl = e->cyl->t;
+			e->c.objcyl = e->cyl->nm;
+			e->c.obj = 2;
+		}
+		e->cyl = e->cyl->next;
+	}
+	while (e->cone)
+	{
+		checkcone(e->cone, &e->raydir, &e->poscam);
+		if (e->cone->t < e->c.distcone && e->cone->t > 0.00001)
+		{
+			e->c.distcone = e->cone->t;
+			e->c.objcone = e->cone->nm;
+			e->c.obj = 3;
+		}
+		e->cone = e->cone->next;
+	}
+	while (e->light)
+	{
+		checklight(e->light, &e->raydir, &e->poscam);
+		if (e->light->t < e->c.distlight && e->light->t > 0.00001)
+		{
+			e->c.distlight = e->light->t;
+			e->c.objlight = e->light->nm;
+			e->c.obj = 4;
+		}
+		e->light = e->light->next;
 	}
 }
 
-void		checklight(t_light *light, t_vec *raydir, t_vec *poscam)
+void		check_dist(t_stuff *e)
 {
-	double	a;
-	double	b;
-	double	c;
-
-	a = (raydir->x * raydir->x) + (raydir->y * raydir->y) + (raydir->z * \
-		raydir->z);
-	b = 2 * (raydir->x * (poscam->x - light->pos.x) + raydir->y * \
-	(poscam->y - light->pos.y) + raydir->z * (poscam->z - light->pos.z));
-	c = (((poscam->x - light->pos.x) * (poscam->x - light->pos.x)) + \
-	((poscam->y - light->pos.y) * (poscam->y - light->pos.y)) + \
-	((poscam->z - light->pos.z) * (poscam->z - light->pos.z))) - \
-	(light->ray * light->ray);
-	light->det = (b * b) - 4 * a * c;
-	if (light->det < 0)
-		light->t = -1;
-	else if (light->det == 0)
-		light->t = (-b + sqrt(light->det)) / (2 * a);
-	else if (light->det > 0)
+	if (e->c.distsph < e->c.dist && e->c.distsph > 0.00001)
 	{
-		light->t1 = ((b * -1) + sqrt(light->det)) / (2 * a);
-		light->t2 = ((b * -1) - sqrt(light->det)) / (2 * a);
-		light->t = (light->t1 <= light->t2 ? light->t1 : light->t2);
+		e->c.obj = (e->c.distsph < e->c.dist ? 0 : -1);
+		e->c.dist = e->c.distsph;
+	}
+	if (e->c.distpla < e->c.dist && e->c.distpla > 0.00001)
+	{
+		e->c.obj = (e->c.distpla < e->c.dist ? 1 : e->c.obj);
+		e->c.dist = e->c.distpla;
+	}
+	if (e->c.distcyl < e->c.dist && e->c.distcyl > 0.00001)
+	{
+		e->c.obj = (e->c.distcyl < e->c.dist ? 2 : e->c.obj);
+		e->c.dist = e->c.distcyl;
+	}
+	if (e->c.distcone < e->c.dist && e->c.distcone > 0.00001)
+	{
+		e->c.obj = (e->c.distcone < e->c.dist ? 3 : e->c.obj);
+		e->c.dist = e->c.distcone;
+	}
+	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001)
+	{
+		e->c.obj = (e->c.distcone < e->c.dist ? 4 : e->c.obj);
+		e->c.dist = e->c.distlight;
 	}
 }
 
-void		checkplan(t_plan *plan, t_vec *raydir, t_vec *poscam)
+void	searchlist(t_stuff *e, int nmail, int nlist)
 {
-	double	a;
-	double	b;
-	double	c;
-	double	d;
-
-	a = poscam->x - plan->pos.x;
-	b = poscam->y - plan->pos.y;
-	c = poscam->z - plan->pos.z;
-	d = plan->pos.x + plan->pos.y + plan->pos.z;
-
-	plan->t = -((plan->norm.x * a + plan->norm.y * b + plan->norm.z * c + d) \
-	/ (plan->norm.x * raydir->x + plan->norm.y * \
-		raydir->y + plan->norm.z * raydir->z));
-}
-
-void		checkcyl(t_cyl *cyl, t_vec *raydir, t_vec *poscam)
-{
-	double a;
-	double b;
-	double c;
-
-	a = ((raydir->x) * (raydir->x) + \
-	(raydir->y) * (raydir->y));
-	b = 2 * (raydir->x * (poscam->x - cyl->pos.x) + \
-	raydir->y * (poscam->y - cyl->pos.y));
-	c = (((poscam->x - cyl->pos.x) * (poscam->x - cyl->pos.x)) + \
-	((poscam->y - cyl->pos.y) * (poscam->y - cyl->pos.y)) - ((cyl->ray) \
-	* (cyl->ray)));
-	cyl->det = (b * b) - 4 * a * c;
-	cyl->t1 = (-b - sqrt(cyl->det)) / (2 * a);
-	cyl->t2 = (-b + sqrt(cyl->det)) / (2 * a);
-	cyl->t = (cyl->t1 <= cyl->t2 ? cyl->t1 : cyl->t2);
-}
-
-void		checkcone(t_con *con, t_vec *raydir, t_vec *poscam)
-{
-	double	new_z;
-	double	a;
-	double	b;
-	double	c;
-
-	new_z = 0.7 * raydir->z;
-	a = (raydir->x * raydir->x) + (raydir->y * raydir->y) - (new_z * new_z);
-	b = 2 * ((raydir->x * (poscam->x - con->pos.x)) + \
-	(raydir->y * (poscam->y - con->pos.y)) - (poscam->z - con->pos.z * new_z));
-	c = ((poscam->x - con->pos.x) * (poscam->x - con->pos.x)) + ((poscam->y - con->pos.y) * (poscam->y - con->pos.y)) - ((poscam->z - con->pos.z) * (poscam->z - con->pos.z));
-	con->det = b * b - 4 * a * c;
-	con->t1 = -b - sqrt(con->det) / (2 * a);
-	con->t2 = -b + sqrt(con->det) / (2 * a);
-	con->t = (con->t2 > con->t1 ? con->t1 : con->t2);
+	reboot_list_loop(e);
+	if (nlist == 0)
+	{
+		while (e->sph->nm != nmail)
+			e->sph = e->sph->next;
+	}
+	if (nlist == 1)
+	{
+		while (e->pla->nm != nmail)
+		e->pla = e->pla->next;
+	}
+	if (nlist == 2)
+	{
+		while (e->cyl->nm != nmail)
+			e->cyl = e->cyl->next;
+	}
+	if (nlist == 3)
+	{
+		while (e->cone->nm != nmail)
+			e->cone = e->cone->next;
+	}
+	if (nlist == 4)
+	{
+		while (e->light->nm != nmail)
+			e->light = e->light->next;
+	}
 }

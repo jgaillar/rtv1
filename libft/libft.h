@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgaillar <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 13:56:57 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/05/09 11:25:03 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/01 12:20:25 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ typedef	struct	s_gnl
 
 typedef	unsigned char	t_byte;
 
+double			ft_myatod(char *str);
+int				ft_counttabchar(char **tab);
 int				get_next_line(const int fd, char **line);
 int				ft_abs(int x);
 size_t			ft_strlen(const char *s);

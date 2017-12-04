@@ -6,13 +6,17 @@
 #    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2017/11/22 11:21:19 by jgaillar         ###   ########.fr        #
+#    Updated: 2017/12/04 11:59:37 by jgaillar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_PATH = src/
 
-SRC_NAME = main.c raytracing.c struct.c img.c vector.c vector2.c hooks.c
+SRC_NAME = main.c raytracing.c struct.c img.c vector.c vector2.c hooks.c \
+			check_data_plan.c check_data_light.c check_data_sphere.c \
+			check_data_cylindre.c ft_check.c ft_compare_sd.c ft_compare.c \
+			ft_parsing_sd.c ft_parsing.c list_tools.c vectorcalc.c \
+			check_format.c check_format_obj.c check_data_cone.c check_obj.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

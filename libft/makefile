@@ -30,7 +30,7 @@ SRC = ft_strlen.c ft_strdup.c ft_strcpy.c ft_strncpy.c \
 	  ft_strsplit.c ft_countw.c ft_strlcat.c ft_isupper.c \
 	  ft_islower.c ft_isblank.c ft_lstnew.c ft_lstdelone.c \
 	  ft_lstdel.c ft_lstadd.c ft_lstiter.c ft_lstmap.c ft_strchrindex.c \
-	  ft_strjoinf.c ft_abs.c get_next_line.c
+	  ft_strjoinf.c ft_abs.c get_next_line.c ft_counttabchar.c ft_myatod.c
 
 OBJ = ft_strlen.o ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o \
 	  ft_strncat.o ft_putchar.o ft_putchar_fd.o ft_putstr.o \
@@ -48,7 +48,7 @@ OBJ = ft_strlen.o ft_strdup.o ft_strcpy.o ft_strncpy.o ft_strcat.o \
 	  ft_countw.o ft_strlcat.o ft_isupper.o ft_islower.o \
 	  ft_isblank.o ft_lstnew.o ft_lstdelone.o ft_lstdel.o \
 	  ft_lstadd.o ft_lstiter.o ft_lstmap.o ft_strchrindex.o ft_strjoinf.o \
-	  ft_abs.o get_next_line.o
+	  ft_abs.o get_next_line.o ft_counttabchar.o ft_myatod.o
 all: $(NAME)
 
 $(NAME):

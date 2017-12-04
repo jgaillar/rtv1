@@ -6,11 +6,40 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:17:03 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/30 09:32:28 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/04 13:57:24 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+
+void		ft_affich(t_stuff *e, int option)
+{
+	(void)e;
+	if (option == 0)
+	{
+		ft_putstr("usage : ./rtv1 scene/camera scene/objets\n");
+		ft_putstr("---> run ./rtv1 scene/exemple_camera scene/exemple_objets");
+		ft_putstr("  to know how to set values\n");
+	}
+	if (option == 1)
+		ft_putstr("\nError in Open or Read functions (scene/Camera)\n\n");
+	if (option == 2)
+		ft_putstr("\nError in Parsing function (scene/camera)\n\n");
+	if (option == 3)
+		ft_putstr("\nError in Open or Read functions (scene/objets)\n\n");
+	if (option == 4)
+		ft_putstr("\nError in Parsing function (scene/objets)");
+	ft_exit (option, e);
+}
+
+int		ft_open(t_stuff *e, char *argv)
+{
+	if ((e->b.fd = open(argv, O_RDONLY)) < 0)
+		return (-1);
+	e->b.buf[read(e->b.fd, e->b.buf, BUFF_SIZE)] = '\0';
+	close(e->b.fd);
+	return (0);
+}
 
 void			ft_exit(int code, t_stuff *e)
 {
@@ -24,26 +53,35 @@ void			ft_exit(int code, t_stuff *e)
 	exit(code);
 }
 
-static void		ft_usage(t_stuff *e)
+int		main_sd(t_stuff *e, char **argv)
 {
-	ft_putendl("Usage: ./rtv1 <map>");
-	ft_exit(0, e);
+	if (ft_open(e, argv[2]) == -1)
+		ft_affich(e, 3);
+	ft_init_struct(e, 1);
+	if (ft_parsing_sd(e) == -1)
+		ft_affich(e, 4);
+	ft_init_struct(e, 2);
+	vectorcalc(e);
+	return (0);
 }
 
 int				main(int ac, char **av)
 {
 	t_stuff e;
 
-	if (ac != 2 || !av[1])
-		ft_usage(&e);
-	// if ((e.fd = open(av[1], O_RDONLY)) < 0)
-	// 	ft_exit(-1, &e);
+	if (ac != 3 || !av[1] || !av[2])
+		ft_affich(&e, 0);
+	if (ft_open(&e, av[1]) == -1)
+		ft_affich(&e, 1);
+	ft_init_struct(&e, 0);
+	if (ft_parsing(&e) == -1)
+		ft_affich(&e, 2);
+	main_sd(&e, av);
+//	print_list(&e);
 	e.img.mlx_ptr = mlx_init();
 	e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIDTH, LENGTH,\
 			"RTv1");
-	// e.buf[read(e.fd, e.buf, BUFF_SIZE)] = '\0';
-	// close(e.fd);
-	init_struct(&e);
+	create_image(&e);
 	aff(&e);
 	mlx_hook(e.img.win_ptr, 2, (1L << 0), hooks, &e);
 	mlx_hook(e.img.win_ptr, 17, (1L << 17), (int(*)())cleanexit, &e);

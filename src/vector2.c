@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/21 09:44:13 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/11/22 11:57:22 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/04 16:46:36 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,11 @@ void		vecnorm(t_vec *i)
 	veclength(i);
 }
 
-void		getintersection(t_vec *poscam, t_vec *raydir, double dist, t_rt *rt)
+void		getintersection(t_stuff *e, double dist)
 {
-	rt->inter.x = poscam->x + raydir->x * dist;
-	rt->inter.y = poscam->y + raydir->y * dist;
-	rt->inter.z = poscam->z + raydir->z * dist;
+	e->c.inter.x = e->poscam.x + e->raydir.x * dist;
+	e->c.inter.y = e->poscam.y + e->raydir.y * dist;
+	e->c.inter.z = e->poscam.z + e->raydir.z * dist;
+	vecsous(&e->light->lightdir, &e->light->pos, &e->c.inter);
+	vecnorm(&e->light->lightdir);
 }
