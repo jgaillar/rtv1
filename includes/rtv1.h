@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/04 16:45:19 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/05 10:12:15 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ typedef struct		s_cone
 {
 	struct s_cone	*prev;
 	t_vec			norm;
+	t_vec			norml;
 	t_vec			pos;
 	t_rgb			color;
 	double			t1;

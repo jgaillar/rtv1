@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/04 16:46:10 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/05 12:27:59 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,37 +42,42 @@ void		raythingy(t_stuff *e)
 	e->c.colorf = 0;
 	if (e->c.obj > -1)
 	{
+		reboot_list_loop(e);
 		getintersection(e, e->c.dist);
 		if (e->c.obj == 0)
 		{
 			searchlist(e, e->c.objsph, e->c.obj);
 			vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
 			vecnorm(&e->sph->norm);
-			e->c.colorf = getlight(&e->sph->norm, &e->light, &e->sph->color);
+			e->c.colorf += getlight(&e->sph->norm, &e->light, &e->sph->color);
 		}
 		if (e->c.obj == 1)
 		{
 			searchlist(e, e->c.objpla, e->c.obj);
-			e->c.colorf = getlight(&e->pla->norm, &e->light, &e->pla->color);
+			e->c.colorf += getlight(&e->pla->norm, &e->light, &e->pla->color);
 		}
 		if (e->c.obj == 2)
 		{
 			searchlist(e, e->c.objcyl, e->c.obj);
 			vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
 			vecnorm(&e->cyl->norml);
-			e->c.colorf = getlight(&e->cyl->norml, &e->light, &e->cyl->color);
+			e->c.colorf += getlight(&e->cyl->norml, &e->light, &e->cyl->color);
 		}
 		if (e->c.obj == 3)
 		{
 			searchlist(e, e->c.objcone, e->c.obj);
-			vecsous(&e->cone->norm, &e->c.inter, &e->cone->pos);
-			vecnorm(&e->cone->norm);
-			e->c.colorf = getlight(&e->cone->norm, &e->light, &e->cone->color);
+			vecsous(&e->cone->norml, &e->c.inter, &e->cone->pos);
+			vecnorm(&e->cone->norml);
+			e->c.colorf += getlight(&e->cone->norml, &e->light, &e->cone->color);
 		}
 		if (e->c.obj == 4)
 		{
 			searchlist(e, e->c.objlight, e->c.obj);
-			e->c.colorf = 0xFFFFFF;
+			vecsous(&e->light->norm, &e->c.inter, &e->light->pos);
+			vecnorm(&e->light->norm);;
+			e->c.colorf += rgbtohexa(e->light->color.r * e->light->diff,\
+				 e->light->color.g * e->light->diff, \
+				 e->light->color.b * e->light->diff);
 		}
 	}
 }
@@ -204,7 +209,7 @@ void		check_dist(t_stuff *e)
 	}
 	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001)
 	{
-		e->c.obj = (e->c.distcone < e->c.dist ? 4 : e->c.obj);
+		e->c.obj = (e->c.distlight < e->c.dist ? 4 : e->c.obj);
 		e->c.dist = e->c.distlight;
 	}
 }

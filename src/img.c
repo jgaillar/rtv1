@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:06:24 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/01 10:54:51 by jgaillar         ###   ########.fr       */
+/*   Updated: 2017/12/05 12:29:12 by jgaillar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ double			rgbtohexa(int r, int g, int b)
 		g = 0;
 	if (b < 0)
 		b = 0;
-	color = (r << 16) | (g << 8) | b;
+	color = ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF);
 	return (color);
 }
