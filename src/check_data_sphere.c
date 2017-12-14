@@ -16,7 +16,7 @@ int		check_data_sphere_fh(t_stuff *e, char *nb)
 {
 	double		d;
 
-	if ((d = ft_myatod(nb)) == -1)
+	if ((d = ft_myatod(nb)) == 2147483647)
 		return (-1);
 	e->d.tabd[++e->d.i] = d;
 	return (0);

@@ -16,7 +16,7 @@ int		check_data_cone_fh(t_stuff *e, char *nb)
 {
 	double	d;
 
-	if ((d = ft_myatod(nb)) == -1)
+	if ((d = ft_myatod(nb)) == 2147483647)
 		return (-1);
 	e->d.tabdcone[++e->d.i] = d;
 	return (0);
@@ -82,7 +82,7 @@ int		check_data_cone(t_stuff *e, int y)
 
 	tmp = y - 1;
 	i = 0;
-	while (++tmp < y + 6)
+	while (++tmp < y + 10)
 	{
 		if (check_data_cone_sd(e, e->b.tab[tmp]) == -1)
 			return (-1);

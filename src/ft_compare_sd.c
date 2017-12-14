@@ -12,6 +12,23 @@
 
 #include "rtv1.h"
 
+int		ft_compare_cone_sd(char *str, int i)
+{
+	if (i == 6)
+		if (ft_strcmp(str, "normX =") == 0)
+			return (0);
+	if (i == 7)
+		if (ft_strcmp(str, "normY =") == 0)
+			return (0);
+	if (i == 8)
+		if (ft_strcmp(str, "normZ =") == 0)
+			return (0);
+	if (i == 9)
+		if (ft_strcmp(str, "angle =") == 0)
+			return (0);
+	return (-1);
+}
+
 int		ft_compare_cone(char *str, int i)
 {
 	if (i == 0)
@@ -32,6 +49,8 @@ int		ft_compare_cone(char *str, int i)
 	if (i == 5)
 		if (ft_strcmp(str, "b =") == 0)
 			return (0);
+	if (ft_compare_cone_sd(str, i) == 0)
+		return (0);
 	return (-1);
 }
 

@@ -97,11 +97,11 @@ double		ft_myatod(char *str)
 	double	newnb;
 
 	if (!str)
-		return (-1);
+		return (2147483647);
 	if (checkchar(str) == -1)
-		return (-1);
+		return (2147483647);
 	if (!(newstr = deletechar(str)))
-		return (-1);
+		return (2147483647);
 	dot = dot_value(str);
 	nb = ft_atoi(newstr);
 	newnb = put_dot(nb, dot);

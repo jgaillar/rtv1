@@ -16,7 +16,7 @@ int		check_data_cylindre_fh(t_stuff *e, char *nb)
 {
 	double		d;
 
-	if ((d = ft_myatod(nb)) == -1)
+	if ((d = ft_myatod(nb)) == 2147483647)
 		return (-1);
 	e->d.tabdcyl[++e->d.i] = d;
 	return (0);

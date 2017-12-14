@@ -150,6 +150,7 @@ typedef struct		s_cone
 	t_vec			norml;
 	t_vec			pos;
 	t_rgb			color;
+	double			angle;
 	double			t1;
 	double			t2;
 	double			t;
@@ -281,5 +282,5 @@ int		light(t_stuff *e, int y);
 int		plan(t_stuff *e, int y);
 int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
-
+int		ft_compare_cone_sd(char *str, int i);
 #endif

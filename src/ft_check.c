@@ -16,7 +16,7 @@ int		ft_check_fih(t_stuff *e)
 {
 	double		d;
 
-	if ((d = ft_myatod(e->b.tmp3)) == -1)
+	if ((d = ft_myatod(e->b.tmp3)) == 2147483647)
 		return (-1);
 	if (!e->b.tabd)
 		if (!(e->b.tabd = (double *)malloc(sizeof(double) * e->b.y)))

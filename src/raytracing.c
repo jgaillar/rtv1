@@ -77,7 +77,7 @@ void		raythingy(t_stuff *e)
 			vecnorm(&e->light->norm);;
 			e->c.colorf += rgbtohexa(e->light->color.r * e->light->diff,\
 				 e->light->color.g * e->light->diff, \
-				 e->light->color.b * e->light->diff);
+				 	e->light->color.b * e->light->diff);
 		}
 	}
 }

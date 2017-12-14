@@ -111,7 +111,7 @@ int		cone(t_stuff *e, int y)
 	if (ft_strcmp(e->b.tab[y + 1], "------") != 0)
 		return (-1);
 	y += 2;
-	if (!(e->d.tabdcone = (double *)malloc(sizeof(double) * 6)))
+	if (!(e->d.tabdcone = (double *)malloc(sizeof(double) * 10)))
 		return (-1);
 	if (check_data_cone(e, y) == -1)
 		return (-1);

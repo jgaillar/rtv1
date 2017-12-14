@@ -23,6 +23,10 @@ int		init_list_cone(t_cone **cone)
 	(*cone)->color.r = 0;
 	(*cone)->color.g = 0;
 	(*cone)->color.b = 0;
+	(*cone)->norm.x = 0;
+	(*cone)->norm.y = 0;
+	(*cone)->norm.z = 0;
+	(*cone)->angle = 0;
 	(*cone)->next = NULL;
 	return (0);
 }
@@ -165,6 +169,10 @@ void	fill_list_cone(t_cone **cone, double *tabdcone, int nbmcone)
 	(*cone)->color.r = tabdcone[3];
 	(*cone)->color.g = tabdcone[4];
 	(*cone)->color.b = tabdcone[5];
+	(*cone)->norm.x = tabdcone[6];
+	(*cone)->norm.y = tabdcone[7];
+	(*cone)->norm.z = tabdcone[8];
+	(*cone)->angle = tabdcone[9];
 	(*cone)->nm = nbmcone;
 	free(tabdcone);
 }

@@ -39,30 +39,30 @@ void	cleanexit(t_stuff *e)
 
 void	movement(int keycode, t_stuff *e)
 {
-// 	if (keycode == 2)
-// 		e->light->pos.y -= 0.5;
-// 	if (keycode == 0)
-// 		e->light->pos.y += 0.5;
-// 	if (keycode == 1)
-// 		e->light->pos.x -= 0.5;
-// 	if (keycode == 13)
-// 		e->light->pos.x += 0.5;
-// 	if (keycode == 49)
-// 		e->light->pos.z += 0.5;
-// 	if (keycode == 8)
-// 		e->light->pos.z -= 0.5;
-// 	if (keycode == 125)
-// 		e->sph->pos.x -= 0.5;
-// 	if (keycode == 126)
-// 		e->sph->pos.x += 0.5;
-// 	if (keycode == 123)
-// 		e->sph->pos.y += 0.5;
-// 	if (keycode == 124)
-// 		e->sph->pos.y -= 0.5;
-// 	if (keycode == 78)
-// 		e->sph->pos.z -= 0.5;
-// 	if (keycode == 69)
-// 		e->sph->pos.z += 0.5;
+	if (keycode == 2)
+ 		e->poscam.y -= 0.1;
+ 	if (keycode == 0)
+ 		e->poscam.y += 0.1;
+ 	if (keycode == 1)
+ 		e->poscam.x -= 0.1;
+ 	if (keycode == 13)
+ 		e->poscam.x += 0.1;
+ 	if (keycode == 49)
+ 		e->poscam.z += 0.1;
+	if (keycode == 8)
+		e->poscam.z -= 0.1;
+	// if (keycode == 125)
+	// 	e->pr.x -= 0.1;
+	// if (keycode == 126)
+	// 	e->pr.x += 0.1;
+	// if (keycode == 123)
+	// 	e->pr.y += 0.1;
+	// if (keycode == 124)
+	// 	e->pr.y -= 0.1;
+	// if (keycode == 78)
+	// 	e->pr.z -= 0.1;
+	// if (keycode == 69)
+	// 	e->pr.z += 0.1;
 // 	if (keycode == 27)
 // 		e->sph->ray -= 0.5;
 // 	if (keycode == 24)
