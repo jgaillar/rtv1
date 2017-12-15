@@ -111,16 +111,16 @@ void		checkcone(t_cone *cone, t_vec *raydir, t_vec *poscam)
 	double	c;
 
 	vecsous(&l, poscam, &cone->pos);
-	a = dot_product(raydir, raydir) - (1 + tan(cone->angle) \
+	a = dot_product(raydir, raydir) - (1.0 + tan(cone->angle) \
 		* tan(cone->angle)) * (dot_product(raydir, &cone->norm) \
 			* dot_product(raydir, &cone->norm));
-	b = 2 * (dot_product(raydir, &l) - (1 + tan(cone->angle) \
+	b = 2 * (dot_product(raydir, &l) - (1.0 + tan(cone->angle) \
 		* tan(cone->angle)) * (dot_product(raydir, &cone->norm) \
 			* dot_product(&l, &cone->norm)));
-	c = dot_product(&l, &l) - (1 + tan(cone->angle) * tan(cone->angle)) \
+	c = dot_product(&l, &l) - (1.0 + tan(cone->angle) * tan(cone->angle)) \
 		* (dot_product(&l, &cone->norm) * dot_product(&l, &cone->norm));
-	cone->det = (b * b) - 4 * a * c;
+	cone->det = (b * b) - 4.0 * a * c;
 	cone->t1 = -b - sqrt(cone->det) / (2 * a);
 	cone->t2 = -b + sqrt(cone->det) / (2 * a);
-	cone->t = (cone->t2 > cone->t1 ? cone->t1 : cone->t2);
+	cone->t = (cone->t2 >= cone->t1 ? cone->t1 : cone->t2);
 }

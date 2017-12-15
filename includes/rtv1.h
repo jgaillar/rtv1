@@ -17,6 +17,11 @@
 # define LENGTH 720
 # define MT 16
 # define BUFF_SIZE 0xfffff
+# define SPHERE 0
+# define PLAN 1
+# define CYLINDRE 2
+# define CONE 3
+# define LIGHT 4
 # include <fcntl.h>
 # include <stdlib.h>
 # include <math.h>
@@ -264,7 +269,7 @@ void				vecnorm(t_vec *i);
 void				veclength(t_vec *i);
 void				getintersection(t_stuff *e, double dist);
 void				movement(int keycode, t_stuff *e);
-void				raythingy(t_stuff *e);
+int				raythingy(t_stuff *e);
 double				rgbtohexa(int r, int g, int b);
 void		checklight(t_light *light, t_vec *raydir, t_vec *poscam);
 void		checkcyl(t_cyl *cyl, t_vec *raydir, t_vec *poscam);
@@ -275,12 +280,13 @@ int		check_data_cone(t_stuff *e, int y);
 void	fill_list_cone(t_cone **cone, double *tabdcone, int nbmcone);
 int		ft_compare_cone(char *str, int i);
 void	searchlist(t_stuff *e, int nmail, int nlist);
-void		check_dist(t_stuff *e);
-void		check(t_stuff *e);
+void		check_dist(t_stuff *e, double dist);
+void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist);
 int		cylindre(t_stuff *e, int y);
 int		light(t_stuff *e, int y);
 int		plan(t_stuff *e, int y);
 int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
 int		ft_compare_cone_sd(char *str, int i);
+double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir);
 #endif

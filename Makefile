@@ -17,6 +17,7 @@ SRC_NAME = main.c raytracing.c struct.c img.c vector.c vector2.c hooks.c \
 			check_data_cylindre.c ft_check.c ft_compare_sd.c ft_compare.c \
 			ft_parsing_sd.c ft_parsing.c list_tools.c vectorcalc.c \
 			check_format.c check_format_obj.c check_data_cone.c check_obj.c \
+			shadows.c \
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
