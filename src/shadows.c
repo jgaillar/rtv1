@@ -12,12 +12,12 @@
 
 #include "rtv1.h"
 
-double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir)
+double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color)
 {
 	checklight(e->light, lightdir, inter);
 	check(e, lightdir, inter, e->light->t);
 	check_dist(e, 0);
 	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
-		return (0xFF0000);
+		return (rgbtohexa(color.r * e->light->amb, color.g * e->light->amb, color.b * e->light->amb));
 	return (0);
 }

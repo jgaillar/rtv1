@@ -87,6 +87,10 @@ typedef struct		s_c
 	int				objcone;
 	int				objlight;
 	t_rgb			color;
+	t_rgb			colsph;
+	t_rgb			colpla;
+	t_rgb			colcyl;
+	t_rgb			colcone;
 	double			colorf;
 	t_vec			inter;
 
@@ -288,5 +292,5 @@ int		plan(t_stuff *e, int y);
 int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
 int		ft_compare_cone_sd(char *str, int i);
-double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir);
+double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color);
 #endif
