@@ -12,13 +12,13 @@
 
 #include "rtv1.h"
 
-void		raydir(t_stuff *e)
+void		raydir(t_stuff *e, int x, int y)
 {
 	t_vec	tmp;
 	t_vec	tmp2;
 
-	e->c.xindent = e->c.largvue / WIDTH * e->c.posx;
-	e->c.yindent = e->c.longvue / LENGTH * e->c.posy;
+	e->c.xindent = e->c.largvue / WIDTH * x;
+	e->c.yindent = e->c.longvue / LENGTH * y;
 	tmp.x = e->vecdroit.x * e->c.xindent;
 	tmp.y = e->vecdroit.y * e->c.xindent;
 	tmp.z = e->vecdroit.z * e->c.xindent;

@@ -85,6 +85,7 @@ int				main(int ac, char **av)
 	aff(&e);
 	mlx_hook(e.img.win_ptr, 2, (1L << 0), hooks, &e);
 	mlx_hook(e.img.win_ptr, 17, (1L << 17), (int(*)())cleanexit, &e);
+	mlx_hook(e.img.win_ptr, 4, (1L << 2), mouse_hook, &e);
 	mlx_loop(e.img.mlx_ptr);
 	return (0);
 }

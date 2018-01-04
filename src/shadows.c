@@ -18,6 +18,9 @@ double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color)
 	check(e, lightdir, inter, e->light->t);
 	check_dist(e, 0);
 	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
-		return (rgbtohexa(color.r * e->light->amb, color.g * e->light->amb, color.b * e->light->amb));
+	{
+		e->c.colorf += rgbtohexa(color.r * 0.05, color.g * 0.05, color.b * 0.05);
+		return (1);
+	}
 	return (0);
 }

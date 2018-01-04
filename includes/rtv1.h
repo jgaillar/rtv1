@@ -30,6 +30,16 @@
 # include "../mlx/mlx.h"
 # include <stdio.h>
 
+typedef struct	s_seg
+{
+	int			dx;
+	int			dy;
+	int			sx;
+	int			sy;
+	int			err;
+	int			e2;
+}				t_seg;
+
 typedef struct		s_rgb
 {
 	int				r;
@@ -221,6 +231,7 @@ typedef	struct		s_stuff
 	t_cyl			*tmpcyl;
 	t_cone			*cone;
 	t_cone			*tmpcone;
+	t_seg			seg;
 	int				pix;
 	int				fd;
 	char			buf[BUFF_SIZE + 1];
@@ -229,7 +240,7 @@ typedef	struct		s_stuff
 void				vectorcalc(t_stuff *e);
 void				reboot_list(t_stuff *e);
 void				print_list(t_stuff *e);
-void				reboot_list_loop(t_stuff *e);
+void				reboot_list_loop(t_stuff *e, int option);
 int					ft_check(t_stuff *e);
 int					ft_parsing(t_stuff *e);
 int					ft_parsing_sd(t_stuff *e);
@@ -262,7 +273,7 @@ double				dot_product(t_vec *i, t_vec *j);
 void				cross_product(t_vec *res, t_vec *i, t_vec *j);
 void				vecpuivec(t_vec *res, t_vec *i, t_vec *j);
 void				upleft(t_stuff *e);
-void				raydir(t_stuff *e);
+void				raydir(t_stuff *e, int x, int y);
 void				checksphere(t_sphere *sphere, t_vec *raydir, t_vec *poscam);
 void				checkplan(t_plan *plan, t_vec *raydir, t_vec *poscam);
 void				mlx_pixel_put_to_image(t_img img, int x, int y ,int color);
@@ -293,4 +304,6 @@ int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
 int		ft_compare_cone_sd(char *str, int i);
 double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color);
+int		mouse_hook(int button, int x, int y, t_stuff *e);
+void			ft_segment(t_stuff *e, int x1, int y1, double color);
 #endif

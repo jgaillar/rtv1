@@ -48,3 +48,36 @@ double			rgbtohexa(int r, int g, int b)
 	color = ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF);
 	return (color);
 }
+
+void			ft_segment(t_stuff *e, int x1, int y1, double color)
+{
+	int x0;
+	int y0;
+
+	x0 = WIDTH / 2;
+	y0 = LENGTH;
+	e->seg.dx = ft_abs(x1 - x0);
+	e->seg.sx = (x0 < x1 ? 1 : -1);
+	e->seg.dy = ft_abs(y1 - y0);
+	e->seg.sy = (y0 < y1 ? 1 : -1);
+	e->seg.err = (e->seg.dx > e->seg.dy \
+	? e->seg.dx : -e->seg.dy) / 2;
+	while (1)
+	{
+		mlx_pixel_put_to_image(e->img, x0, y0, \
+			color);
+		if (x0 == x1 && y0 == y1)
+			break ;
+		e->seg.e2 = e->seg.err;
+		if (e->seg.e2 > -e->seg.dx)
+		{
+			e->seg.err -= e->seg.dy;
+			x0 += e->seg.sx;
+		}
+		if (e->seg.e2 < e->seg.dy)
+		{
+			e->seg.err += e->seg.dx;
+			y0 += e->seg.sy;
+		}
+	}
+}

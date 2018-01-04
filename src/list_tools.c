@@ -196,13 +196,17 @@ void	reboot_list(t_stuff *e)
 	e->tmpcone = e->cone;
 }
 
-void	reboot_list_loop(t_stuff *e)
+void	reboot_list_loop(t_stuff *e, int option)
 {
-	e->sph = e->tmp;
-	e->pla = e->tmppla;
-	e->light = e->tmplight;
-	e->cyl = e->tmpcyl;
-	e->cone = e->tmpcone;
+	if (option == 1 || option == 3)
+	{
+		e->sph = e->tmp;
+		e->pla = e->tmppla;
+		e->cyl = e->tmpcyl;
+		e->cone = e->tmpcone;
+	}
+	if (option == 2 || option == 3)
+		e->light = e->tmplight;
 }
 
 void	print_list(t_stuff *e)
