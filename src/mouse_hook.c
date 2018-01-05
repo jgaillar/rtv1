@@ -16,6 +16,7 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 {
 	if (button == 1 && (x >= 0 && x <= WIDTH) && (y >= 0 && y <= LENGTH))
 	{
+		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 		reboot_list_loop(e, 3);
 		raydir(e, x, y);
 		check(e, &e->raydir, &e->poscam, 9999);
@@ -33,8 +34,8 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 		else if (e->c.obj == 4)
 			ft_putnbr(e->c.objlight);
 		ft_putchar('\n');
-		ft_segment(e, x, y, 0x9148D0 + x + y);
-		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
+		if (e->c.obj > -1)
+			ft_segment(e, x, y, 0x9148D0 + (x * 10) + (y * 10));
 	}
 	return (0);
 }

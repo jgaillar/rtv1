@@ -19,8 +19,11 @@ double		getlight(t_vec *norm, t_light **light, t_rgb *colorobj)
 	double	color;
 
 	color = 0;
+	rgb.r = 0;
+	rgb.g = 0;
+	rgb.b = 0;
 	angle = ((*light)->ray > 0.00001 ? (dot_product(norm, &(*light)->lightdir)) \
-	 		* (*light)->ray : (dot_product(norm, &(*light)->lightdir)));
+		: 0);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
 		if ((*light)->nm == 0)
@@ -35,59 +38,56 @@ double		getlight(t_vec *norm, t_light **light, t_rgb *colorobj)
 		color = rgbtohexa(rgb.r, rgb.g, rgb.b);
 		return (color);
 	}
-	color = rgbtohexa(colorobj->r * (*light)->amb, colorobj->g * (*light)->amb, colorobj->b * (*light)->amb);
+	if ((*light)->nm == 0)
+		color = rgbtohexa(colorobj->r * (*light)->amb, colorobj->g * (*light)->amb, colorobj->b * (*light)->amb);
 	return (color);
 }
 
 int		raythingy(t_stuff *e)
 {
+	double dist;
+
 	check(e, &e->raydir, &e->poscam, 9999);
 	check_dist(e, 9999);
+	dist = e->c.dist;
 	reboot_list_loop(e, 3);
 	e->c.colorf = 0;
 	if (e->c.obj >= 0 && e->c.obj <= 3)
 	{
 		while (e->light)
 		{
-			getintersection(e, e->c.dist);
-			// if (shadows(e, &e->c.inter, &e->light->lightdir, e->c.color) == 1)
-			// 	return (0);
+			getintersection(e, dist);
+			if (shadows(e, &e->c.inter, &e->light->lightdir, e->c.color) == 1)
+				return (0);
 			if (e->c.obj == SPHERE)
 			{
-				// if (e->light->nm == 0)
-				// {
-					searchlist(e, e->c.objsph, e->c.obj);
-					vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
-					vecnorm(&e->sph->norm);
-			//	}
+				searchlist(e, e->c.objsph, e->c.obj);
+				vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
+				vecnorm(&e->sph->norm);
 				e->c.colorf += getlight(&e->sph->norm, &e->light, &e->sph->color);
+
 			}
 			else if (e->c.obj == PLAN)
 			{
-		//		if (e->light->nm == 0)
-					searchlist(e, e->c.objpla, e->c.obj);
+				searchlist(e, e->c.objpla, e->c.obj);
 				e->c.colorf += getlight(&e->pla->norm, &e->light, &e->pla->color);
 			}
 			else if (e->c.obj == CYLINDRE)
 			{
-				// if (e->light->nm == 0)
-				// {
-					searchlist(e, e->c.objcyl, e->c.obj);
-					vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
-					vecnorm(&e->cyl->norml);
-				//}
+				searchlist(e, e->c.objcyl, e->c.obj);
+				vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
+				vecnorm(&e->cyl->norml);
 				e->c.colorf += getlight(&e->cyl->norml, &e->light, &e->cyl->color);
 			}
 			else if (e->c.obj == CONE)
 			{
-				// if (e->light->nm == 0)
-				// {
-					searchlist(e, e->c.objcone, e->c.obj);
-					vecsous(&e->cone->norml, &e->cone->pos, &e->c.inter);
-					vecnorm(&e->cone->norml);
-			//	}
+				searchlist(e, e->c.objcone, e->c.obj);
+				vecsous(&e->cone->norml, &e->cone->pos, &e->c.inter);
+				vecnorm(&e->cone->norml);
 				e->c.colorf += getlight(&e->cone->norml, &e->light, &e->cone->color);
 			}
+			if (e->c.colorf >= 16777215)
+				e->c.colorf = 16777215;
 			e->light = e->light->next;
 		}
 	}

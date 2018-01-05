@@ -45,7 +45,7 @@ double			rgbtohexa(int r, int g, int b)
 		g = 0;
 	if (b < 0)
 		b = 0;
-	color = ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF);
+	color = ((r) << 16) + ((g) << 8) + (b);
 	return (color);
 }
 
@@ -64,7 +64,7 @@ void			ft_segment(t_stuff *e, int x1, int y1, double color)
 	? e->seg.dx : -e->seg.dy) / 2;
 	while (1)
 	{
-		mlx_pixel_put_to_image(e->img, x0, y0, \
+		mlx_pixel_put(e->img.mlx_ptr, e->img.win_ptr, x0, y0, \
 			color);
 		if (x0 == x1 && y0 == y1)
 			break ;
