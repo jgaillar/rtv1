@@ -14,12 +14,17 @@
 
 double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color)
 {
+	t_rgb caca;
+
+	caca.r = 0;
+	caca.g = 0;
+	caca.b = 0;
 	checklight(e->light, lightdir, inter);
 	check(e, lightdir, inter, e->light->t);
 	check_dist(e, 0);
 	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
 	{
-		e->c.colorf = rgbtohexa(color.r * 0.05, color.g * 0.05, color.b * 0.05);
+		rgb_add(&e->c.colorf, caca, color, 0.7);
 		return (1);
 	}
 	return (0);

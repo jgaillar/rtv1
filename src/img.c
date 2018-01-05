@@ -81,3 +81,10 @@ void			ft_segment(t_stuff *e, int x1, int y1, double color)
 		}
 	}
 }
+
+void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k)
+{
+	res->r = i.r + j.r * k;
+	res->g = i.g + j.g * k;
+	res->b = i.b + j.b * k;
+}
