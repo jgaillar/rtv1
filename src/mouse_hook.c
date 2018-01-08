@@ -26,40 +26,35 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 		if (e->c.obj == 0)
 		{
 			color = 0x6a74af;
-			ft_putnbr(e->c.obj);
-			ft_putchar('\n');
+			ft_putstr("SPHERE : ");
 			ft_putnbr(e->c.objsph);
 			ft_putchar('\n');
 		}
 		else if (e->c.obj == 1)
 		{
 			color = 0xf3a1d1;
-			ft_putnbr(e->c.obj);
-			ft_putchar('\n');
+			ft_putstr("PLAN : ");
 			ft_putnbr(e->c.objpla);
 			ft_putchar('\n');
 		}
 		else if (e->c.obj == 2)
 		{
 			color = 0xff5370;
-			ft_putnbr(e->c.obj);
-			ft_putchar('\n');
+			ft_putstr("CYLINDRE : ");
 			ft_putnbr(e->c.objcyl);
 			ft_putchar('\n');
 		}
 		else if (e->c.obj == 3)
 		{
 			color = 0x73d1c8;
-			ft_putnbr(e->c.obj);
-			ft_putchar('\n');
+			ft_putstr("CONE : ");
 			ft_putnbr(e->c.objcone);
 			ft_putchar('\n');
 		}
 		else if (e->c.obj == 4)
 		{
 			color = 0xff9966;
-			ft_putnbr(e->c.obj);
-			ft_putchar('\n');
+			ft_putstr("LIGHT : ");
 			ft_putnbr(e->c.objlight);
 			ft_putchar('\n');
 		}

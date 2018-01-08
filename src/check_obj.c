@@ -98,9 +98,14 @@ void		checkcyl(t_cyl *cyl, t_vec *raydir, t_vec *poscam)
 	c = dot_product(&l, &l) - (dot_product(&l, &cyl->norm) \
 	* dot_product(&l, &cyl->norm)) - cyl->ray * cyl->ray;
 	cyl->det = (b * b) - 4 * a * c;
-	cyl->t1 = (-b - sqrt(cyl->det)) / (2 * a);
-	cyl->t2 = (-b + sqrt(cyl->det)) / (2 * a);
-	cyl->t = (cyl->t1 <= cyl->t2 ? cyl->t1 : cyl->t2);
+	if (cyl->det != 0)
+	{
+		cyl->t1 = (-b - sqrt(cyl->det)) / (2 * a);
+		cyl->t2 = (-b + sqrt(cyl->det)) / (2 * a);
+		cyl->t = (cyl->t1 <= cyl->t2 ? cyl->t1 : cyl->t2);
+	}
+	else
+		cyl->t = (-b / 2 * a);
 }
 
 void		checkcone(t_cone *cone, t_vec *raydir, t_vec *poscam)

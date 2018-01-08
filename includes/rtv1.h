@@ -96,11 +96,6 @@ typedef struct		s_c
 	int				objcyl;
 	int				objcone;
 	int				objlight;
-	t_rgb			color;
-	t_rgb			colsph;
-	t_rgb			colpla;
-	t_rgb			colcyl;
-	t_rgb			colcone;
 	t_rgb			colorf;
 	t_vec			inter;
 
