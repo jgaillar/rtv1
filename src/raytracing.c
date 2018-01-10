@@ -44,8 +44,8 @@ int		raythingy(t_stuff *e)
 {
 	double dist;
 
-	check(e, &e->raydir, &e->poscam, 9999);
-	check_dist(e, 9999);
+	check(e, &e->raydir, &e->poscam, 1);
+	check_dist(e, 1);
 	dist = e->c.dist;
 	reboot_list_loop(e, 3);
 	e->c.colorf.r = 0;
@@ -53,9 +53,10 @@ int		raythingy(t_stuff *e)
 	e->c.colorf.b = 0;
 	if (e->c.obj >= 0 && e->c.obj <= 3)
 	{
+		getintersection(e, dist);
 		while (e->light)
 		{
-			getintersection(e, dist);
+			getlightdir(e, e->c.inter);
 			if (e->c.obj == SPHERE)
 			{
 				searchlist(e, e->c.objsph, e->c.obj);
@@ -86,13 +87,11 @@ int		raythingy(t_stuff *e)
 				rgb_add(&e->c.colorf, e->c.colorf,\
 					 getlight(&e->cone->norm, &e->light, &e->cone->color), 1);
 			}
-			if (shadows(e, &e->c.inter, &e->light->lightdir, e->c.colorf) == 1)
-			{
-				if (e->light->next == NULL)
-					return (0);
-			}
 			e->light = e->light->next;
 		}
+		reboot_list_loop(e, 2);
+		if (shadows(e, &e->c.inter) == 1)
+			return (0);
 	}
 	else if (e->c.obj == 4)
 	{
@@ -145,23 +144,22 @@ void		aff(t_stuff *e)
 	reboot_list_loop(e, 3);
 }
 
-void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist)
+void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 {
-	e->c.dist = dist;
+	e->c.dist = 9999;
 	e->c.distsph = 9999;
 	e->c.distpla = 9999;
 	e->c.distcyl = 9999;
 	e->c.distcone = 9999;
 	e->c.distlight = 9999;
-	if (dist == 9999)
-		e->c.obj = -1;
+	e->c.obj = -1;
 	while (e->sph)
 	{
 		checksphere(e->sph, raydir, pos);
 		if (e->sph->t < e->c.distsph && e->sph->t > 0.00001)
 		{
 			e->c.distsph = e->sph->t;
-			if (dist == 9999)
+			if (option == 1)
 			{
 				e->c.objsph = e->sph->nm;
 				e->c.obj = SPHERE;
@@ -175,7 +173,7 @@ void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist)
 		if (e->pla->t < e->c.distpla && e->pla->t > 0.00001)
 		{
 			e->c.distpla = e->pla->t;
-			if (dist == 9999)
+			if (option == 1)
 			{
 				e->c.objpla = e->pla->nm;
 				e->c.obj = PLAN;
@@ -189,7 +187,7 @@ void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist)
 		if (e->cyl->t < e->c.distcyl && e->cyl->t > 0.00001)
 		{
 			e->c.distcyl = e->cyl->t;
-			if (dist == 9999)
+			if (option == 1)
 			{
 				e->c.objcyl = e->cyl->nm;
 				e->c.obj = CYLINDRE;
@@ -203,7 +201,7 @@ void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist)
 		if (e->cone->t < e->c.distcone && e->cone->t > 0.00001)
 		{
 			e->c.distcone = e->cone->t;
-			if (dist == 9999)
+			if (option == 1)
 			{
 				e->c.objcone = e->cone->nm;
 				e->c.obj = CONE;
@@ -211,23 +209,20 @@ void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist)
 		}
 		e->cone = e->cone->next;
 	}
-	while (e->light && dist == 9999)
+	while (e->light && option == 1)
 	{
 		checklight(e->light, raydir, pos);
 		if (e->light->t < e->c.distlight && e->light->t > 0.00001)
 		{
 			e->c.distlight = e->light->t;
-			if (dist == 9999)
-			{
-				e->c.objlight = e->light->nm;
-				e->c.obj = LIGHT;
-			}
+			e->c.objlight = e->light->nm;
+			e->c.obj = LIGHT;
 		}
 		e->light = e->light->next;
 	}
 }
 
-void		check_dist(t_stuff *e, double dist)
+void		check_dist(t_stuff *e, int option)
 {
 	if (e->c.distsph < e->c.dist && e->c.distsph > 0.00001)
 	{
@@ -249,7 +244,7 @@ void		check_dist(t_stuff *e, double dist)
 		e->c.obj = (e->c.distcone < e->c.dist ? CONE : e->c.obj);
 		e->c.dist = e->c.distcone;
 	}
-	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001 && dist == 9999)
+	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001 && option == 1)
 	{
 		e->c.obj = (e->c.distlight < e->c.dist ? LIGHT : e->c.obj);
 		e->c.dist = e->c.distlight;

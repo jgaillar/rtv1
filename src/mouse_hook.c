@@ -21,8 +21,8 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 		reboot_list_loop(e, 3);
 		raydir(e, x, y);
-		check(e, &e->raydir, &e->poscam, 9999);
-		check_dist(e, 9999);
+		check(e, &e->raydir, &e->poscam, 1);
+		check_dist(e, 1);
 		if (e->c.obj == 0)
 		{
 			color = 0x6a74af;

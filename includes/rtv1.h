@@ -290,16 +290,18 @@ int		check_data_cone(t_stuff *e, int y);
 void	fill_list_cone(t_cone **cone, double *tabdcone, int nbmcone);
 int		ft_compare_cone(char *str, int i);
 void	searchlist(t_stuff *e, int nmail, int nlist);
-void		check_dist(t_stuff *e, double dist);
-void		check(t_stuff *e, t_vec *raydir, t_vec *pos, double dist);
+void		check_dist(t_stuff *e, int option);
+void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option);
 int		cylindre(t_stuff *e, int y);
 int		light(t_stuff *e, int y);
 int		plan(t_stuff *e, int y);
 int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
 int		ft_compare_cone_sd(char *str, int i);
-double		shadows(t_stuff *e, t_vec *inter, t_vec *lightdir, t_rgb color);
+double		shadows(t_stuff *e, t_vec *inter);
 int		mouse_hook(int button, int x, int y, t_stuff *e);
 void			ft_segment(t_stuff *e, int x1, int y1, double color);
 void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k);
+void		getlightdir(t_stuff *e, t_vec inter);
+
 #endif

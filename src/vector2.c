@@ -31,6 +31,10 @@ void		getintersection(t_stuff *e, double dist)
 	e->c.inter.x = e->poscam.x + (e->raydir.x * dist);
 	e->c.inter.y = e->poscam.y + (e->raydir.y * dist);
 	e->c.inter.z = e->poscam.z + (e->raydir.z * dist);
-	vecsous(&e->light->lightdir, &e->light->pos, &e->c.inter);
+}
+
+void		getlightdir(t_stuff *e, t_vec inter)
+{
+	vecsous(&e->light->lightdir, &e->light->pos, &inter);
 	vecnorm(&e->light->lightdir);
 }
