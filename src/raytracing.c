@@ -12,7 +12,45 @@
 
 #include "rtv1.h"
 
-t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj)
+t_vec		getrefray(t_stuff *e, t_vec *norm)
+{
+	t_vec res;
+	t_vec j;
+	t_vec i;
+	double u;
+
+	vecsous(&j, &e->poscam, &e->c.inter);
+	u = 2 * (dot_product(&j, norm));
+	i.x = u * norm->x;
+	i.y = u * norm->y;
+	i.z = u * norm->z;
+	vecsous(&res, &j, &i);
+	vecnorm(&res);
+	return (res);
+}
+
+void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
+{
+	double	i;
+	double	l;
+	t_vec	j;
+	t_vec	k;
+	t_vec	u;
+
+	vecsous(&u, &e->poscam, &e->c.inter);
+	vecnorm(&u);
+	j.x = (*light)->lightdir.x * -1;
+	j.y = (*light)->lightdir.y * -1;
+	j.z = (*light)->lightdir.z * -1;
+	k = getrefray(e, norm);
+	l = (dot_product(&k, &u));
+	i = (dot_product(&j, &k));
+	color->r += (*light)->color.r * i * l;
+	color->g += (*light)->color.g * i * l;
+	color->b += (*light)->color.b * i * l;
+}
+
+t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 {
 	t_rgb	rgb;
 	double	angle;
@@ -33,6 +71,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj)
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
+		getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
 	if ((*light)->nm == 0)
@@ -63,13 +102,13 @@ int		raythingy(t_stuff *e)
 				vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
 				vecnorm(&e->sph->norm);
 				rgb_add(&e->c.colorf, e->c.colorf, \
-					getlight(&e->sph->norm, &e->light, &e->sph->color), 1);
+					getlight(&e->sph->norm, &e->light, &e->sph->color, e), 1);
 			}
 			else if (e->c.obj == PLAN)
 			{
 				searchlist(e, e->c.objpla, e->c.obj);
 				rgb_add(&e->c.colorf, e->c.colorf, \
-					getlight(&e->pla->norm, &e->light, &e->pla->color), 1);
+					getlight(&e->pla->norm, &e->light, &e->pla->color, e), 1);
 			}
 			else if (e->c.obj == CYLINDRE)
 			{
@@ -77,7 +116,7 @@ int		raythingy(t_stuff *e)
 				vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
 				vecnorm(&e->cyl->norml);
 				rgb_add(&e->c.colorf, e->c.colorf, \
-					getlight(&e->cyl->norml, &e->light, &e->cyl->color), 1);
+					getlight(&e->cyl->norml, &e->light, &e->cyl->color, e), 1);
 			}
 			else if (e->c.obj == CONE)
 			{
@@ -85,7 +124,7 @@ int		raythingy(t_stuff *e)
 				vecsous(&e->cone->norml, &e->c.inter, &e->cone->pos);
 				vecnorm(&e->cone->norml);
 				rgb_add(&e->c.colorf, e->c.colorf,\
-					 getlight(&e->cone->norm, &e->light, &e->cone->color), 1);
+					 getlight(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			}
 			e->light = e->light->next;
 		}

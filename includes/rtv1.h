@@ -257,7 +257,7 @@ int					init_list_cyl(t_cyl **cyl);
 int					check_data_cylindre(t_stuff *e, int y);
 void				fill_list_cyl(t_cyl **cyl, double *tabdcyl, int nbmcyl);
 int					ft_compare_cylindre(char *str, int i);
-t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj);
+t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *es);
 void				ft_exit(int code, t_stuff *e);
 void				ft_init_struct(t_stuff *e, int option);
 void				create_image(t_stuff *e);
@@ -303,5 +303,7 @@ int		mouse_hook(int button, int x, int y, t_stuff *e);
 void			ft_segment(t_stuff *e, int x1, int y1, double color);
 void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k);
 void		getlightdir(t_stuff *e, t_vec inter);
+void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light);
+t_vec		getrefray(t_stuff *e, t_vec *norm);
 
 #endif
