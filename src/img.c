@@ -94,9 +94,9 @@ void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k)
 	if (res->g > 255)
 		res->g = 255;
 	else if (res->g < 0)
-		res->g < 0;
+		res->g = 0;
 	if (res->b > 255)
 		res->b = 255;
 	else if (res->b < 0)
-		res->b < 0;
+		res->b = 0;
 }

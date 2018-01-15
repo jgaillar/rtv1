@@ -40,17 +40,35 @@ void	cleanexit(t_stuff *e)
 void	movement(int keycode, t_stuff *e)
 {
 	if (keycode == 2)
+	{
  		e->poscam.y -= 0.1;
+		vectorcalc(e);
+	}
  	if (keycode == 0)
+	{
  		e->poscam.y += 0.1;
+		vectorcalc(e);
+	}
  	if (keycode == 1)
+	{
  		e->poscam.x -= 0.1;
+		vectorcalc(e);
+	}
  	if (keycode == 13)
+	{
  		e->poscam.x += 0.1;
+		vectorcalc(e);
+	}
  	if (keycode == 49)
+	{
  		e->poscam.z += 0.1;
+		vectorcalc(e);
+	}
 	if (keycode == 8)
+	{
 		e->poscam.z -= 0.1;
+		vectorcalc(e);
+	}
 	if (keycode == 125)
 	{
 		e->pr.x -= 0.5;

@@ -15,39 +15,36 @@
 t_vec		getrefray(t_stuff *e, t_vec *norm)
 {
 	t_vec res;
-	t_vec j;
-	t_vec i;
-	double u;
+	double a;
 
-	vecsous(&j, &e->poscam, &e->c.inter);
-	u = 2 * (dot_product(&j, norm));
-	i.x = u * norm->x;
-	i.y = u * norm->y;
-	i.z = u * norm->z;
-	vecsous(&res, &j, &i);
+	res.x = 0;
+	res.y = 0;
+	res.z = 0;
+	a = 2 * (dot_product(norm, &e->light->lightdir));
+	res.x = a * norm->x - e->light->lightdir.x;
+	res.y = a * norm->y - e->light->lightdir.y;
+	res.z = a * norm->z - e->light->lightdir.z;
 	vecnorm(&res);
 	return (res);
 }
 
 void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 {
-	double	i;
-	double	l;
-	t_vec	j;
-	t_vec	k;
-	t_vec	u;
+	double	a;
+	t_vec	ref;
+	t_vec	v;
+	t_rgb tmp;
 
-	vecsous(&u, &e->poscam, &e->c.inter);
-	vecnorm(&u);
-	j.x = (*light)->lightdir.x * -1;
-	j.y = (*light)->lightdir.y * -1;
-	j.z = (*light)->lightdir.z * -1;
-	k = getrefray(e, norm);
-	l = (dot_product(&k, &u));
-	i = (dot_product(&j, &k));
-	color->r += (*light)->color.r * i * l;
-	color->g += (*light)->color.g * i * l;
-	color->b += (*light)->color.b * i * l;
+	vecsous(&v, &e->poscam, &e->c.inter);
+	vecnorm(&v);
+	ref = getrefray(e, norm);
+//	printf("light : [%f] [%f] [%f]\n", e->light->lightdir.x, e->light->lightdir.y, e->light->lightdir.z);
+	a = dot_product(&ref, &v);
+//	printf("ref : [%f] [%f] [%f]\n", ref.x, ref.y, ref.z);
+	tmp.r = ((*light)->color.r) * (*light)->diff * pow(a, 1000);
+	tmp.g = ((*light)->color.g) * (*light)->diff * pow(a, 1000);
+	tmp.b = ((*light)->color.b) * (*light)->diff * pow(a, 1000);
+	rgb_add(color, *color, tmp, 1);
 }
 
 t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
@@ -71,7 +68,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		//getspeclight(e, norm, &rgb, light);
+		getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
 	if ((*light)->nm == 0)
@@ -111,6 +108,8 @@ int		raythingy(t_stuff *e)
 			{
 				searchlist(e, e->c.objcyl, CYLINDRE);
 				vecsous(&e->cyl->norml, &e->c.inter, &e->cyl->pos);
+				vecnorm(&e->cyl->norml);
+				e->cyl->norml.z = 0;
 				vecnorm(&e->cyl->norml);
 				rgb_add(&e->c.colorf, e->c.colorf, \
 					getlight(&e->cyl->norml, &e->light, &e->cyl->color, e), 1);
