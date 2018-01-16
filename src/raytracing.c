@@ -17,9 +17,6 @@ t_vec		getrefray(t_stuff *e, t_vec *norm)
 	t_vec res;
 	double a;
 
-	res.x = 0;
-	res.y = 0;
-	res.z = 0;
 	a = 2 * (dot_product(norm, &e->light->lightdir));
 	res.x = a * norm->x - e->light->lightdir.x;
 	res.y = a * norm->y - e->light->lightdir.y;
@@ -38,12 +35,10 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 	vecsous(&v, &e->poscam, &e->c.inter);
 	vecnorm(&v);
 	ref = getrefray(e, norm);
-//	printf("light : [%f] [%f] [%f]\n", e->light->lightdir.x, e->light->lightdir.y, e->light->lightdir.z);
-	a = dot_product(&ref, &v);
-//	printf("ref : [%f] [%f] [%f]\n", ref.x, ref.y, ref.z);
-	tmp.r = ((*light)->color.r) * (*light)->diff * pow(a, 1000);
-	tmp.g = ((*light)->color.g) * (*light)->diff * pow(a, 1000);
-	tmp.b = ((*light)->color.b) * (*light)->diff * pow(a, 1000);
+	a = pow(dot_product(&ref, &v), 100);
+	tmp.r = ((*light)->color.r) * (*light)->diff * a;
+	tmp.g = ((*light)->color.g) * (*light)->diff * a;
+	tmp.b = ((*light)->color.b) * (*light)->diff * a;
 	rgb_add(color, *color, tmp, 1);
 }
 
