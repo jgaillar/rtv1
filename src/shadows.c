@@ -12,25 +12,26 @@
 
 #include "rtv1.h"
 
-double		shadows(t_stuff *e, t_vec *inter)
+double		shadows(t_stuff *e, t_vec *inter, t_rgb color)
 {
 	t_rgb caca;
 
 	caca.r = 0;
 	caca.g = 0;
 	caca.b = 0;
-	while (e->light)
+	reboot_list_loop(e, 1);
+	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
 	{
-		reboot_list_loop(e, 1);
-		getlightdir(e, *inter);
-		checklight(e->light, &e->light->lightdir, inter);
-		check(e, &e->light->lightdir, inter, 2);
-		check_dist(e, 2);
-		if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
-			rgb_add(&e->c.colorf, caca, e->c.colorf, 0.8);
-		if (e->light->next == NULL)
-			return (1);
-		e->light = e->light->next;
+		rgb_add(&e->c.colorf, caca, color, 0.8);
+		return (1);
 	}
 	return (0);
+}
+
+void		oklm(t_stuff *e)
+{
+	checklight(e->light, &e->light->lightdir, &e->c.inter);
+	check(e, &e->light->lightdir, &e->c.inter, 2);
+	check_dist(e, 2);
+	reboot_list_loop(e, 1);
 }

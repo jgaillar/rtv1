@@ -71,6 +71,11 @@ typedef struct		s_d
 	double			*tabdlight;
 	double			*tabdcyl;
 	double			*tabdcone;
+	t_rgb			color;
+	t_rgb			colsph;
+	t_rgb			colpla;
+	t_rgb			colcyl;
+	t_rgb			colcone;
 }					t_d;
 
 typedef struct		s_c
@@ -298,12 +303,13 @@ int		plan(t_stuff *e, int y);
 int		sphere(t_stuff *e, int y);
 int		cone(t_stuff *e, int y);
 int		ft_compare_cone_sd(char *str, int i);
-double		shadows(t_stuff *e, t_vec *inter);
+double		shadows(t_stuff *e, t_vec *inter, t_rgb color);
 int		mouse_hook(int button, int x, int y, t_stuff *e);
 void			ft_segment(t_stuff *e, int x1, int y1, double color);
 void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k);
 void		getlightdir(t_stuff *e, t_vec inter);
 void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light);
 t_vec		getrefray(t_stuff *e, t_vec *norm);
+void		oklm(t_stuff *e);
 
 #endif
