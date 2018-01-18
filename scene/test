@@ -45,9 +45,9 @@ z = 0.01
 
 normX = 0.00
 
-normY = 0.00
+normY = 0.50
 
-normZ = 1.00
+normZ = 0.50
 
 ray = 5.00
 

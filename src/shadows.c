@@ -19,7 +19,6 @@ double		shadows(t_stuff *e, t_vec *inter, t_rgb color)
 	caca.r = 0;
 	caca.g = 0;
 	caca.b = 0;
-	reboot_list_loop(e, 1);
 	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
 	{
 		rgb_add(&e->c.colorf, caca, color, 0.8);
@@ -30,8 +29,7 @@ double		shadows(t_stuff *e, t_vec *inter, t_rgb color)
 
 void		oklm(t_stuff *e)
 {
-	checklight(e->light, &e->light->lightdir, &e->c.inter);
 	check(e, &e->light->lightdir, &e->c.inter, 2);
 	check_dist(e, 2);
-	reboot_list_loop(e, 1);
+	checklight(e->light, &e->light->lightdir, &e->c.inter);
 }

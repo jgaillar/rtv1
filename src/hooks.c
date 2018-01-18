@@ -65,32 +65,32 @@ void	movement(int keycode, t_stuff *e)
 	}
 	if (keycode == 125)
 	{
-		e->pr.x -= 0.5;
+		e->pr.x -= 0.1;
 		vectorcalc(e);
 	}
 	if (keycode == 126)
 	{
-		e->pr.x += 0.5;
+		e->pr.x += 0.1;
 		vectorcalc(e);
 	}
 	if (keycode == 123)
 	{
-		e->pr.y += 0.5;
+		e->pr.y += 0.1;
 		vectorcalc(e);
 	}
 	if (keycode == 124)
 	{
-		e->pr.y -= 0.5;
+		e->pr.y -= 0.1;
 		vectorcalc(e);
 	}
 	if (keycode == 78)
 	{
-		e->pr.z -= 0.5;
+		e->pr.z -= 0.1;
 		vectorcalc(e);
 	}
 	if (keycode == 69)
 	{
-		e->pr.z += 0.5;
+		e->pr.z += 0.1;
 		vectorcalc(e);
 	}
 // 	if (keycode == 27)
