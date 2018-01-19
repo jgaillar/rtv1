@@ -311,5 +311,6 @@ void		getlightdir(t_stuff *e, t_vec inter);
 void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light);
 t_vec		getrefray(t_stuff *e, t_vec *norm);
 void		oklm(t_stuff *e);
+int		raythingydebug(t_stuff *e);
 
 #endif

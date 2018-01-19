@@ -16,7 +16,8 @@ void		check_distdebug(t_stuff *e, int option)
 {
 	if (e->c.distsph < e->c.dist && e->c.distsph > 0.00001)
 	{
-		e->c.obj = (e->c.distsph < e->c.dist ? SPHERE : -1);
+		if (option == 1)
+			e->c.obj = (e->c.distsph < e->c.dist ? SPHERE : -1);
 		e->c.dist = e->c.distsph;
 		e->d.color.r = e->d.colsph.r;
 		e->d.color.g = e->d.colsph.g;
@@ -24,7 +25,8 @@ void		check_distdebug(t_stuff *e, int option)
 	}
 	if (e->c.distpla < e->c.dist && e->c.distpla > 0.00001)
 	{
-		e->c.obj = (e->c.distpla < e->c.dist ? PLAN : e->c.obj);
+		if (option == 1)
+			e->c.obj = (e->c.distpla < e->c.dist ? PLAN : e->c.obj);
 		e->c.dist = e->c.distpla;
 		e->d.color.r = e->d.colpla.r;
 		e->d.color.g = e->d.colpla.g;
@@ -32,7 +34,8 @@ void		check_distdebug(t_stuff *e, int option)
 	}
 	if (e->c.distcyl < e->c.dist && e->c.distcyl > 0.00001)
 	{
-		e->c.obj = (e->c.distcyl < e->c.dist ? CYLINDRE : e->c.obj);
+		if (option == 1)
+			e->c.obj = (e->c.distcyl < e->c.dist ? CYLINDRE : e->c.obj);
 		e->c.dist = e->c.distcyl;
 		e->d.color.r = e->d.colcyl.r;
 		e->d.color.g = e->d.colcyl.g;
@@ -40,7 +43,8 @@ void		check_distdebug(t_stuff *e, int option)
 	}
 	if (e->c.distcone < e->c.dist && e->c.distcone > 0.00001)
 	{
-		e->c.obj = (e->c.distcone < e->c.dist ? CONE : e->c.obj);
+		if (option == 1)
+			e->c.obj = (e->c.distcone < e->c.dist ? CONE : e->c.obj);
 		e->c.dist = e->c.distcone;
 		e->d.color.r = e->d.colcone.r;
 		e->d.color.g = e->d.colcone.g;
@@ -73,9 +77,6 @@ void		checkdebug(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 			{
 				e->c.objsph = e->sph->nm;
 				e->c.obj = SPHERE;
-			}
-			else
-			{
 				e->d.colsph.r = e->sph->color.r;
 				e->d.colsph.g = e->sph->color.g;
 				e->d.colsph.b = e->sph->color.b;
@@ -93,9 +94,6 @@ void		checkdebug(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 			{
 				e->c.objpla = e->pla->nm;
 				e->c.obj = PLAN;
-			}
-			else
-			{
 				e->d.colpla.r = e->pla->color.r;
 				e->d.colpla.g = e->pla->color.g;
 				e->d.colpla.b = e->pla->color.b;
@@ -113,9 +111,6 @@ void		checkdebug(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 			{
 				e->c.objcyl = e->cyl->nm;
 				e->c.obj = CYLINDRE;
-			}
-			else
-			{
 				e->d.colcyl.r = e->cyl->color.r;
 				e->d.colcyl.g = e->cyl->color.g;
 				e->d.colcyl.b = e->cyl->color.b;
@@ -133,9 +128,6 @@ void		checkdebug(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 			{
 				e->c.objcone = e->cone->nm;
 				e->c.obj = CONE;
-			}
-			else
-			{
 				e->d.colcone.r = e->cone->color.r;
 				e->d.colcone.g = e->cone->color.g;
 				e->d.colcone.b = e->cone->color.b;
@@ -156,12 +148,69 @@ void		checkdebug(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
 	}
 }
 
+double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
+{
+	t_rgb caca;
+
+	caca.r = 0;
+	caca.g = 0;
+	caca.b = 0;
+	getlightdir(e, e->c.inter);
+	reboot_list_loop(e, 1);
+	checkdebug(e, &e->light->lightdir, &e->c.inter, 2);
+	check_distdebug(e, 2);
+	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+	{
+		printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", color.r, color.g, color.b);
+		rgb_add(&e->c.colorf, caca, color, 0.1);
+		printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+		return (1);
+	}
+	return (0);
+}
+
+t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
+{
+	t_rgb	rgb;
+	double	angle;
+
+	ft_putendl("getlight");
+	printf("dirx : [%f] | diry : [%f] | dirz : [%f]\n\n", e->light->lightdir.x, e->light->lightdir.y, e->light->lightdir.z);
+	rgb.r = 0;
+	rgb.g = 0;
+	rgb.b = 0;
+	angle = ((*light)->ray > 0.00001 ? (dot_product(norm, &(*light)->lightdir)) \
+		: 0);
+	printf("angle : [%f]\n\n", angle);
+	if ((*light)->ray > 0.00001 && angle > 0.00001)
+	{
+		if ((*light)->nm == 0)
+		{
+
+			ft_putendl("amb");
+			rgb.r = colorobj->r * (*light)->amb;
+			rgb.g = colorobj->g * (*light)->amb;
+			rgb.b = colorobj->b * (*light)->amb;
+		}
+		printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", colorobj->r, colorobj->g, colorobj->b);
+		rgb.r += (*light)->color.r * angle * (*light)->diff;
+		rgb.g += (*light)->color.g * angle * (*light)->diff;
+		rgb.b += (*light)->color.b * angle * (*light)->diff;
+		getspeclight(e, norm, &rgb, light);
+		return (rgb);
+	}
+	if ((*light)->nm == 0)
+		rgb_add(&rgb, rgb, (*colorobj), (*light)->amb);
+	return (rgb);
+}
+
 int		raythingydebug(t_stuff *e)
 {
 	reboot_list_loop(e, 3);
 	checkdebug(e, &e->raydir, &e->poscam, 1);
 	check_distdebug(e, 1);
 	ft_putendl("1");
+	printf("obj : [%d]\n", e->c.obj);
 	printf("sph : [%f] | pla : [%f]\n\n", e->c.distsph, e->c.distpla);
 	reboot_list_loop(e, 3);
 	e->c.colorf.r = 0;
@@ -179,27 +228,29 @@ int		raythingydebug(t_stuff *e)
 			checkdebug(e, &e->light->lightdir, &e->c.inter, 2);
 			check_distdebug(e, 2);
 			ft_putendl("2");
+			printf("obj : [%d]\n", e->c.obj);
 			printf("sph : [%f] | pla : [%f]\n\n", e->c.distsph, e->c.distpla);
 			checklight(e->light, &e->light->lightdir, &e->c.inter);
 			printf("lightdist : [%f]\n\n", e->light->t);
 		 	// printf("sph : [%f] | pla : [%f]\n", e->c.distsph, e->c.distpla);
+			reboot_list_loop(e, 1);
 			if (e->c.dist > e->light->t && e->c.dist > 0.00001 && e->light->t > 0.00001)
 			{
-				ft_putendl("3");
-				printf("sph : [%f] | pla : [%f]\n\n", e->c.distsph, e->c.distpla);
 				if (e->c.obj == SPHERE)
 				{
 					searchlist(e, e->c.objsph, SPHERE);
+					printf("sphx : [%f] | sphy : [%f] | sphz : [%f]\n\n", e->sph->pos.x, e->sph->pos.y, e->sph->pos.z);
 					vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
 					vecnorm(&e->sph->norm);
 					rgb_add(&e->c.colorf, e->c.colorf, \
-						getlight(&e->sph->norm, &e->light, &e->sph->color, e), 1);
+						getlightdebug(&e->sph->norm, &e->light, &e->sph->color, e), 1);
 				}
 				else if (e->c.obj == PLAN)
 				{
+					ft_putendl("plan");
 					searchlist(e, e->c.objpla, PLAN);
 					rgb_add(&e->c.colorf, e->c.colorf, \
-						getlight(&e->pla->norm, &e->light, &e->pla->color, e), 1);
+						getlightdebug(&e->pla->norm, &e->light, &e->pla->color, e), 1);
 				}
 				else if (e->c.obj == CYLINDRE)
 				{
@@ -209,7 +260,7 @@ int		raythingydebug(t_stuff *e)
 					e->cyl->norml.z = 0;
 					vecnorm(&e->cyl->norml);
 					rgb_add(&e->c.colorf, e->c.colorf, \
-							getlight(&e->cyl->norml, &e->light, &e->cyl->color, e), 1);
+							getlightdebug(&e->cyl->norml, &e->light, &e->cyl->color, e), 1);
 				}
 				else if (e->c.obj == CONE)
 				{
@@ -217,16 +268,11 @@ int		raythingydebug(t_stuff *e)
 					vecsous(&e->cone->norml, &e->c.inter, &e->cone->pos);
 					vecnorm(&e->cone->norml);
 					rgb_add(&e->c.colorf, e->c.colorf,\
-					 	getlight(&e->cone->norm, &e->light, &e->cone->color, e), 1);
+					 	getlightdebug(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
 			else
-			{
-				e->d.color.r = 255;
-				e->d.color.g = 0;
-				e->d.color.b = 0;
-				shadows(e, &e->c.inter, e->d.color);
-			}
+				shadowsdebug(e, &e->c.inter, e->d.color);
 			e->light = e->light->next;
 		}
 	}
