@@ -17,38 +17,46 @@ void		check_distdebug(t_stuff *e, int option)
 	if (e->c.distsph < e->c.dist && e->c.distsph > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distsph < e->c.dist ? SPHERE : -1);
+			e->d.color.r = e->d.colsph.r;
+			e->d.color.g = e->d.colsph.g;
+			e->d.color.b = e->d.colsph.b;
+		}
 		e->c.dist = e->c.distsph;
-		e->d.color.r = e->d.colsph.r;
-		e->d.color.g = e->d.colsph.g;
-		e->d.color.g = e->d.colsph.b;
 	}
 	if (e->c.distpla < e->c.dist && e->c.distpla > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distpla < e->c.dist ? PLAN : e->c.obj);
+			e->d.color.r = e->d.colpla.r;
+			e->d.color.g = e->d.colpla.g;
+			e->d.color.b = e->d.colpla.b;
+		}
 		e->c.dist = e->c.distpla;
-		e->d.color.r = e->d.colpla.r;
-		e->d.color.g = e->d.colpla.g;
-		e->d.color.b = e->d.colpla.b;
 	}
 	if (e->c.distcyl < e->c.dist && e->c.distcyl > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distcyl < e->c.dist ? CYLINDRE : e->c.obj);
+			e->d.color.r = e->d.colcyl.r;
+			e->d.color.g = e->d.colcyl.g;
+			e->d.color.b = e->d.colcyl.b;
+		}
 		e->c.dist = e->c.distcyl;
-		e->d.color.r = e->d.colcyl.r;
-		e->d.color.g = e->d.colcyl.g;
-		e->d.color.b = e->d.colcyl.b;
 	}
 	if (e->c.distcone < e->c.dist && e->c.distcone > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distcone < e->c.dist ? CONE : e->c.obj);
+			e->d.color.r = e->d.colcone.r;
+			e->d.color.g = e->d.colcone.g;
+			e->d.color.g = e->d.colcone.b;
+		}
 		e->c.dist = e->c.distcone;
-		e->d.color.r = e->d.colcone.r;
-		e->d.color.g = e->d.colcone.g;
-		e->d.color.g = e->d.colcone.b;
 	}
 	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001 && option == 1)
 	{
@@ -155,16 +163,19 @@ double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
 	caca.r = 0;
 	caca.g = 0;
 	caca.b = 0;
-	getlightdir(e, e->c.inter);
-	reboot_list_loop(e, 1);
-	checkdebug(e, &e->light->lightdir, &e->c.inter, 2);
-	check_distdebug(e, 2);
-	if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+	reboot_list_loop(e, 2);
+	while (e->light)
 	{
-		printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", color.r, color.g, color.b);
-		rgb_add(&e->c.colorf, caca, color, 0.1);
-		printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
-		return (1);
+		reboot_list_loop(e, 1);
+		check(e, &e->light->lightdir, &e->c.inter, 2);
+		check_dist(e, 2);
+		if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+		{
+			printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+			rgb_add(&e->c.colorf, e->c.colorf, color, 0.05);
+			printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+		}
+		e->light = e->light->next;
 	}
 	return (0);
 }
@@ -175,24 +186,21 @@ t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 	double	angle;
 
 	ft_putendl("getlight");
-	printf("dirx : [%f] | diry : [%f] | dirz : [%f]\n\n", e->light->lightdir.x, e->light->lightdir.y, e->light->lightdir.z);
 	rgb.r = 0;
 	rgb.g = 0;
 	rgb.b = 0;
 	angle = ((*light)->ray > 0.00001 ? (dot_product(norm, &(*light)->lightdir)) \
 		: 0);
-	printf("angle : [%f]\n\n", angle);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
 		if ((*light)->nm == 0)
 		{
-
-			ft_putendl("amb");
 			rgb.r = colorobj->r * (*light)->amb;
 			rgb.g = colorobj->g * (*light)->amb;
 			rgb.b = colorobj->b * (*light)->amb;
 		}
-		printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", colorobj->r, colorobj->g, colorobj->b);
+		ft_putendl("diff");
+		printf("r : [%d] | g : [%d] | b : [%d]\n\n", rgb.r, rgb.g, rgb.b);
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
@@ -206,12 +214,11 @@ t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 
 int		raythingydebug(t_stuff *e)
 {
+	ft_putendl("1");
 	reboot_list_loop(e, 3);
 	checkdebug(e, &e->raydir, &e->poscam, 1);
 	check_distdebug(e, 1);
-	ft_putendl("1");
-	printf("obj : [%d]\n", e->c.obj);
-	printf("sph : [%f] | pla : [%f]\n\n", e->c.distsph, e->c.distpla);
+	printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->d.color.r, e->d.color.g, e->d.color.b);
 	reboot_list_loop(e, 3);
 	e->c.colorf.r = 0;
 	e->c.colorf.g = 0;
@@ -219,27 +226,20 @@ int		raythingydebug(t_stuff *e)
 	if (e->c.obj >= 0 && e->c.obj <= 3)
 	{
 		getintersection(e, e->c.dist);
-		printf("interx : [%f] | intery : [%f] | interz : [%f]\n\n", e->c.inter.x, e->c.inter.y, e->c.inter.z);
 		while (e->light)
 		{
+			printf("lumos : %d\n", e->light->nm);
 			getlightdir(e, e->c.inter);
 			reboot_list_loop(e, 1);
-			printf("dirx : [%f] | diry : [%f] | dirz : [%f]\n\n", e->light->lightdir.x, e->light->lightdir.y, e->light->lightdir.z);
 			checkdebug(e, &e->light->lightdir, &e->c.inter, 2);
 			check_distdebug(e, 2);
-			ft_putendl("2");
-			printf("obj : [%d]\n", e->c.obj);
-			printf("sph : [%f] | pla : [%f]\n\n", e->c.distsph, e->c.distpla);
 			checklight(e->light, &e->light->lightdir, &e->c.inter);
-			printf("lightdist : [%f]\n\n", e->light->t);
-		 	// printf("sph : [%f] | pla : [%f]\n", e->c.distsph, e->c.distpla);
 			reboot_list_loop(e, 1);
 			if (e->c.dist > e->light->t && e->c.dist > 0.00001 && e->light->t > 0.00001)
 			{
 				if (e->c.obj == SPHERE)
 				{
 					searchlist(e, e->c.objsph, SPHERE);
-					printf("sphx : [%f] | sphy : [%f] | sphz : [%f]\n\n", e->sph->pos.x, e->sph->pos.y, e->sph->pos.z);
 					vecsous(&e->sph->norm, &e->c.inter, &e->sph->pos);
 					vecnorm(&e->sph->norm);
 					rgb_add(&e->c.colorf, e->c.colorf, \
@@ -247,7 +247,6 @@ int		raythingydebug(t_stuff *e)
 				}
 				else if (e->c.obj == PLAN)
 				{
-					ft_putendl("plan");
 					searchlist(e, e->c.objpla, PLAN);
 					rgb_add(&e->c.colorf, e->c.colorf, \
 						getlightdebug(&e->pla->norm, &e->light, &e->pla->color, e), 1);
@@ -271,10 +270,9 @@ int		raythingydebug(t_stuff *e)
 					 	getlightdebug(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
-			else
-				shadowsdebug(e, &e->c.inter, e->d.color);
-			e->light = e->light->next;
+						e->light = e->light->next;
 		}
+		shadowsdebug(e, &e->c.inter, e->d.color);
 	}
 	else if (e->c.obj == LIGHT)
 	{

@@ -43,11 +43,11 @@ y = 3.00
 
 z = 0.01
 
-normX = 0.00
+normX = -0.50
 
-normY = 0.50
+normY = -0.50
 
-normZ = 0.50
+normZ = 0.00
 
 ray = 5.00
 

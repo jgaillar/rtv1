@@ -63,7 +63,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		getspeclight(e, norm, &rgb, light);
+		//getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
 	if ((*light)->nm == 0)
@@ -125,12 +125,9 @@ int		raythingy(t_stuff *e)
 					 	getlight(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
-			else
-			{
-				shadows(e, &e->c.inter, e->d.color);
-			}
 			e->light = e->light->next;
 		}
+		shadows(e, &e->c.inter, e->d.color);
 	}
 	else if (e->c.obj == LIGHT)
 	{
@@ -277,38 +274,46 @@ void		check_dist(t_stuff *e, int option)
 	if (e->c.distsph < e->c.dist && e->c.distsph > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distsph < e->c.dist ? SPHERE : -1);
+			e->d.color.r = e->d.colsph.r;
+			e->d.color.g = e->d.colsph.g;
+			e->d.color.b = e->d.colsph.b;
+		}
 		e->c.dist = e->c.distsph;
-		e->d.color.r = e->d.colsph.r;
-		e->d.color.g = e->d.colsph.g;
-		e->d.color.g = e->d.colsph.b;
 	}
 	if (e->c.distpla < e->c.dist && e->c.distpla > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distpla < e->c.dist ? PLAN : e->c.obj);
+			e->d.color.r = e->d.colpla.r;
+			e->d.color.g = e->d.colpla.g;
+			e->d.color.b = e->d.colpla.b;
+		}
 		e->c.dist = e->c.distpla;
-		e->d.color.r = e->d.colpla.r;
-		e->d.color.g = e->d.colpla.g;
-		e->d.color.b = e->d.colpla.b;
 	}
 	if (e->c.distcyl < e->c.dist && e->c.distcyl > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distcyl < e->c.dist ? CYLINDRE : e->c.obj);
+			e->d.color.r = e->d.colcyl.r;
+			e->d.color.g = e->d.colcyl.g;
+			e->d.color.b = e->d.colcyl.b;
+		}
 		e->c.dist = e->c.distcyl;
-		e->d.color.r = e->d.colcyl.r;
-		e->d.color.g = e->d.colcyl.g;
-		e->d.color.b = e->d.colcyl.b;
 	}
 	if (e->c.distcone < e->c.dist && e->c.distcone > 0.00001)
 	{
 		if (option == 1)
+		{
 			e->c.obj = (e->c.distcone < e->c.dist ? CONE : e->c.obj);
+			e->d.color.r = e->d.colcone.r;
+			e->d.color.g = e->d.colcone.g;
+			e->d.color.g = e->d.colcone.b;
+		}
 		e->c.dist = e->c.distcone;
-		e->d.color.r = e->d.colcone.r;
-		e->d.color.g = e->d.colcone.g;
-		e->d.color.g = e->d.colcone.b;
 	}
 	if (e->c.distlight < e->c.dist && e->c.distlight > 0.00001 && option == 1)
 	{
