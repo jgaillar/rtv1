@@ -54,7 +54,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		: 0);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
-		if ((*light)->nm == 0)
+		if (e->l > 0)
 		{
 			rgb.r = colorobj->r * (*light)->amb;
 			rgb.g = colorobj->g * (*light)->amb;
@@ -73,6 +73,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 
 int		raythingy(t_stuff *e)
 {
+	e->l = 0;
 	check(e, &e->raydir, &e->poscam, 1);
 	check_dist(e, 1);
 	reboot_list_loop(e, 3);
@@ -92,6 +93,7 @@ int		raythingy(t_stuff *e)
 			reboot_list_loop(e, 1);
 			if (e->c.dist > e->light->t && e->c.dist > 0.00001 && e->light->t > 0.00001)
 			{
+				e->l++;
 				if (e->c.obj == SPHERE)
 				{
 					searchlist(e, e->c.objsph, SPHERE);

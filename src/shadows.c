@@ -27,7 +27,7 @@ double		shadows(t_stuff *e, t_vec *inter, t_rgb color)
 		check(e, &e->light->lightdir, &e->c.inter, 2);
 		check_dist(e, 2);
 		if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
-			rgb_add(&e->c.colorf, e->c.colorf, color, 0.05);
+			rgb_add(&e->c.colorf, e->c.colorf, color, e->light->amb / 2);
 		e->light = e->light->next;
 	}
 	return (0);

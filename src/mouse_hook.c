@@ -164,8 +164,10 @@ double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
 	caca.g = 0;
 	caca.b = 0;
 	reboot_list_loop(e, 2);
+	ft_putendl("shadows");
 	while (e->light)
 	{
+		printf("shadows : %d\n", e->light->nm);
 		reboot_list_loop(e, 1);
 		check(e, &e->light->lightdir, &e->c.inter, 2);
 		check_dist(e, 2);
@@ -193,32 +195,33 @@ t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		: 0);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
-		if ((*light)->nm == 0)
+		if (e->l > 0)
 		{
+			ft_putendl("amb");
 			rgb.r = colorobj->r * (*light)->amb;
 			rgb.g = colorobj->g * (*light)->amb;
 			rgb.b = colorobj->b * (*light)->amb;
+			printf("r : [%d] | g : [%d] | b : [%d]\n\n", rgb.r, rgb.g, rgb.b);
 		}
 		ft_putendl("diff");
-		printf("r : [%d] | g : [%d] | b : [%d]\n\n", rgb.r, rgb.g, rgb.b);
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		getspeclight(e, norm, &rgb, light);
+		printf("r : [%d] | g : [%d] | b : [%d]\n\n", rgb.r, rgb.g, rgb.b);
+		//getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
-	if ((*light)->nm == 0)
+	if (e->l > 0)
 		rgb_add(&rgb, rgb, (*colorobj), (*light)->amb);
 	return (rgb);
 }
 
 int		raythingydebug(t_stuff *e)
 {
-	ft_putendl("1");
+	e->l = 0;
 	reboot_list_loop(e, 3);
 	checkdebug(e, &e->raydir, &e->poscam, 1);
 	check_distdebug(e, 1);
-	printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->d.color.r, e->d.color.g, e->d.color.b);
 	reboot_list_loop(e, 3);
 	e->c.colorf.r = 0;
 	e->c.colorf.g = 0;
@@ -237,6 +240,7 @@ int		raythingydebug(t_stuff *e)
 			reboot_list_loop(e, 1);
 			if (e->c.dist > e->light->t && e->c.dist > 0.00001 && e->light->t > 0.00001)
 			{
+				e->l++;
 				if (e->c.obj == SPHERE)
 				{
 					searchlist(e, e->c.objsph, SPHERE);
@@ -270,7 +274,8 @@ int		raythingydebug(t_stuff *e)
 					 	getlightdebug(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
-						e->light = e->light->next;
+			e->light = e->light->next;
+			ft_putendl("end");
 		}
 		shadowsdebug(e, &e->c.inter, e->d.color);
 	}

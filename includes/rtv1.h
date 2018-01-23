@@ -235,6 +235,7 @@ typedef	struct		s_stuff
 	int				pix;
 	int				fd;
 	char			buf[BUFF_SIZE + 1];
+	int				l;
 }					t_stuff;
 
 void				vectorcalc(t_stuff *e);
