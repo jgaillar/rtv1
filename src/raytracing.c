@@ -15,12 +15,15 @@
 t_vec		getrefray(t_stuff *e, t_vec *norm)
 {
 	t_vec res;
+	t_vec	v;
 	double a;
 
-	a = 2 * (dot_product(norm, &e->light->lightdir));
-	res.x = a * norm->x - e->light->lightdir.x;
-	res.y = a * norm->y - e->light->lightdir.y;
-	res.z = a * norm->z - e->light->lightdir.z;
+	vecsous(&v, &e->poscam, &e->c.inter);
+	vecnorm(&v);
+	a = 2 * dot_product(&e->raydir, norm);
+	res.x = e->raydir.x - a * norm->x;
+	res.y = e->raydir.y - a * norm->y;
+	res.z = e->raydir.z - a * norm->z;
 	vecnorm(&res);
 	return (res);
 }
@@ -29,13 +32,11 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 {
 	double	a;
 	t_vec	ref;
-	t_vec	v;
+	t_vec rev;
 	t_rgb tmp;
 
-	vecsous(&v, &e->poscam, &e->c.inter);
-	vecnorm(&v);
 	ref = getrefray(e, norm);
-	a = pow(dot_product(&ref, &v), 100);
+	a = pow(dot_product(&(*light)->lightdir, &ref), 100);
 	tmp.r = ((*light)->color.r) * (*light)->diff * a;
 	tmp.g = ((*light)->color.g) * (*light)->diff * a;
 	tmp.b = ((*light)->color.b) * (*light)->diff * a;
@@ -54,7 +55,7 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		: 0);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
-		if (e->l > 0)
+		if (e->l == 1)
 		{
 			rgb.r = colorobj->r * (*light)->amb;
 			rgb.g = colorobj->g * (*light)->amb;
@@ -63,10 +64,10 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		//getspeclight(e, norm, &rgb, light);
+		getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
-	if ((*light)->nm == 0)
+	if (e->l == 1)
 		rgb_add(&rgb, rgb, (*colorobj), (*light)->amb);
 	return (rgb);
 }
@@ -105,6 +106,8 @@ int		raythingy(t_stuff *e)
 				else if (e->c.obj == PLAN)
 				{
 					searchlist(e, e->c.objpla, PLAN);
+					vecsous(&e->pla->norml, &e->c.inter, &e->pla->pos);
+					vecnorm(&e->pla->norml);
 					rgb_add(&e->c.colorf, e->c.colorf, \
 						getlight(&e->pla->norm, &e->light, &e->pla->color, e), 1);
 				}
@@ -123,13 +126,18 @@ int		raythingy(t_stuff *e)
 					searchlist(e, e->c.objcone, CONE);
 					vecsous(&e->cone->norml, &e->c.inter, &e->cone->pos);
 					vecnorm(&e->cone->norml);
+					// e->cone->norml.z = 0;
+					// vecnorm(&e->cone->norml);
 					rgb_add(&e->c.colorf, e->c.colorf,\
 					 	getlight(&e->cone->norm, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
 			e->light = e->light->next;
 		}
-		shadows(e, &e->c.inter, e->d.color);
+		if (e->l > 0)
+			shadows(e, &e->c.inter, e->c.colorf);
+		else
+			shadows(e, &e->c.inter, e->d.color);
 	}
 	else if (e->c.obj == LIGHT)
 	{

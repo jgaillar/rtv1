@@ -171,11 +171,24 @@ double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
 		reboot_list_loop(e, 1);
 		check(e, &e->light->lightdir, &e->c.inter, 2);
 		check_dist(e, 2);
-		if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+		if (e->l > 0)
 		{
-			printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
-			rgb_add(&e->c.colorf, e->c.colorf, color, 0.05);
-			printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+			if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+			{
+				printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+				rgb_add(&e->c.colorf, caca, color, 0.8);
+				printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+			}
+		}
+		else
+		{
+			printf("l : [%d]\n", e->l);
+			if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
+			{
+				printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+				rgb_add(&e->c.colorf, caca, color, 0.1);
+				printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+			}
 		}
 		e->light = e->light->next;
 	}
@@ -195,7 +208,7 @@ t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		: 0);
 	if ((*light)->ray > 0.00001 && angle > 0.00001)
 	{
-		if (e->l > 0)
+		if (e->l == 1)
 		{
 			ft_putendl("amb");
 			rgb.r = colorobj->r * (*light)->amb;
@@ -211,7 +224,7 @@ t_rgb		getlightdebug(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		//getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
-	if (e->l > 0)
+	if (e->l == 1)
 		rgb_add(&rgb, rgb, (*colorobj), (*light)->amb);
 	return (rgb);
 }
@@ -277,7 +290,10 @@ int		raythingydebug(t_stuff *e)
 			e->light = e->light->next;
 			ft_putendl("end");
 		}
-		shadowsdebug(e, &e->c.inter, e->d.color);
+		if (e->l > 0)
+			shadowsdebug(e, &e->c.inter, e->c.colorf);
+		else
+			shadowsdebug(e, &e->c.inter, e->d.color);
 	}
 	else if (e->c.obj == LIGHT)
 	{
