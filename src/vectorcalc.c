@@ -35,7 +35,11 @@ void	upleft(t_stuff *e)
 	t_vec tmp;
 	t_vec tmp2;
 	t_vec tmp3;
+	t_vec o;
 
+	o.x = 0;
+	o.y = 0;
+	o.z = 0;
 	tmp.x = e->c.distvue * e->dircam.x;
 	tmp.y = e->c.distvue * e->dircam.y;
 	tmp.z = e->c.distvue * e->dircam.z;
@@ -45,7 +49,7 @@ void	upleft(t_stuff *e)
 	tmp3.x = (e->c.largvue / 2) * e->vecdroit.x;
 	tmp3.y = (e->c.largvue / 2) * e->vecdroit.y;
 	tmp3.z = (e->c.largvue / 2) * e->vecdroit.z;
-	vecadd(&e->vecupleft, &e->poscam, &tmp);
+	vecadd(&e->vecupleft, &o, &tmp);
 	vecadd(&e->vecupleft, &e->vecupleft, &tmp2);
 	vecsous(&e->vecupleft, &e->vecupleft, &tmp3);
 	vecnorm(&e->vecupleft);

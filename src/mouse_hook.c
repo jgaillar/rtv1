@@ -171,8 +171,10 @@ double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
 		reboot_list_loop(e, 1);
 		check(e, &e->light->lightdir, &e->c.inter, 2);
 		check_dist(e, 2);
+		printf("l : [%d]\n", e->l);
 		if (e->l > 0)
 		{
+			ft_putendl("pipi");
 			if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
 			{
 				printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
@@ -182,12 +184,13 @@ double		shadowsdebug(t_stuff *e, t_vec *inter, t_rgb color)
 		}
 		else
 		{
-			printf("l : [%d]\n", e->l);
+			ft_putendl("popo");
 			if (e->c.dist < e->light->t && e->c.dist > 0.00001 && e->c.obj != LIGHT)
 			{
 				printf("colorr : [%d] | colorg : [%d] | colorb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
 				rgb_add(&e->c.colorf, caca, color, 0.1);
 				printf("colorfr : [%d] | colorfg : [%d] | colorfb : [%d]\n\n", e->c.colorf.r, e->c.colorf.g, e->c.colorf.b);
+				e->l++;
 			}
 		}
 		e->light = e->light->next;

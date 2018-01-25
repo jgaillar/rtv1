@@ -18,12 +18,12 @@ t_vec		getrefray(t_stuff *e, t_vec *norm)
 	t_vec	v;
 	double a;
 
-	vecsous(&v, &e->poscam, &e->c.inter);
+	vecsous(&v, &e->c.inter, &e->poscam);
 	vecnorm(&v);
-	a = 2 * dot_product(&e->raydir, norm);
-	res.x = e->raydir.x - a * norm->x;
-	res.y = e->raydir.y - a * norm->y;
-	res.z = e->raydir.z - a * norm->z;
+	a = dot_product(&e->raydir, norm);
+	res.x = v.x - 2 * a * norm->x;
+	res.y = v.y - 2 * a * norm->y;
+	res.z = v.z - 2 * a * norm->z;
 	vecnorm(&res);
 	return (res);
 }
@@ -36,7 +36,11 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 	t_rgb tmp;
 
 	ref = getrefray(e, norm);
-	a = pow(dot_product(&(*light)->lightdir, &ref), 100);
+	rev.x = (*light)->lightdir.x * -1;
+	rev.y = (*light)->lightdir.y * -1;
+	rev.z = (*light)->lightdir.z * -1;
+	vecnorm(&rev);
+	a = pow(dot_product(&rev, &ref), 100);
 	tmp.r = ((*light)->color.r) * (*light)->diff * a;
 	tmp.g = ((*light)->color.g) * (*light)->diff * a;
 	tmp.b = ((*light)->color.b) * (*light)->diff * a;
@@ -64,7 +68,8 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 		rgb.r += (*light)->color.r * angle * (*light)->diff;
 		rgb.g += (*light)->color.g * angle * (*light)->diff;
 		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		getspeclight(e, norm, &rgb, light);
+		if (e->c.obj != PLAN)
+			getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
 	if (e->l == 1)
@@ -137,7 +142,12 @@ int		raythingy(t_stuff *e)
 		if (e->l > 0)
 			shadows(e, &e->c.inter, e->c.colorf);
 		else
+		{
+			e->d.color.r *= 0.1;
+			e->d.color.g *= 0.1;
+			e->d.color.b *= 0.1;
 			shadows(e, &e->c.inter, e->d.color);
+		}
 	}
 	else if (e->c.obj == LIGHT)
 	{
