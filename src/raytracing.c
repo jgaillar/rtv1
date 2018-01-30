@@ -20,10 +20,10 @@ t_vec		getrefray(t_stuff *e, t_vec *norm)
 
 	vecsous(&v, &e->c.inter, &e->poscam);
 	vecnorm(&v);
-	a = dot_product(&e->raydir, norm);
-	res.x = v.x - 2 * a * norm->x;
-	res.y = v.y - 2 * a * norm->y;
-	res.z = v.z - 2 * a * norm->z;
+	a = dot_product(&v, norm);
+	res.x = v.x - (2 * a * norm->x);
+	res.y = v.y - (2 * a * norm->y);
+	res.z = v.z - (2 * a * norm->z);
 	vecnorm(&res);
 	return (res);
 }
@@ -34,16 +34,15 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 	t_vec	ref;
 	t_vec rev;
 	t_rgb tmp;
-
 	ref = getrefray(e, norm);
 	rev.x = (*light)->lightdir.x * -1;
 	rev.y = (*light)->lightdir.y * -1;
 	rev.z = (*light)->lightdir.z * -1;
 	vecnorm(&rev);
-	a = pow(dot_product(&rev, &ref), 100);
-	tmp.r = ((*light)->color.r) * (*light)->diff * a;
-	tmp.g = ((*light)->color.g) * (*light)->diff * a;
-	tmp.b = ((*light)->color.b) * (*light)->diff * a;
+	a = pow(dot_product(&rev, &ref), 1000);
+	tmp.r = ((*light)->color.r) * a;
+	tmp.g = ((*light)->color.g) * a;
+	tmp.b = ((*light)->color.b) * a;
 	rgb_add(color, *color, tmp, 1);
 }
 
@@ -131,10 +130,10 @@ int		raythingy(t_stuff *e)
 					searchlist(e, e->c.objcone, CONE);
 					vecsous(&e->cone->norml, &e->c.inter, &e->cone->pos);
 					vecnorm(&e->cone->norml);
-					// e->cone->norml.z = 0;
-					// vecnorm(&e->cone->norml);
+					e->cone->norml.z = 0;
+					vecnorm(&e->cone->norml);
 					rgb_add(&e->c.colorf, e->c.colorf,\
-					 	getlight(&e->cone->norm, &e->light, &e->cone->color, e), 1);
+					 	getlight(&e->cone->norml, &e->light, &e->cone->color, e), 1);
 			 	}
 			}
 			e->light = e->light->next;

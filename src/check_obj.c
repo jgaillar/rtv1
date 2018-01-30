@@ -110,22 +110,31 @@ void		checkcyl(t_cyl *cyl, t_vec *raydir, t_vec *poscam)
 
 void		checkcone(t_cone *cone, t_vec *raydir, t_vec *poscam)
 {
+	t_vec tmp;
 	t_vec	l;
 	double	a;
 	double	b;
 	double	c;
 
-	vecsous(&l, poscam, &cone->pos);
-	a = dot_product(raydir, raydir) - (1.0 + tan(cone->angle) \
-		* tan(cone->angle)) * (dot_product(raydir, &cone->norm) \
-			* dot_product(raydir, &cone->norm));
-	b = 2 * (dot_product(raydir, &l) - (1.0 + tan(cone->angle) \
-		* tan(cone->angle)) * (dot_product(raydir, &cone->norm) \
-			* dot_product(&l, &cone->norm)));
-	c = dot_product(&l, &l) - (1.0 + tan(cone->angle) * tan(cone->angle)) \
-		* (dot_product(&l, &cone->norm) * dot_product(&l, &cone->norm));
-	cone->det = (b * b) - 4.0 * a * c;
-	cone->t1 = -b - sqrt(cone->det) / (2 * a);
-	cone->t2 = -b + sqrt(cone->det) / (2 * a);
-	cone->t = (cone->t1 <= cone->t2 ? cone->t1 : cone->t2);
+	tmp.x = 1;
+	tmp.y = 0;
+	tmp.z = 0;
+	vecsous(&l ,&tmp, &cone->pos);
+	a = dot_product(raydir, raydir) - (1 + tan(cone->angle) * tan(cone->angle)) \
+	* (dot_product(raydir, &cone->norm) * dot_product(raydir, &cone->norm));
+	b = 2 * (dot_product(raydir, &l) - (1 + tan(cone->angle) * \
+	tan(cone->angle)) * (dot_product(raydir, &cone->norm) * dot_product(&l, &cone->norm)));
+	c = dot_product(&l, &l) - (1 + tan(cone->angle) * tan(cone->angle)) \
+	* (dot_product(&l, &cone->norm) * dot_product(&l, &cone->norm));
+	cone->det = (b * b) - 4 * a * c;
+	if (cone->det < 0)
+		cone->t = -1;
+	else if (cone->det != 0)
+	{
+		cone->t1 = -b - sqrt(cone->det) / (2 * a);
+		cone->t2 = -b + sqrt(cone->det) / (2 * a);
+		cone->t = (cone->t1 <= cone->t2 ? cone->t1 : cone->t2);
+	}
+	else
+		cone->t = (-b / 2 * a);
 }
