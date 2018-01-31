@@ -119,7 +119,7 @@ void		checkcone(t_cone *cone, t_vec *raydir, t_vec *poscam)
 	tmp.x = 1;
 	tmp.y = 0;
 	tmp.z = 0;
-	vecsous(&l ,&tmp, &cone->pos);
+	vecsous(&l ,poscam, &cone->pos);
 	a = dot_product(raydir, raydir) - (1 + tan(cone->angle) * tan(cone->angle)) \
 	* (dot_product(raydir, &cone->norm) * dot_product(raydir, &cone->norm));
 	b = 2 * (dot_product(raydir, &l) - (1 + tan(cone->angle) * \
