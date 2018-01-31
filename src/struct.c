@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 14:52:42 by prossi           ###   ########.fr       */
+/*   Updated: 2018/01/31 22:53:28 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,6 @@ void	ft_init_struct(t_stuff *e, int option)
 		e->m.axe = '\0';
 		e->m.type = '\0';
 		e->m.type_sujet = 0;
+		e->i.first = 0;
 	}
 }

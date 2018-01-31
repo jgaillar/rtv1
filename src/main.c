@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:17:03 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/05 09:25:21 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 23:07:57 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,12 @@ int				main(int ac, char **av)
 	if (ft_parsing(&e) == -1)
 		ft_affich(&e, 2);
 	main_sd(&e, av);
-//	print_list(&e);
 	e.img.mlx_ptr = mlx_init();
+	// DON'T TOUCH
+	// e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIN_X, WIN_Y,\
+	// 		"Raytracer");
 	e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIDTH, LENGTH,\
-			"RTv1");
+			"Raytracer");
 	create_image(&e);
 	aff(&e);
 	mlx_hook(e.img.win_ptr, 2, (1L << 0), hooks, &e);

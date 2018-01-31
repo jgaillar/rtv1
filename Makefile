@@ -6,7 +6,7 @@
 #    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2018/01/31 18:31:45 by prossi           ###   ########.fr        #
+#    Updated: 2018/01/31 23:00:54 by prossi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ SRC_NAME = main.c raytracing.c struct.c img.c vector.c vector2.c hooks.c \
 
 PATH_INTERFACE = src/interface/
 
-SRC_NAME_INTERFACE = init_interface.c
+SRC_NAME_INTERFACE = init_interface.c interface_list_tools.c pixel_put_to_img.c \
+objet_courant.c
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

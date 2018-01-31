@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/04 16:14:48 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 13:17:58 by prossi           ###   ########.fr       */
+/*   Updated: 2018/01/31 23:07:34 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 
 	if (button == 1 && (x >= 0 && x <= WIDTH) && (y >= 0 && y <= LENGTH))
 	{
+			// DON'T TOUCH
+		// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
 		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 		reboot_list_loop(e, 3);
 		raydir(e, x, y);

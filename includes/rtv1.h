@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 18:51:42 by prossi           ###   ########.fr       */
+/*   Updated: 2018/01/31 23:01:26 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,10 +221,26 @@ typedef struct		s_img
 	char			*data;
 }					t_img;
 
+typedef struct		s_mlx
+{
+	struct s_mlx	*prev;
+	void			*img;
+	char			*map;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	int				nmail;
+	double			img_x;
+	double			img_y;
+	struct s_mlx	*next;
+}					t_mlx;
+
 typedef	struct		s_ntmgtk
 {
-	void 			*init;
-	void			*wdow;
+	int				nb_img;
+	t_mlx			*mlx;
+	t_mlx			*tmp_mlx;
+	int				first;
 }					t_ntmgtk;
 
 typedef	struct		s_stuff
@@ -340,5 +356,10 @@ void	matrice(char type, char axe, t_stuff *e, t_vec *sujet);
 
 
 int				first_launch_interface(t_stuff *e);
+void			pixel_put_to_img(t_mlx **mlx, int x, int y, int color);
+int				new_img(t_stuff *e);
+int				init_img(t_mlx **mlx);
+void			fill_img(t_mlx **mlx, int nbmail, t_stuff *e);
+void			objet_courant(t_stuff *e);
 
 #endif

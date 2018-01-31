@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 14:06:47 by prossi           ###   ########.fr       */
+/*   Updated: 2018/01/31 23:07:25 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,9 +229,12 @@ void		aff(t_stuff *e)
 		if (e->pix > 0)
 			e->c.posy += e->pix;
 	}
+		// DON'T TOUCH
+	// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 	reboot_list_loop(e, 3);
 	e->c.obj = -1;
+	first_launch_interface(e);
 }
 
 void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
