@@ -12,21 +12,47 @@
 
 #include "rtv1.h"
 
-t_vec		getrefray(t_stuff *e, t_vec *norm)
-{
-	t_vec res;
-	t_vec	v;
-	double a;
+// t_vec		getrefray(t_stuff *e, t_vec *norm)
+// {
+// 	t_vec res;
+// 	t_vec	v;
+// 	double a;
+//
+// 	vecsous(&v, &e->poscam, &e->c.inter);
+// 	vecnorm(&v);
+// 	a = dot_product(&v, norm);
+// 	res.x = -v.x - (2 * a * norm->x);
+// 	res.y = -v.y - (2 * a * norm->y);
+// 	res.z = -v.z - (2 * a * norm->z);
+// 	vecnorm(&res);
+// 	return (res);
+// }
 
-	vecsous(&v, &e->c.inter, &e->poscam);
-	vecnorm(&v);
-	a = dot_product(&v, norm);
-	res.x = v.x - (2 * a * norm->x);
-	res.y = v.y - (2 * a * norm->y);
-	res.z = v.z - (2 * a * norm->z);
+t_vec		revvec(t_vec *vec)
+{
+	t_vec ret;
+
+	ret.x = vec->x * -1;
+	ret.y = vec->y * -1;
+	ret.z = vec->z * -1;
+	return (ret);
+}
+
+t_vec		getrefray(t_stuff *e, t_vec *norm, t_vec *light)
+{
+	t_vec	res;
+	t_vec	tmp2;
+	double	tmp;
+
+	revvec(norm);
+	tmp = 2 * dot_product(norm, light);
+	res.x =	((tmp * norm->x) - light->x);
+	res.y = ((tmp * norm->y) - light->y);
+	res.z = ((tmp * norm->z) - light->z);
 	vecnorm(&res);
 	return (res);
 }
+
 
 void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 {
@@ -34,15 +60,18 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light)
 	t_vec	ref;
 	t_vec rev;
 	t_rgb tmp;
-	ref = getrefray(e, norm);
-	rev.x = (*light)->lightdir.x * -1;
-	rev.y = (*light)->lightdir.y * -1;
-	rev.z = (*light)->lightdir.z * -1;
-	vecnorm(&rev);
-	a = pow(dot_product(&rev, &ref), 1000);
-	tmp.r = ((*light)->color.r) * a;
-	tmp.g = ((*light)->color.g) * a;
-	tmp.b = ((*light)->color.b) * a;
+	t_vec tmp3;
+
+	ref = getrefray(e, norm, &(*light)->lightdir);
+	vecsous(&tmp3, &e->poscam, &e->c.inter);
+	vecnorm(&tmp3);
+	tmp3.x *= -1;
+	tmp3.y *= -1;
+	tmp3.z *= -1;
+	a = pow(dot_product(&ref, &tmp3), 100);
+	tmp.r = ((*light)->color.r * (*light)->diff) * a;
+	tmp.g = ((*light)->color.g * (*light)->diff) * a;
+	tmp.b = ((*light)->color.b * (*light)->diff) * a;
 	rgb_add(color, *color, tmp, 1);
 }
 
@@ -64,10 +93,10 @@ t_rgb		getlight(t_vec *norm, t_light **light, t_rgb *colorobj, t_stuff *e)
 			rgb.g = colorobj->g * (*light)->amb;
 			rgb.b = colorobj->b * (*light)->amb;
 		}
-		rgb.r += (*light)->color.r * angle * (*light)->diff;
-		rgb.g += (*light)->color.g * angle * (*light)->diff;
-		rgb.b += (*light)->color.b * angle * (*light)->diff;
-		if (e->c.obj != PLAN)
+		rgb.r += ((*light)->color.r * (*light)->diff) * angle;
+		rgb.g += ((*light)->color.g * (*light)->diff) * angle;
+		rgb.b += ((*light)->color.b * (*light)->diff) * angle;
+		//if (e->c.obj != PLAN)
 			getspeclight(e, norm, &rgb, light);
 		return (rgb);
 	}
@@ -110,10 +139,17 @@ int		raythingy(t_stuff *e)
 				else if (e->c.obj == PLAN)
 				{
 					searchlist(e, e->c.objpla, PLAN);
-					vecsous(&e->pla->norml, &e->c.inter, &e->pla->pos);
-					vecnorm(&e->pla->norml);
-					rgb_add(&e->c.colorf, e->c.colorf, \
-						getlight(&e->pla->norm, &e->light, &e->pla->color, e), 1);
+					if (dot_product(&e->raydir, &e->pla->norm) < 0)
+						rgb_add(&e->c.colorf, e->c.colorf, \
+							getlight(&e->pla->norm, &e->light, &e->pla->color, e), 1);
+					else
+					{
+						e->pla->norml.x = e->pla->norm.x * -1;
+						e->pla->norml.y = e->pla->norm.y * -1;
+						e->pla->norml.z = e->pla->norm.z * -1;
+						rgb_add(&e->c.colorf, e->c.colorf, \
+							getlight(&e->pla->norml, &e->light, &e->pla->color, e), 1);
+					}
 				}
 				else if (e->c.obj == CYLINDRE)
 				{

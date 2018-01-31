@@ -321,7 +321,7 @@ void			ft_segment(t_stuff *e, int x1, int y1, double color);
 void			rgb_add(t_rgb *res, t_rgb i, t_rgb j, double k);
 void		getlightdir(t_stuff *e, t_vec inter);
 void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light);
-t_vec		getrefray(t_stuff *e, t_vec *norm);
+t_vec		getrefray(t_stuff *e, t_vec *norm, t_vec *light);
 void		oklm(t_stuff *e);
 int		raythingydebug(t_stuff *e);
 void	matrice(char type, char axe, t_stuff *e, t_vec *sujet);
