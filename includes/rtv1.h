@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/05 10:12:15 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:51:49 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,24 @@
 # include "../mlx/mlx.h"
 # include <stdio.h>
 
+typedef struct		s_vec
+{
+	double 			x;
+	double 			y;
+	double 			z;
+	double 			length;
+}					t_vec;
+
+typedef struct	s_mat   // Structure matrice
+{
+	double		angle;   // Angle de rotation en degre
+	double		radian;  // Angle en radian ---> obvious no ?
+	double		value;  // Valeur de la translation
+	char		type;  // 'r' rotation / 't' translation
+	char		axe; // Axe de rotation x, y ou z
+	int			type_sujet;  // 1 : pos obj // 2 : direction de l obj
+}				t_mat;
+
 typedef struct	s_seg
 {
 	int			dx;
@@ -46,14 +64,6 @@ typedef struct		s_rgb
 	int				g;
 	int				b;
 }					t_rgb;
-
-typedef struct		s_vec
-{
-	double 			x;
-	double 			y;
-	double 			z;
-	double 			length;
-}					t_vec;
 
 typedef struct		s_d
 {
@@ -236,6 +246,7 @@ typedef	struct		s_stuff
 	int				fd;
 	char			buf[BUFF_SIZE + 1];
 	int				l;
+	t_mat			m;
 }					t_stuff;
 
 void				vectorcalc(t_stuff *e);
@@ -313,5 +324,6 @@ void		getspeclight(t_stuff *e, t_vec *norm, t_rgb *color, t_light **light);
 t_vec		getrefray(t_stuff *e, t_vec *norm);
 void		oklm(t_stuff *e);
 int		raythingydebug(t_stuff *e);
+void	matrice(char type, char axe, t_stuff *e, t_vec *sujet);
 
 #endif

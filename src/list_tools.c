@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/22 13:32:49 by prossi            #+#    #+#             */
-/*   Updated: 2017/12/01 15:04:11 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 13:11:12 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,36 @@ void	reboot_list_loop(t_stuff *e, int option)
 	}
 	if (option == 2 || option == 3)
 		e->light = e->tmplight;
+}
+
+void	searchlist(t_stuff *e, int nmail, int nlist)
+{
+	reboot_list_loop(e, 1);
+	if (nlist == SPHERE)
+	{
+		while (e->sph->nm != nmail)
+			e->sph = e->sph->next;
+	}
+	if (nlist == PLAN)
+	{
+		while (e->pla->nm != nmail)
+		e->pla = e->pla->next;
+	}
+	if (nlist == CYLINDRE)
+	{
+		while (e->cyl->nm != nmail)
+			e->cyl = e->cyl->next;
+	}
+	if (nlist == CONE)
+	{
+		while (e->cone->nm != nmail)
+			e->cone = e->cone->next;
+	}
+	if (nlist == LIGHT)
+	{
+	while (e->light->nm != nmail)
+		e->light = e->light->next;
+	}
 }
 
 void	print_list(t_stuff *e)

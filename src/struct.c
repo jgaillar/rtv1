@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 13:09:32 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/04 10:02:35 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:52:42 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,10 @@ void	ft_init_struct(t_stuff *e, int option)
 		e->pix = 0;
 		reboot_list(e);
 		e->c.n = -1;
+		e->m.angle = 45;
+		e->m.value = -50;
+		e->m.axe = '\0';
+		e->m.type = '\0';
+		e->m.type_sujet = 0;
 	}
 }

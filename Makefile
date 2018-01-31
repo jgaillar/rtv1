@@ -6,7 +6,7 @@
 #    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2017/12/04 11:59:37 by jgaillar         ###   ########.fr        #
+#    Updated: 2018/01/31 14:04:58 by prossi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC_NAME = main.c raytracing.c struct.c img.c vector.c vector2.c hooks.c \
 			check_data_cylindre.c ft_check.c ft_compare_sd.c ft_compare.c \
 			ft_parsing_sd.c ft_parsing.c list_tools.c vectorcalc.c \
 			check_format.c check_format_obj.c check_data_cone.c check_obj.c \
-			shadows.c mouse_hook.c \
+			shadows.c mouse_hook.c matrice.c\
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 

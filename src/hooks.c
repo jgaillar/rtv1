@@ -6,14 +6,125 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/04 14:54:10 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:51:59 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
+void	choose_sujet(t_stuff *e)
+{
+	if (e->c.obj == SPHERE)
+	{
+		searchlist(e, e->c.objsph, SPHERE);
+		matrice(e->m.type, e->m.axe, e, &e->sph->pos);
+	}
+	else if (e->c.obj == LIGHT)
+	{
+		searchlist(e, e->c.objlight, LIGHT);
+		matrice(e->m.type, e->m.axe, e, &e->light->pos);
+	}
+	else if (e->c.obj == CYLINDRE)
+	{
+		searchlist(e, e->c.objcyl, CYLINDRE);
+		if (e->m.type_sujet == 1)
+			matrice(e->m.type, e->m.axe, e, &e->cyl->pos);
+		else
+			matrice(e->m.type, e->m.axe, e, &e->cyl->norm);
+	}
+	else if (e->c.obj == PLAN)
+	{
+		searchlist(e, e->c.objpla, PLAN);
+		if (e->m.type_sujet == 1)
+			matrice(e->m.type, e->m.axe, e, &e->pla->pos);
+		else
+			matrice(e->m.type, e->m.axe, e, &e->pla->norm);
+	}
+	else if (e->c.obj == CONE)
+	{
+		searchlist(e, e->c.objcone, CONE);
+		if (e->m.type_sujet == 1)
+			matrice(e->m.type, e->m.axe, e, &e->cone->pos);
+		else
+			matrice(e->m.type, e->m.axe, e, &e->cone->norm);
+	}
+	else if (e->c.obj == -1)
+	{
+		if (e->m.type_sujet == 1)
+			matrice(e->m.type, e->m.axe, e, &e->poscam);
+		else
+			matrice(e->m.type, e->m.axe, e, &e->dircam);
+	}
+}
+
+void	movement_matrice(int keycode, t_stuff *e)
+{
+	if (keycode == 17)
+	{
+		if (e->m.type == '\0' || e->m.type == 'r')
+		{
+			e->m.type = 't';
+			printf("\nActivation translation\n");
+		}
+		else
+		{
+			e->m.type = '\0';
+			printf("\nDesactivation translation\n");
+		}
+	}
+	else if (keycode == 15)
+	{
+		if (e->m.type == '\0' || e->m.type == 't')
+		{
+			e->m.type = 'r';
+			printf("\nActivation rotation\n");
+		}
+		else
+		{
+			e->m.type = '\0';
+			printf("\nDesactivation rotation\n");
+		}
+	}
+	else if (keycode == 7)
+	{
+		e->m.axe = 'x';
+		printf("\nL'axe de la matrice est en x\n");
+	}
+	else if (keycode == 16)
+	{
+		e->m.axe = 'y';
+		printf("\nL'axe de la matrice est en y\n");
+	}
+	else if (keycode == 6)
+	{
+		e->m.axe = 'z';
+		printf("\nL'axe de la matrice est en z\n");
+	}
+	else if (keycode == 8)
+	{
+		if (e->m.type_sujet == 0)
+		{
+			e->m.type_sujet = 1;
+			printf("\nLa matrice s'effectuera sur la pos. de l'objet\n");
+		}
+		else if (e->m.type_sujet == 1)
+		{
+			e->m.type_sujet = 2;
+			printf("\nLa matrice s'effectuera sur la direction de l'objet\n");
+		}
+		else if (e->m.type_sujet == 2)
+		{
+			e->m.type_sujet = 0;
+			printf("\nAucun type de sujet selectionné\n");
+		}
+	}
+	if (keycode == 36 && e->m.type != '\0' && e->m.axe != '\0' && e->m.type_sujet != 0)
+		choose_sujet(e);
+}
+
 int		hooks(int keycode, t_stuff *e)
 {
+	movement_matrice(keycode, e);
 	echap(keycode, e);
 	movement(keycode, e);
 	aff(e);
@@ -64,11 +175,11 @@ void	movement(int keycode, t_stuff *e)
  		e->poscam.z += 0.5;
 		vectorcalc(e);
 	}
-	if (keycode == 8)
-	{
-		e->poscam.z -= 0.5;
-		vectorcalc(e);
-	}
+	// if (keycode == 8)
+	// {
+	// 	e->poscam.z -= 0.5;
+	// 	vectorcalc(e);
+	// }
 	if (keycode == 125)
 	{
 		e->pr.x -= 0.5;
@@ -99,54 +210,6 @@ void	movement(int keycode, t_stuff *e)
 		e->pr.z += 0.5;
 		vectorcalc(e);
 	}
-// 	if (keycode == 27)
-// 		e->sph->ray -= 0.5;
-// 	if (keycode == 24)
-// 		e->sph->ray += 0.5;
-// 	if (keycode == 91)
-// 		e->pla->norm.x += 0.1;
-// 	if (keycode == 86)
-// 		e->pla->norm.y += 0.1;
-// 	if (keycode == 87)
-// 		e->pla->norm.x -= 0.1;
-// 	if (keycode == 88)
-// 		e->pla->norm.y -= 0.1;
-// 	if (keycode == 89)
-// 		e->pla->norm.z -= 0.5;
-// 	if (keycode == 92)
-// 		e->pla->norm.z += 0.5;
-// 	if (keycode == 83)
-// 		e->pla->pos.y -= 0.1;
-// 	if (keycode == 84)
-// 		e->pla->pos.x += 0.1;
-// 	if (keycode == 85)
-// 		e->pla->pos.y += 0.1;
-// 	if (keycode == 82)
-// 		e->pla->pos.x -= 0.1;
-// 	if (keycode == 81 && e->light->ray - 0.1 > -0.00001)
-// 		e->light->ray -= 0.1;
-// 	if (keycode == 75)
-// 		e->light->ray += 0.1;
-// 	if (keycode == 34)
-// 		e->cyl->pos.x += 0.5;
-// 	if (keycode == 38)
-// 		e->cyl->pos.y += 0.5;
-// 	if (keycode == 40)
-// 		e->cyl->pos.x -= 0.5;
-// 	if (keycode == 37)
-// 		e->cyl->pos.y -= 0.5;
-// 	if (keycode == 17)
-// 		e->cone->pos.x += 0.1;
-// 	if (keycode == 3)
-// 		e->cone->pos.y += 0.1;
-// 	if (keycode == 5)
-// 		e->cone->pos.x -= 0.1;
-// 	if (keycode == 4)
-// 		e->cone->pos.y -= 0.1;
-// 	if (keycode == 15)
-// 		e->cone->pos.z -= 0.1;
-// 	if (keycode == 16)
-// 		e->cone->pos.z += 0.1;
 	if (keycode == 43 && e->pix - 2 >= 0)
 		e->pix -= 2;
 	if (keycode == 47 && e->pix + 2 < 20)

@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2017/12/05 12:27:59 by jgaillar         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:06:47 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ void		aff(t_stuff *e)
 	}
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 	reboot_list_loop(e, 3);
+	e->c.obj = -1;
 }
 
 void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option)
@@ -338,35 +339,5 @@ void		check_dist(t_stuff *e, int option)
 	{
 		e->c.obj = (e->c.distlight < e->c.dist ? LIGHT : e->c.obj);
 		e->c.dist = e->c.distlight;
-	}
-}
-
-void	searchlist(t_stuff *e, int nmail, int nlist)
-{
-	reboot_list_loop(e, 1);
-	if (nlist == SPHERE)
-	{
-		while (e->sph->nm != nmail)
-			e->sph = e->sph->next;
-	}
-	if (nlist == PLAN)
-	{
-		while (e->pla->nm != nmail)
-		e->pla = e->pla->next;
-	}
-	if (nlist == CYLINDRE)
-	{
-		while (e->cyl->nm != nmail)
-			e->cyl = e->cyl->next;
-	}
-	if (nlist == CONE)
-	{
-		while (e->cone->nm != nmail)
-			e->cone = e->cone->next;
-	}
-	if (nlist == LIGHT)
-	{
-	while (e->light->nm != nmail)
-		e->light = e->light->next;
 	}
 }
