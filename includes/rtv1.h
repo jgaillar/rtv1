@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 14:51:49 by prossi           ###   ########.fr       */
+/*   Updated: 2018/01/31 18:51:42 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # include "../libft/libft.h"
 # include "../mlx/mlx.h"
 # include <stdio.h>
+// Define de la taille de la fenetre avec interface
+# define WIN_X 1800
+# define WIN_Y 1000
 
 typedef struct		s_vec
 {
@@ -218,6 +221,12 @@ typedef struct		s_img
 	char			*data;
 }					t_img;
 
+typedef	struct		s_ntmgtk
+{
+	void 			*init;
+	void			*wdow;
+}					t_ntmgtk;
+
 typedef	struct		s_stuff
 {
 	t_b				b;
@@ -247,6 +256,7 @@ typedef	struct		s_stuff
 	char			buf[BUFF_SIZE + 1];
 	int				l;
 	t_mat			m;
+	t_ntmgtk		i;
 }					t_stuff;
 
 void				vectorcalc(t_stuff *e);
@@ -325,5 +335,10 @@ t_vec		getrefray(t_stuff *e, t_vec *norm, t_vec *light);
 void		oklm(t_stuff *e);
 int		raythingydebug(t_stuff *e);
 void	matrice(char type, char axe, t_stuff *e, t_vec *sujet);
+
+
+
+
+int				first_launch_interface(t_stuff *e);
 
 #endif
