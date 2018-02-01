@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 23:07:25 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/01 23:54:04 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,7 @@ void		aff(t_stuff *e)
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 	reboot_list_loop(e, 3);
 	e->c.obj = -1;
-	first_launch_interface(e);
+	// launch_interface(e);
 }
 
 void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option)

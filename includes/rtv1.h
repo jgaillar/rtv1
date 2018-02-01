@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 23:01:26 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/01 18:53:10 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,13 @@ typedef struct		s_b
 	int				y;
 }					t_b;
 
+typedef struct		s_texture
+{
+	t_rgb			c1;
+	t_rgb			c2;
+	t_rgb			c3;
+}					t_texture;
+
 typedef struct		s_sphere
 {
 	struct s_sphere	*prev;
@@ -143,6 +150,7 @@ typedef struct		s_sphere
 	double			t2;
 	double			t;
 	t_vec			norm;
+	t_texture		text;
 	int				nm;
 	struct s_sphere	*next;
 }					t_sphere;
@@ -154,6 +162,7 @@ typedef struct		s_plan
 	t_vec			norml;
 	t_vec			pos;
 	t_rgb			color;
+	t_texture		text;
 	double			t;
 	int				nm;
 	struct s_plan	*next;
@@ -167,6 +176,7 @@ typedef struct		s_cyl
 	t_vec			pos;
 	double			ray;
 	t_rgb			color;
+	t_texture		text;
 	double			t1;
 	double			t2;
 	double			t;
@@ -182,6 +192,7 @@ typedef struct		s_cone
 	t_vec			norml;
 	t_vec			pos;
 	t_rgb			color;
+	t_texture		text;
 	double			angle;
 	double			t1;
 	double			t2;
@@ -198,6 +209,7 @@ typedef struct		s_light
 	t_vec			norm;
 	t_vec			lightdir;
 	t_rgb			color;
+	t_texture		text;
 	double			ray;
 	double			det;
 	double			t1;
@@ -221,6 +233,15 @@ typedef struct		s_img
 	char			*data;
 }					t_img;
 
+typedef struct		s_data
+{
+	t_vec			pos;
+	t_vec			dir;
+	t_rgb			color;
+	t_texture		text;
+	int				ray;
+}					t_data;
+
 typedef struct		s_mlx
 {
 	struct s_mlx	*prev;
@@ -232,6 +253,7 @@ typedef struct		s_mlx
 	int				nmail;
 	double			img_x;
 	double			img_y;
+	t_data			data;
 	struct s_mlx	*next;
 }					t_mlx;
 
@@ -241,7 +263,35 @@ typedef	struct		s_ntmgtk
 	t_mlx			*mlx;
 	t_mlx			*tmp_mlx;
 	int				first;
+	int				img_x;
+	int				img_y;
 }					t_ntmgtk;
+
+typedef struct		s_letter
+{
+	char			charac;
+	int				couleur;
+	int				posx;
+	int				posy;
+	double			coeff;
+	int				space;
+}					t_letter;
+
+typedef struct		s_bres
+{
+	int				dx;
+	int				dy;
+	int				xi;
+	int				xf;
+	int				yi;
+	int				yf;
+	int				cumul;
+	int				xinc;
+	int				yinc;
+	int				ray_arc;
+	int	 			x_arc;
+	int				y_arc;
+}					t_bres;
 
 typedef	struct		s_stuff
 {
@@ -273,6 +323,8 @@ typedef	struct		s_stuff
 	int				l;
 	t_mat			m;
 	t_ntmgtk		i;
+	t_letter		lt;
+	t_bres			bs;
 }					t_stuff;
 
 void				vectorcalc(t_stuff *e);
@@ -353,13 +405,47 @@ int		raythingydebug(t_stuff *e);
 void	matrice(char type, char axe, t_stuff *e, t_vec *sujet);
 
 
+//			INTERFACE
 
-
-int				first_launch_interface(t_stuff *e);
+int				launch_interface(t_stuff *e);
 void			pixel_put_to_img(t_mlx **mlx, int x, int y, int color);
 int				new_img(t_stuff *e);
 int				init_img(t_mlx **mlx);
 void			fill_img(t_mlx **mlx, int nbmail, t_stuff *e);
 void			objet_courant(t_stuff *e);
+void			reboot_list_interface(t_stuff *e, int option);
+void			searchlist_interface(t_stuff *e, int nmail);
 
+
+//			LIB_LETTER
+
+void				A(t_stuff *e);
+void				B(t_stuff *e);
+void				C(t_stuff *e);
+void				D(t_stuff *e);
+void				E(t_stuff *e);
+void				F(t_stuff *e);
+void				G(t_stuff *e);
+void				H(t_stuff *e);
+void				I(t_stuff *e);
+void				J(t_stuff *e);
+void				K(t_stuff *e);
+void				L(t_stuff *e);
+void				M(t_stuff *e);
+void				N(t_stuff *e);
+void				O(t_stuff *e);
+void				P(t_stuff *e);
+void				Q(t_stuff *e);
+void				R(t_stuff *e);
+void				S(t_stuff *e);
+void				T(t_stuff *e);
+void				U(t_stuff *e);
+void				V(t_stuff *e);
+void				W(t_stuff *e);
+void				X(t_stuff *e);
+void				Y(t_stuff *e);
+void				Z(t_stuff *e);
+void				ft_segment_letter(t_stuff *e);
+void				ft_arc(t_stuff *e, int option);
+void				awklm_string_put(char *str, t_stuff *e);
 #endif
