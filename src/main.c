@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:17:03 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 09:25:35 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 10:58:55 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int				main(int ac, char **av)
 	e.img.mlx_ptr = mlx_init();
 	// DON'T TOUCH
 	// e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIN_X, WIN_Y,\
-	// 		"Raytracer");
+			// "Raytracer");
 	e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIDTH, LENGTH,\
 			"Raytracer");
 	// DON'T TOUCH
