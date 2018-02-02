@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/04 11:09:06 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 10:58:14 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 16:07:44 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ t_vec		getrefray(t_stuff *e, t_vec *norm, t_vec *light)
 	t_vec	tmp2;
 	double	tmp;
 
-	revvec(norm);
-	tmp = 2 * dot_product(norm, light);
-	res.x =	((tmp * norm->x) - light->x);
-	res.y = ((tmp * norm->y) - light->y);
-	res.z = ((tmp * norm->z) - light->z);
+	vecsous(&tmp2, &e->c.inter, &e->light->pos);
+	tmp = dot_product(norm, &tmp2);
+	res.x =	2 * tmp * norm->x + light->x;
+	res.y = 2 * tmp * norm->y + light->y;
+	res.z = 2 * tmp * norm->z + light->z;
 	vecnorm(&res);
 	return (res);
 }
@@ -230,11 +230,11 @@ void		aff(t_stuff *e)
 			e->c.posy += e->pix;
 	}
 		// DON'T TOUCH
-	// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
-	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
+	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
+	// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 	reboot_list_loop(e, 3);
 	e->c.obj = -1;
-	// launch_interface(e);
+	launch_interface(e);
 }
 
 void		check(t_stuff *e, t_vec *raydir, t_vec *pos, int option)

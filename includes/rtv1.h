@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/01 18:53:10 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 16:25:00 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,7 +239,7 @@ typedef struct		s_data
 	t_vec			dir;
 	t_rgb			color;
 	t_texture		text;
-	int				ray;
+	double			ray;
 }					t_data;
 
 typedef struct		s_mlx

@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/04 16:14:48 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 10:58:35 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 14:40:37 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,17 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 {
 	double color;
 
-	if (button == 1 && (x >= 0 && x <= WIDTH) && (y >= 0 && y <= LENGTH))
+	// if (button == 1 && (x >= 0 && x <= WIDTH) && (y >= 0 && y <= LENGTH))
 	// DON'T TOUCH
-	// if (button == 1 && (x >= (WIN_X - WIDTH) && x <= WIN_X) && (y >= (WIN_Y - LENGTH) && y <= WIN_Y))
+	if (button == 1 && (x >= (WIN_X - WIDTH) && x <= WIN_X) && (y >= (WIN_Y - LENGTH) && y <= WIN_Y))
 	{
 			// DON'T TOUCH
-		// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
-		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
+		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
+		// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
 		reboot_list_loop(e, 3);
 		//	DON'T TOUCH
-		// raydir(e, x - (WIN_X - WIDTH), y - (WIN_Y - LENGTH));
-		raydir(e, x, y);
+		raydir(e, x - (WIN_X - WIDTH), y - (WIN_Y - LENGTH));
+		// raydir(e, x, y);
 		check(e, &e->raydir, &e->poscam, 1);
 		check_dist(e, 1);
 		if (e->c.obj == 0)
@@ -66,7 +66,7 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 		}
 		if (e->c.obj > -1)
 			ft_segment(e, x, y, color);
+		launch_interface(e);
 	}
-	// launch_interface(e);
 	return (0);
 }

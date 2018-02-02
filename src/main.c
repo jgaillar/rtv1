@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/19 22:17:03 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 10:58:55 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 11:23:57 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,21 @@ int		main_sd(t_stuff *e, char **argv)
 
 //			DON'T TOUCH
 
-// void			color_window(t_stuff *e)
-// {
-// 	int		x;
-// 	int		y;
-//
-// 	y = -1;
-// 	while (++y < WIN_Y)
-// 	{
-// 		x = -1;
-// 		while (++x < WIN_X)
-// 		{
-// 			mlx_pixel_put(e->img.mlx_ptr, e->img.win_ptr, x, y, 0x6C0277);
-// 		}
-// 	}
-// }
+void			color_window(t_stuff *e)
+{
+	int		x;
+	int		y;
+
+	y = -1;
+	while (++y < WIN_Y)
+	{
+		x = -1;
+		while (++x < WIN_X)
+		{
+			mlx_pixel_put(e->img.mlx_ptr, e->img.win_ptr, x, y, 0x6C0277);
+		}
+	}
+}
 
 int				main(int ac, char **av)
 {
@@ -97,12 +97,12 @@ int				main(int ac, char **av)
 	main_sd(&e, av);
 	e.img.mlx_ptr = mlx_init();
 	// DON'T TOUCH
-	// e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIN_X, WIN_Y,\
-			// "Raytracer");
-	e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIDTH, LENGTH,\
+	e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIN_X, WIN_Y,\
 			"Raytracer");
+	// e.img.win_ptr = mlx_new_window(e.img.mlx_ptr, WIDTH, LENGTH,\
+	// 		"Raytracer");
 	// DON'T TOUCH
-	// color_window(&e);
+	color_window(&e);
 	create_image(&e);
 	aff(&e);
 	mlx_hook(e.img.win_ptr, 2, (1L << 0), hooks, &e);

@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 22:13:22 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/02 10:57:27 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 16:37:31 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	cadre_current(t_stuff *e)
 		x = -1;
 		while (++x < e->i.mlx->img_x)
 		{
+			//	COULEUR DE L IMAGE
 			pixel_put_to_img(&e->i.mlx, x, y, 0x6C0277);
 			if (x == e->i.mlx->img_x - 1 || x == e->i.mlx->img_x - 2 || x == 0 || x == 1)
 				pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
@@ -176,24 +177,6 @@ void	position_current(t_stuff *e)
 	draw_position_current(e);
 	e->lt.posx = 400;
 	draw_position_current(e);
-	// e->lt.posx = 20;
-	// e->lt.posy = 185;
-	// e->lt.coeff = 0.3;
-	// e->lt.couleur = 0x000000;
-	// e->lt.space = 40;
-	// awklm_string_put("COULEUR", e);
-	// e->lt.posx = 20;
-	// e->lt.posy = 225;
-	// e->lt.coeff = 0.3;
-	// e->lt.couleur = 0x000000;
-	// e->lt.space = 40;
-	// awklm_string_put("TEXTURE", e);
-	// e->lt.posx = 20;
-	// e->lt.posy = 265;
-	// e->lt.coeff = 0.3;
-	// e->lt.couleur = 0x000000;
-	// e->lt.space = 40;
-	// awklm_string_put("RAYON", e);
 }
 
 void	direction_current(t_stuff *e)
@@ -221,7 +204,68 @@ void	color_current(t_stuff *e)
 	e->lt.couleur = 0x000000;
 	e->lt.space = 40;
 	draw_position_current(e);
+	e->lt.posx = 25;
 	awklm_string_put("COULEUR", e);
+	e->lt.posx = 150;
+	draw_position_current(e);
+	e->lt.posx = 275;
+	draw_position_current(e);
+	e->lt.posx = 400;
+	draw_position_current(e);
+}
+
+void	texture_current(t_stuff *e)
+{
+	e->lt.posx = 20;
+	e->lt.posy = 231;
+	e->lt.coeff = 0.27;
+	e->lt.couleur = 0x000000;
+	e->lt.space = 40;
+	draw_position_current(e);
+	e->lt.posx = 30;
+	awklm_string_put("TEXTURE", e);
+	e->lt.posx = 150;
+	draw_position_current(e);
+	e->lt.posx = 275;
+	draw_position_current(e);
+	e->lt.posx = 400;
+	draw_position_current(e);
+}
+
+void	draw_ray_current(t_stuff *e)
+{
+	int		x;
+	int		y;
+
+	y = e->lt.posy - 30 - 1;
+	while (++y < e->lt.posy)
+	{
+		x = e->lt.posx - 10 - 1;
+		while (++x < e->lt.posx + 110)
+		{
+			if (((y == e->lt.posy - 30 || y == e->lt.posy - 29 || y == e->lt.posy - 2 || y == e->lt.posy - 1) && x >= e->lt.posx - 10 && x <= e->lt.posx + 109))
+				pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
+			else if (x == e->lt.posx - 10 || x == e->lt.posx - 9 || x == e->lt.posx + 109 || x == e->lt.posx + 108)
+				pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
+			else
+				pixel_put_to_img(&e->i.mlx, x, y, 0x6A455D);
+		}
+	}
+}
+
+void	ray_current(t_stuff *e)
+{
+	e->lt.posx = 20;
+	e->lt.posy = 273;
+	e->lt.coeff = 0.24;
+	e->lt.couleur = 0x000000;
+	e->lt.space = 40;
+	draw_ray_current(e);
+	e->lt.posx = 275;
+	draw_ray_current(e);
+	e->lt.posx = 45;
+	e->lt.posy = 268;
+	awklm_string_put("RAYON", e);
 }
 
 void	string_put_current(t_stuff *e)
@@ -247,6 +291,56 @@ void	string_put_current(t_stuff *e)
 		sprintf(buf, "%.2f", e->i.mlx->data.dir.z);
 		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 416, 125, 0x000000, buf);
 	}
+	//
+	//		COULEUR OBJET
+	if (e->c.obj != -1)
+	{
+		sprintf(buf, "%d", e->i.mlx->data.color.r);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 190, 167, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.color.g);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 315, 167, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.color.b);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 440, 167, 0x000000, buf);
+	}
+	//
+	//		TEXTURE OBJET
+	if (e->c.obj != -1)
+	{
+		e->i.mlx->data.text.c1.r = 0;
+		e->i.mlx->data.text.c1.g = 0;
+		e->i.mlx->data.text.c1.b = 0;
+		e->i.mlx->data.text.c2.r = 0;
+		e->i.mlx->data.text.c2.g = 0;
+		e->i.mlx->data.text.c2.b = 0;
+		e->i.mlx->data.text.c3.r = 0;
+		e->i.mlx->data.text.c3.g = 0;
+		e->i.mlx->data.text.c3.b = 0;
+		sprintf(buf, "%d", e->i.mlx->data.text.c1.r);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 150, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c1.g);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 185, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c1.b);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 220, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c2.r);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 275, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c2.g);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 310, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c2.b);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 345, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c3.r);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 400, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c3.g);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 435, 209, 0x000000, buf);
+		sprintf(buf, "%d", e->i.mlx->data.text.c3.b);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 470, 209, 0x000000, buf);
+	}
+	//
+	//		RAYON OBJET
+	if (e->c.obj == 0 || e->c.obj == 2 || e->c.obj == 4)
+	{
+		sprintf(buf, "%.2f", e->i.mlx->data.ray);
+		mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 291, 251, 0x000000, buf);
+	}
 	ft_strdel(&buf);
 }
 
@@ -270,6 +364,8 @@ void	objet_courant(t_stuff *e)
 	if (e->c.obj != 0 || e->c.obj != 4)
 		direction_current(e);
 	color_current(e);
+	texture_current(e);
+	ray_current(e);
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->i.mlx->img, 0, 0);
 	string_put_current(e);
 }

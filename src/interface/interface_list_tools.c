@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 09:56:01 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/01 10:06:41 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 16:40:31 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		new_img(t_stuff *e)
 		e->i.tmp_mlx = e->i.mlx;
 		if (init_img(&e->i.mlx->next) == -1)
 			return (-1);
-		e->i.mlx = e->i.tmp_mlx;
+		e->i.mlx = e->i.mlx->next;
 		e->i.mlx->prev = e->i.tmp_mlx;
 	}
 	e->i.mlx->img_x = e->i.img_x;
