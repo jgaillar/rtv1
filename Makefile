@@ -6,7 +6,7 @@
 #    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2018/02/01 18:39:51 by prossi           ###   ########.fr        #
+#    Updated: 2018/02/03 00:04:46 by prossi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ PATH_INTERFACE = src/interface/
 PATH_LIB_LETTER = src/interface/lib_letter
 
 SRC_NAME_INTERFACE = init_interface.c interface_list_tools.c pixel_put_to_img.c \
-objet_courant.c
+objet_courant.c apercu_courant.c
 
 SRC_NAME_LIB_LETTER = AA.c BB.c CC.c \
 DD.c EE.c FF.c GG.c HH.c II.c JJ.c KK.c LL.c MM.c NN.c OO.c PP.c QQ.c RR.c \
@@ -68,7 +68,8 @@ $(NAME): $(OBJ) $(OBJ_INTERFACE) $(OBJ_LIB_LETTER)
 	$(CC) $(CCFLAGS) $(FDFFLAGS) $(CPPFLAGS) libft/libft.a mlx/libmlx.a $^ -o $@
 
 clean:
-	@cd src ; rm -rf $(OBJ_NAME) $(OBJ_SRC_INTERFACE) $(OBJ_LIB_LETTER); cd ..
+	cd src ; rm -rf $(OBJ_NAME) ; cd interface ; rm -rf $(OBJ_SRC_INTERFACE)
+	cd lib_letter ; rm -rf $(OBJ_SRC_LIB_LETTER); cd ../../../
 
 fclean: clean
 	rm -rf libft/libft.a

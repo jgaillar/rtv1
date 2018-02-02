@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 16:25:00 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 21:37:01 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,13 @@ typedef	struct		s_ntmgtk
 	int				first;
 	int				img_x;
 	int				img_y;
+	t_vec			poscam;
+	t_vec			preg;
+	t_vec			dircam;
+	t_vec			vecdroit;
+	t_vec			upleft;
+	int				objet;
+	int				each_obj;
 }					t_ntmgtk;
 
 typedef struct		s_letter
@@ -415,6 +422,9 @@ void			fill_img(t_mlx **mlx, int nbmail, t_stuff *e);
 void			objet_courant(t_stuff *e);
 void			reboot_list_interface(t_stuff *e, int option);
 void			searchlist_interface(t_stuff *e, int nmail);
+void			apercu_courant(t_stuff *e);
+void			fill_value_current(t_stuff *e);
+void			get_value_current(t_stuff *e);
 
 
 //			LIB_LETTER

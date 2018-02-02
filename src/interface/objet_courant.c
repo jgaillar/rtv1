@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 22:13:22 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/02 16:37:31 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 22:23:02 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,8 +121,12 @@ void	title_current(t_stuff *e)
 	e->lt.coeff = 0.5;
 	e->lt.couleur = 0x000000;
 	e->lt.space = 40;
+	printf("Pointeur objet : [%d]\n", e->c.obj);
 	if (e->c.obj == -1)
+	{
+		printf("Pointeur objet : [%d]\n", e->c.obj);
 		awklm_string_put("CAMERA", e);
+	}
 	if (e->c.obj == 0)
 		awklm_string_put("SPHERE", e);
 	if (e->c.obj == 1)

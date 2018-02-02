@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/05 10:47:04 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/01/31 14:51:59 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 23:40:35 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	choose_sujet(t_stuff *e)
 {
+	e->c.obj = e->i.objet;
 	if (e->c.obj == SPHERE)
 	{
 		searchlist(e, e->c.objsph, SPHERE);
