@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 22:13:22 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/01 23:52:29 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/02 09:25:21 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,10 +202,34 @@ void	position_current(t_stuff *e)
 	// awklm_string_put("RAYON", e);
 }
 
-void	objet_courant(t_stuff *e)
+void	direction_current(t_stuff *e)
+{
+	e->lt.posx = 20;
+	e->lt.posy = 145;
+	e->lt.coeff = 0.3;
+	e->lt.couleur = 0x000000;
+	e->lt.space = 40;
+	awklm_string_put("DIRECTION", e);
+}
+
+void	string_put_current(t_stuff *e)
 {
 	char	*buf;
 
+	buf = ft_strnew(50);
+	//		POSITION OBJET
+	sprintf(buf, "%.2f", e->i.mlx->data.pos.x);
+	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 166, 83, 0x000000, buf);
+	sprintf(buf, "%.2f", e->i.mlx->data.pos.y);
+	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 291, 83, 0x000000, buf);
+	sprintf(buf, "%.2f", e->i.mlx->data.pos.z);
+	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 416, 83, 0x000000, buf);
+	//
+	ft_strdel(&buf);
+}
+
+void	objet_courant(t_stuff *e)
+{
 	if (e->i.first == 0)
 	{
 		e->i.img_x = WIN_X - WIDTH;
@@ -221,12 +245,7 @@ void	objet_courant(t_stuff *e)
 	cadre_current(e);
 	title_current(e);
 	position_current(e);
+	direction_current(e);
 	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->i.mlx->img, 0, 0);
-	buf = ft_strnew(50);
-	sprintf(buf, "%.2f", e->poscam.x);
-	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 166, 83, 0x000000, buf);
-	sprintf(buf, "%.2f", e->poscam.y);
-	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 291, 83, 0x000000, buf);
-	sprintf(buf, "%.2f", e->poscam.z);
-	mlx_string_put(e->img.mlx_ptr, e->img.win_ptr, 416, 83, 0x000000, buf);
+	string_put_current(e);
 }
