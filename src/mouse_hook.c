@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/04 16:14:48 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/03 00:01:03 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/05 08:23:36 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 	// DON'T TOUCH
 	// if (button == 1 && (x >= (WIN_X - WIDTH) && x <= WIN_X) && (y >= (WIN_Y - LENGTH) && y <= WIN_Y))
 	{
+		e->i.term = 0;
 			// DON'T TOUCH
 		// mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, WIN_X - WIDTH, WIN_Y - LENGTH);
 		mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->img.img_ptr, 0, 0);
@@ -71,8 +72,14 @@ int		mouse_hook(int button, int x, int y, t_stuff *e)
 		}
 		if (e->c.obj > -1)
 			ft_segment(e, x, y, color);
+		// Recuperation du pointeur d'objet pour l interface
 		e->i.objet = e->c.obj;
 		// launch_interface(e);
 	}
+	// else if (button == 1 && y > 0 && y < 30 && x > WIN_X - WIDTH && x < WIN_X - WIDTH + 300)
+	// {
+	// 	e->i.term = 1;
+	// 	terminal(e);
+	// }
 	return (0);
 }

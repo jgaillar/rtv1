@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/02 18:10:46 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/02 23:54:19 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/05 07:56:00 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,22 +170,6 @@ void		aff_apercu(t_stuff *e)
 	e->poscam = tmp_poscam;
 }
 
-void	cadre_apercu(t_stuff *e)
-{
-	int		x;
-	int		y;
-
-	y = -1;
-	while (++y < e->i.mlx->img_y)
-	{
-		x = -1;
-		while (++x < e->i.mlx->img_x)
-		{
-			pixel_put_to_img(&e->i.mlx, x, y, 0xFFFFFF);
-		}
-	}
-}
-
 void	apercu_courant(t_stuff *e)
 {
 	if (e->i.first == 0)
@@ -202,5 +186,5 @@ void	apercu_courant(t_stuff *e)
 	// cadre_apercu(e);
 	get_value_apercu(e);
 	aff_apercu(e);
-	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->i.mlx->img, 0, e->i.img_y);
+	mlx_put_image_to_window(e->img.mlx_ptr, e->img.win_ptr, e->i.mlx->img, 0, WIN_Y - LENGTH);
 }

@@ -6,7 +6,7 @@
 /*   By: prossi <prossi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/31 22:13:22 by prossi            #+#    #+#             */
-/*   Updated: 2018/02/02 22:23:02 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/05 08:07:17 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ void	cadre_current(t_stuff *e)
 		{
 			//	COULEUR DE L IMAGE
 			pixel_put_to_img(&e->i.mlx, x, y, 0x6C0277);
-			if (x == e->i.mlx->img_x - 1 || x == e->i.mlx->img_x - 2 || x == 0 || x == 1)
-				pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
-			if (y == e->i.mlx->img_y - 1 || y == e->i.mlx->img_y - 2 || y == 0 || y == 1)
-				pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
+			// if (x == e->i.mlx->img_x - 1 || x == e->i.mlx->img_x - 2 || x == 0 || x == 1)
+			// 	pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
+			// if (y == e->i.mlx->img_y - 1 || y == e->i.mlx->img_y - 2 || y == 0 || y == 1)
+			// 	pixel_put_to_img(&e->i.mlx, x, y, 0x000000);
 			if (((y == 5 || y == 6) && x >= 150 && x <= 370) || \
 			((y == 60 || y == 61) && x >= 150 && x <= 370) || \
 			(y >= 5 && y <= 60 && ((x == 150 || x == 151) || \
@@ -121,12 +121,8 @@ void	title_current(t_stuff *e)
 	e->lt.coeff = 0.5;
 	e->lt.couleur = 0x000000;
 	e->lt.space = 40;
-	printf("Pointeur objet : [%d]\n", e->c.obj);
 	if (e->c.obj == -1)
-	{
-		printf("Pointeur objet : [%d]\n", e->c.obj);
 		awklm_string_put("CAMERA", e);
-	}
 	if (e->c.obj == 0)
 		awklm_string_put("SPHERE", e);
 	if (e->c.obj == 1)

@@ -6,7 +6,7 @@
 #    By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/05/26 20:10:24 by jgaillar          #+#    #+#              #
-#    Updated: 2018/02/03 00:04:46 by prossi           ###   ########.fr        #
+#    Updated: 2018/02/05 08:04:24 by prossi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,8 +68,9 @@ $(NAME): $(OBJ) $(OBJ_INTERFACE) $(OBJ_LIB_LETTER)
 	$(CC) $(CCFLAGS) $(FDFFLAGS) $(CPPFLAGS) libft/libft.a mlx/libmlx.a $^ -o $@
 
 clean:
-	cd src ; rm -rf $(OBJ_NAME) ; cd interface ; rm -rf $(OBJ_SRC_INTERFACE)
-	cd lib_letter ; rm -rf $(OBJ_SRC_LIB_LETTER); cd ../../../
+	cd $(SRC_PATH) ; rm -rf $(OBJ_NAME) ; cd -
+	cd $(PATH_INTERFACE) ; rm -rf $(OBJ_SRC_INTERFACE) ; cd -
+	cd $(PATH_LIB_LETTER) ; rm -rf $(OBJ_SRC_LIB_LETTER) ; cd -
 
 fclean: clean
 	rm -rf libft/libft.a

@@ -6,7 +6,7 @@
 /*   By: jgaillar <jgaillar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/03 14:06:29 by jgaillar          #+#    #+#             */
-/*   Updated: 2018/02/02 21:37:01 by prossi           ###   ########.fr       */
+/*   Updated: 2018/02/05 08:13:11 by prossi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ typedef	struct		s_ntmgtk
 	t_vec			upleft;
 	int				objet;
 	int				each_obj;
+	int				term;
 }					t_ntmgtk;
 
 typedef struct		s_letter
@@ -425,6 +426,7 @@ void			searchlist_interface(t_stuff *e, int nmail);
 void			apercu_courant(t_stuff *e);
 void			fill_value_current(t_stuff *e);
 void			get_value_current(t_stuff *e);
+void			terminal(t_stuff *e);
 
 
 //			LIB_LETTER
